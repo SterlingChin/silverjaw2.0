@@ -1510,6 +1510,18 @@ body.is-preload #bg:before {
 	border-left: 0;
 }
 
+@media screen and (max-width: 480px) {
+	#header .content .inner h1{
+		font-size: 2rem;
+	}
+	#header .content .inner p{
+		font-size: 1.1rem;
+	}
+	#header nav ul li a {
+		font-size: 1rem;
+	}
+}
+
 body.is-article-visible #header {
 	-moz-transform: scale(0.95);
 	-webkit-transform: scale(0.95);
