@@ -11,6 +11,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="shortcut icon" type="image/jpg" href="images/snowboarding-solid.ico" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
@@ -51,6 +52,38 @@
 						<!-- Work -->
 							<article id="work">
 								<h2 class="major">Work</h2>
+								
+								<!-- Add the carousel here, before or after your existing paragraphs -->
+								<div class="swiper speaking-carousel">
+									<div class="swiper-wrapper">
+										<div class="swiper-slide">
+											<img src="images/main-337.jpg" alt="Speaking at Shift '24">
+											<p class="caption">Speaking at Shift '24</p>
+										</div>
+										<div class="swiper-slide">
+											<img src="images/Conference day 2 - 0220.jpg" alt="Speaking at Conexion">
+											<p class="caption">Speaking at Conexion (Postman's internal conference)</p>
+										</div>
+										<div class="swiper-slide">
+											<img src="images/IMG_0455.jpg" alt="Speaking at API World '24">
+											<p class="caption">Speaking at API World '24</p>
+										</div>
+										<div class="swiper-slide">
+											<img src="images/Photo May 21.jpg" alt="Speaking at Microsoft Build '24">
+											<p class="caption">Speaking at Microsoft Build '24</p>
+										</div>
+										<div class="swiper-slide">
+											<img src="images/AI Big Data Expo Panel 2.jpeg" alt="Panel discussion at AI & Big Data Expo '24">
+											<p class="caption">Panel discussion at AI & Big Data Expo '24</p>
+										</div>
+										<!-- Add more slides as needed -->
+									</div>
+									<!-- Add navigation -->
+									<div class="swiper-button-next"></div>
+									<div class="swiper-button-prev"></div>
+									<div class="swiper-pagination"></div>
+								</div>
+
 								<p>Currently a Senior Developer Advocate at Postman, where I previously served as Engineering Manager in Labs, the R&D arm of the company. I've driven several key initiatives from conception to launch, including GA releases of Postbot (Postman's AI Assistant), Postman Flows, gRPC, and GraphQL.</p>
 								<p>My approach combines strategic leadership with hands-on technical expertise. I work closely with Product and Design to create and execute OKRs, coordinate complex initiatives across teams, and ensure transparent documentation of our work. I've led the AI initiative in Labs, conducting comprehensive research to guide our organizational readiness for AI integration.</p>
 								<p>Core competencies include:</p>
@@ -95,6 +128,24 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+			<script>
+				const swiper = new Swiper('.speaking-carousel', {
+					loop: true,
+					pagination: {
+						el: '.swiper-pagination',
+						clickable: true,
+					},
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
+					autoplay: {
+						delay: 5000,
+						disableOnInteraction: false,
+					},
+				});
+			</script>
 
 	</body>
 </html>

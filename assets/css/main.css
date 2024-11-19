@@ -1797,3 +1797,30 @@ body.is-article-visible #footer {
 body.is-preload #footer {
 	opacity: 0;
 }
+
+.speaking-carousel {
+    width: 100%;
+    margin: 2em 0;
+}
+
+.swiper-slide img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.swiper-slide .caption {
+    text-align: center;
+    margin-top: 0.5em;
+    font-size: 0.9em;
+    color: #888;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #888;
+}
+
+.swiper-pagination-bullet-active {
+    background: #888;
+}
