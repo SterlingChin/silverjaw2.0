@@ -1803,9 +1803,14 @@ body.is-preload #footer {
     margin: 2em 0;
 }
 
+.swiper-slide {
+    aspect-ratio: 16/9;
+}
+
 .swiper-slide img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     border-radius: 4px;
 }
 
