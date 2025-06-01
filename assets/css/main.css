@@ -1755,8 +1755,115 @@ body.is-preload #header .content .inner {
 
 	#main article {
 		padding: 3rem 1.5rem 0.5rem 1.5rem;
-		height: 90vh;
-		font-size: x-large;
+		max-height: 90vh;
+		overflow-y: auto;
+		font-size: 1rem;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		hyphens: auto;
+	}
+
+	/* Improve text readability on mobile */
+	#main article p {
+		font-size: 0.95rem;
+		line-height: 1.6;
+		margin-bottom: 1.5rem;
+	}
+
+	#main article h2.major {
+		font-size: 1.3rem;
+		letter-spacing: 0.3rem;
+		margin-bottom: 1.5rem;
+	}
+
+	#main article ul {
+		font-size: 0.9rem;
+		line-height: 1.5;
+	}
+
+	#main article ul li {
+		margin-bottom: 0.5rem;
+	}
+
+	/* Improve carousel on mobile */
+	.speaking-carousel {
+		margin: 1.5em 0;
+	}
+
+	.swiper-slide .caption {
+		font-size: 0.8em;
+		margin-top: 0.3em;
+		line-height: 1.3;
+	}
+
+	.swiper-button-next,
+	.swiper-button-prev {
+		width: 35px;
+		height: 35px;
+		margin-top: -17.5px;
+	}
+
+	.swiper-button-next:after,
+	.swiper-button-prev:after {
+		font-size: 16px;
+	}
+
+	/* Better link handling on mobile */
+	#main article a {
+		word-break: break-word;
+		overflow-wrap: break-word;
+	}
+
+	/* Additional mobile improvements */
+	body {
+		overflow-x: hidden;
+	}
+
+	/* Ensure wrapper doesn't cause horizontal scroll */
+	#wrapper {
+		min-height: 100vh;
+		overflow-x: hidden;
+	}
+
+	/* Better text handling for long words */
+	#main article * {
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
+	/* Improve list spacing and readability */
+	#main article ul.icons {
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	#main article ul.icons li {
+		margin: 0.5rem;
+	}
+
+	/* Better button sizing for touch */
+	#main article ul.icons li a {
+		min-height: 44px;
+		min-width: 44px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+}
+
+/* Improve medium screen sizes too */
+@media screen and (max-width: 736px) and (min-width: 481px) {
+	
+	#main article {
+		font-size: 1rem;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+	}
+
+	#main article p {
+		font-size: 1rem;
+		line-height: 1.65;
 	}
 
 }
@@ -1801,10 +1908,12 @@ body.is-preload #footer {
 .speaking-carousel {
     width: 100%;
     margin: 2em 0;
+    position: relative;
 }
 
 .swiper-slide {
     aspect-ratio: 16/9;
+    position: relative;
 }
 
 .swiper-slide img {
@@ -1812,6 +1921,7 @@ body.is-preload #footer {
     height: 100%;
     object-fit: cover;
     border-radius: 4px;
+    display: block;
 }
 
 .swiper-slide .caption {
@@ -1819,13 +1929,55 @@ body.is-preload #footer {
     margin-top: 0.5em;
     font-size: 0.9em;
     color: #888;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .swiper-button-next,
 .swiper-button-prev {
     color: #888;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .swiper-pagination-bullet-active {
     background: #888;
+}
+
+/* Mobile carousel improvements */
+@media screen and (max-width: 480px) {
+    .speaking-carousel {
+        margin: 1.5em 0;
+    }
+
+    .swiper-slide .caption {
+        font-size: 0.8em;
+        margin-top: 0.3em;
+        line-height: 1.3;
+        padding: 0 0.5em;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        width: 35px;
+        height: 35px;
+        margin-top: -17.5px;
+    }
+
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+        font-size: 16px;
+    }
+
+    .swiper-pagination {
+        bottom: -25px;
+    }
 }
