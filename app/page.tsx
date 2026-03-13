@@ -1,11 +1,12 @@
 import { Nav } from "@/components/nav"
+import { Hero } from "@/components/hero"
 
 export default function Home() {
   return (
     <>
       <Nav />
       <main className="pt-14">
-        <section id="hero" className="min-h-screen" />
+        <Hero />
         <section id="about" className="py-24" />
         <section id="work" className="py-24" />
         <section id="speaking" className="py-24" />
