@@ -1,6 +1,7 @@
 import { Nav } from "@/components/nav"
 import { Hero } from "@/components/hero"
 import { About } from "@/components/about"
+import { Work } from "@/components/work"
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
       <main className="pt-14">
         <Hero />
         <About />
-        <section id="work" className="py-24" />
+        <Work />
         <section id="speaking" className="py-24" />
         <section id="content" className="py-24" />
       </main>
