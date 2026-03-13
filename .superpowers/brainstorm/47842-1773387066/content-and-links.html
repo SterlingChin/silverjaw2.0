@@ -1,0 +1,147 @@
+<h2>Content + Links Sections</h2>
+<p class="subtitle">Last two sections. Pick one from each.</p>
+
+<h3 style="margin-top: 32px; margin-bottom: 8px;">Content Section</h3>
+
+<div class="cards">
+  <div class="card" data-choice="content-tabs" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 300px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="padding: 28px 28px 0;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Content</div>
+        <!-- Tabs -->
+        <div style="display: flex; gap: 0; border-bottom: 1px solid #404040;">
+          <div style="padding: 8px 16px; font-size: 12px; font-weight: 600; color: #f59e0b; border-bottom: 2px solid #f59e0b;">All</div>
+          <div style="padding: 8px 16px; font-size: 12px; color: #a3a3a3;">Blogs</div>
+          <div style="padding: 8px 16px; font-size: 12px; color: #a3a3a3;">Videos</div>
+          <div style="padding: 8px 16px; font-size: 12px; color: #a3a3a3;">Repos</div>
+        </div>
+      </div>
+      <!-- Content list -->
+      <div style="padding: 16px 28px 28px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px; background: #262626; padding: 12px 16px; border-radius: 8px; border: 1px solid #404040;">
+          <div style="background: #92400e; color: #fde68a; padding: 2px 8px; border-radius: 3px; font-size: 9px; flex-shrink: 0;">BLOG</div>
+          <div style="font-size: 13px; color: #e5e5e5; flex: 1;">MCP Apps are Here, and Postman Already Supports Them</div>
+          <div style="font-size: 11px; color: #a3a3a3; flex-shrink: 0;">Feb 2026</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; background: #262626; padding: 12px 16px; border-radius: 8px; border: 1px solid #404040;">
+          <div style="background: #92400e; color: #fde68a; padding: 2px 8px; border-radius: 3px; font-size: 9px; flex-shrink: 0;">VIDEO</div>
+          <div style="font-size: 13px; color: #e5e5e5; flex: 1;">How to Use Postman's MCP Server in Cursor</div>
+          <div style="font-size: 11px; color: #a3a3a3; flex-shrink: 0;">Feb 2026</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; background: #262626; padding: 12px 16px; border-radius: 8px; border: 1px solid #404040;">
+          <div style="background: #92400e; color: #fde68a; padding: 2px 8px; border-radius: 3px; font-size: 9px; flex-shrink: 0;">REPO</div>
+          <div style="font-size: 13px; color: #e5e5e5; flex: 1;">postman-cursor-rules</div>
+          <div style="font-size: 11px; color: #a3a3a3; flex-shrink: 0;">Feb 2026</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Tabbed List</h3>
+      <p>Filter tabs (All / Blogs / Videos / Repos) with a clean list below. Type badges, titles, dates. Easy to scan, easy to add to.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="content-cards" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 300px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="padding: 28px 28px 16px;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Content</div>
+      </div>
+      <!-- Card grid -->
+      <div style="padding: 0 28px 28px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+        <div style="background: #262626; border-radius: 8px; border: 1px solid #404040; overflow: hidden;">
+          <div style="height: 80px; background: #404040; display: flex; align-items: center; justify-content: center;">
+            <div style="font-size: 24px;">&#9998;</div>
+          </div>
+          <div style="padding: 12px;">
+            <div style="font-size: 9px; color: #f59e0b; text-transform: uppercase; letter-spacing: 1px;">Blog</div>
+            <div style="font-size: 12px; font-weight: 600; color: #e5e5e5; margin-top: 4px;">MCP Apps are Here</div>
+            <div style="font-size: 10px; color: #a3a3a3; margin-top: 4px;">Feb 2026</div>
+          </div>
+        </div>
+        <div style="background: #262626; border-radius: 8px; border: 1px solid #404040; overflow: hidden;">
+          <div style="height: 80px; background: #404040; display: flex; align-items: center; justify-content: center;">
+            <div style="font-size: 24px;">&#9654;</div>
+          </div>
+          <div style="padding: 12px;">
+            <div style="font-size: 9px; color: #f59e0b; text-transform: uppercase; letter-spacing: 1px;">Video</div>
+            <div style="font-size: 12px; font-weight: 600; color: #e5e5e5; margin-top: 4px;">Postman MCP in Cursor</div>
+            <div style="font-size: 10px; color: #a3a3a3; margin-top: 4px;">Feb 2026</div>
+          </div>
+        </div>
+        <div style="background: #262626; border-radius: 8px; border: 1px solid #404040; overflow: hidden;">
+          <div style="height: 80px; background: #404040; display: flex; align-items: center; justify-content: center;">
+            <div style="font-size: 24px;">&lt;/&gt;</div>
+          </div>
+          <div style="padding: 12px;">
+            <div style="font-size: 9px; color: #f59e0b; text-transform: uppercase; letter-spacing: 1px;">Repo</div>
+            <div style="font-size: 12px; font-weight: 600; color: #e5e5e5; margin-top: 4px;">postman-cursor-rules</div>
+            <div style="font-size: 10px; color: #a3a3a3; margin-top: 4px;">Feb 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Card Grid</h3>
+      <p>Visual cards with thumbnails/icons, type label, title, date. Richer visually, but takes more vertical space.</p>
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top: 40px; margin-bottom: 8px;">Links / Footer</h3>
+
+<div class="cards">
+  <div class="card" data-choice="links-bar" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 140px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="display: flex; justify-content: center; gap: 20px; padding: 28px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 12px; font-weight: 600;">in</div>
+          <div style="font-size: 10px; color: #a3a3a3;">LinkedIn</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 12px; font-weight: 600;">X</div>
+          <div style="font-size: 10px; color: #a3a3a3;">Twitter</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 12px; font-weight: 600;">GH</div>
+          <div style="font-size: 10px; color: #a3a3a3;">GitHub</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 12px; font-weight: 600;">BS</div>
+          <div style="font-size: 10px; color: #a3a3a3;">Bluesky</div>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 12px; font-weight: 600;">SS</div>
+          <div style="font-size: 10px; color: #a3a3a3;">Substack</div>
+        </div>
+      </div>
+      <div style="text-align: center; padding-bottom: 16px; font-size: 11px; color: #404040;">&copy; Sterling Chin 2026</div>
+    </div>
+    <div class="card-body">
+      <h3>A. Icon Row Footer</h3>
+      <p>Simple centered row of social icons with labels. Doubles as the page footer. Clean, standard.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="links-cta" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 140px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="padding: 28px; text-align: center;">
+        <div style="font-size: 20px; font-weight: 700; color: #e5e5e5;">Let's connect.</div>
+        <div style="font-size: 13px; color: #a3a3a3; margin-top: 8px;">Find me on these platforms or reach out directly.</div>
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: 16px;">
+          <span style="border: 1px solid #404040; color: #e5e5e5; padding: 8px 16px; border-radius: 6px; font-size: 12px;">LinkedIn</span>
+          <span style="border: 1px solid #404040; color: #e5e5e5; padding: 8px 16px; border-radius: 6px; font-size: 12px;">Twitter</span>
+          <span style="border: 1px solid #404040; color: #e5e5e5; padding: 8px 16px; border-radius: 6px; font-size: 12px;">GitHub</span>
+          <span style="border: 1px solid #404040; color: #e5e5e5; padding: 8px 16px; border-radius: 6px; font-size: 12px;">Bluesky</span>
+          <span style="border: 1px solid #404040; color: #e5e5e5; padding: 8px 16px; border-radius: 6px; font-size: 12px;">Substack</span>
+        </div>
+      </div>
+      <div style="text-align: center; padding-bottom: 16px; font-size: 11px; color: #404040;">&copy; Sterling Chin 2026</div>
+    </div>
+    <div class="card-body">
+      <h3>B. CTA Footer</h3>
+      <p>"Let's connect." headline with button-style links. More intentional, feels like a closing statement.</p>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top: 24px;">Click one from each group (Content + Links). You can select multiple.</p>

@@ -1,0 +1,131 @@
+<h2>Speaking Section</h2>
+<p class="subtitle">Your 5 conference photos displayed. Which layout?</p>
+
+<div class="cards">
+  <div class="card" data-choice="masonry" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 340px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="padding: 28px 28px 16px;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px;">Speaking</div>
+        <div style="font-size: 13px; color: #a3a3a3;">24+ conferences worldwide</div>
+      </div>
+      <!-- Masonry-style grid -->
+      <div style="padding: 0 28px 28px; display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto; gap: 8px;">
+        <div style="grid-row: span 2; background: #404040; border-radius: 8px; min-height: 180px; display: flex; align-items: flex-end; padding: 10px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+            <div style="font-size: 11px; font-weight: 600; color: #e5e5e5;">Microsoft Build '24</div>
+          </div>
+        </div>
+        <div style="background: #404040; border-radius: 8px; min-height: 85px; display: flex; align-items: flex-end; padding: 8px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+            <div style="font-size: 10px; font-weight: 600; color: #e5e5e5;">Shift '24</div>
+          </div>
+        </div>
+        <div style="background: #404040; border-radius: 8px; min-height: 85px; display: flex; align-items: flex-end; padding: 8px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+            <div style="font-size: 10px; font-weight: 600; color: #e5e5e5;">API World '24</div>
+          </div>
+        </div>
+        <div style="background: #404040; border-radius: 8px; min-height: 85px; display: flex; align-items: flex-end; padding: 8px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+            <div style="font-size: 10px; font-weight: 600; color: #e5e5e5;">Conexion '24</div>
+          </div>
+        </div>
+        <div style="background: #404040; border-radius: 8px; min-height: 85px; display: flex; align-items: flex-end; padding: 8px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+            <div style="font-size: 10px; font-weight: 600; color: #e5e5e5;">AI & Big Data Expo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Masonry Grid</h3>
+      <p>One hero photo spans two rows, rest fill a staggered grid. Event names overlaid on each image. Dynamic, editorial feel.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="carousel" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 340px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="padding: 28px 28px 16px;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px;">Speaking</div>
+        <div style="font-size: 13px; color: #a3a3a3;">24+ conferences worldwide</div>
+      </div>
+      <!-- Carousel mock -->
+      <div style="padding: 0 28px 28px; display: flex; gap: 12px; overflow: hidden;">
+        <div style="flex-shrink: 0; width: 55%; background: #404040; border-radius: 12px; min-height: 200px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(transparent, rgba(0,0,0,0.85));">
+            <div style="font-size: 14px; font-weight: 600; color: #e5e5e5;">Microsoft Build '24</div>
+            <div style="font-size: 11px; color: #a3a3a3;">Seattle, WA</div>
+          </div>
+        </div>
+        <div style="flex-shrink: 0; width: 35%; background: #404040; border-radius: 12px; min-height: 200px; opacity: 0.6; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(transparent, rgba(0,0,0,0.85));">
+            <div style="font-size: 14px; font-weight: 600; color: #e5e5e5;">Shift '24</div>
+            <div style="font-size: 11px; color: #a3a3a3;">Miami, FL</div>
+          </div>
+        </div>
+        <div style="flex-shrink: 0; width: 20%; background: #404040; border-radius: 12px; min-height: 200px; opacity: 0.3;"></div>
+      </div>
+      <!-- Dots -->
+      <div style="display: flex; justify-content: center; gap: 6px; padding-bottom: 20px;">
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></div>
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: #404040;"></div>
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: #404040;"></div>
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: #404040;"></div>
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: #404040;"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Horizontal Carousel</h3>
+      <p>Swipeable cards, one in focus with the next peeking in. Event name and location on each. Interactive, familiar pattern. Easy to add more photos over time.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="filmstrip" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 340px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="padding: 28px 28px 16px;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px;">Speaking</div>
+        <div style="font-size: 13px; color: #a3a3a3;">24+ conferences worldwide</div>
+      </div>
+      <!-- Filmstrip - full width row -->
+      <div style="padding: 0 28px 12px; display: flex; gap: 8px;">
+        <div style="flex: 1; background: #404040; border-radius: 8px; height: 140px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.85));">
+            <div style="font-size: 10px; font-weight: 600; color: #e5e5e5;">MS Build</div>
+          </div>
+        </div>
+        <div style="flex: 1; background: #404040; border-radius: 8px; height: 140px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.85));">
+            <div style="font-size: 10px; font-weight: 600; color: #e5e5e5;">Shift '24</div>
+          </div>
+        </div>
+        <div style="flex: 1; background: #404040; border-radius: 8px; height: 140px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.85));">
+            <div style="font-size: 10px; font-weight: 600; color: #e5e5e5;">API World</div>
+          </div>
+        </div>
+        <div style="flex: 1; background: #404040; border-radius: 8px; height: 140px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.85));">
+            <div style="font-size: 10px; font-weight: 600; color: #e5e5e5;">Conexion</div>
+          </div>
+        </div>
+        <div style="flex: 1; background: #404040; border-radius: 8px; height: 140px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; background: linear-gradient(transparent, rgba(0,0,0,0.85));">
+            <div style="font-size: 10px; font-weight: 600; color: #e5e5e5;">AI Expo</div>
+          </div>
+        </div>
+      </div>
+      <!-- Upcoming callout -->
+      <div style="margin: 4px 28px 28px; background: #262626; border: 1px solid #404040; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <div style="font-size: 12px; font-weight: 600; color: #e5e5e5;">Next: MCP Dev Summit NA</div>
+          <div style="font-size: 11px; color: #a3a3a3;">April 2, 2026 — New York City</div>
+        </div>
+        <div style="font-size: 11px; color: #f59e0b; font-weight: 600;">Linux Foundation &#8594;</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Filmstrip + Next Up</h3>
+      <p>All 5 photos in a single row, equal width. Below that, a callout card for your next upcoming talk. Keeps the section compact and forward-looking.</p>
+    </div>
+  </div>
+</div>

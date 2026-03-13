@@ -1,0 +1,99 @@
+<h2>About Section</h2>
+<p class="subtitle">Where people learn who you actually are. Which approach?</p>
+
+<div class="cards">
+  <div class="card" data-choice="narrative" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 320px; display: flex; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <!-- Photo side -->
+      <div style="width: 40%; background: #262626; display: flex; align-items: center; justify-content: center; border-right: 1px solid #404040;">
+        <div style="color: #a3a3a3; font-size: 12px; text-align: center;">
+          <div style="width: 120px; height: 150px; background: #404040; border-radius: 8px; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center;">Photo</div>
+          Danville, CA
+        </div>
+      </div>
+      <!-- Text side -->
+      <div style="flex: 1; padding: 28px; display: flex; flex-direction: column; justify-content: center;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">About</div>
+        <div style="font-size: 14px; color: #e5e5e5; line-height: 1.7;">
+          I co-chair Postman's AI Council, where we analyze industry signals, build proof-of-concepts, and ship them. Through the council, I created Postman's first MCP server and launched the official Postman plugin for Claude Code.
+        </div>
+        <div style="font-size: 13px; color: #a3a3a3; line-height: 1.7; margin-top: 12px;">
+          I came into tech through a coding bootcamp. Before DevRel, I was an Engineering Manager at Postman leading the Labs team.
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Narrative + Photo</h3>
+      <p>Photo on the left, story on the right. This is where your headshot lives since the hero doesn't have one. Personal and professional.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="stats" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 320px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <!-- Text -->
+      <div style="padding: 28px 28px 16px;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">About</div>
+        <div style="display: flex; gap: 20px; align-items: flex-start;">
+          <div style="width: 80px; height: 80px; background: #262626; border-radius: 50%; border: 2px solid #f59e0b; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 10px;">Photo</div>
+          <div style="font-size: 14px; color: #e5e5e5; line-height: 1.7;">
+            I co-chair Postman's AI Council, where we turn proof-of-concepts into shipped products. I created Postman's first MCP server, built Claude Code skills for API development, and launched the official Postman plugin for Claude Code.
+          </div>
+        </div>
+      </div>
+      <!-- Stats bar -->
+      <div style="margin-top: auto; display: flex; border-top: 1px solid #404040;">
+        <div style="flex: 1; padding: 16px; text-align: center; border-right: 1px solid #404040;">
+          <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">24+</div>
+          <div style="font-size: 11px; color: #a3a3a3; margin-top: 2px;">Conferences</div>
+        </div>
+        <div style="flex: 1; padding: 16px; text-align: center; border-right: 1px solid #404040;">
+          <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">9</div>
+          <div style="font-size: 11px; color: #a3a3a3; margin-top: 2px;">Cities</div>
+        </div>
+        <div style="flex: 1; padding: 16px; text-align: center; border-right: 1px solid #404040;">
+          <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">5K+</div>
+          <div style="font-size: 11px; color: #a3a3a3; margin-top: 2px;">LinkedIn</div>
+        </div>
+        <div style="flex: 1; padding: 16px; text-align: center;">
+          <div style="font-size: 24px; font-weight: 700; color: #f59e0b;">1</div>
+          <div style="font-size: 11px; color: #a3a3a3; margin-top: 2px;">Plugin Shipped</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Bio + Stats Bar</h3>
+      <p>Short bio with small photo, then a stats row at the bottom for quick credibility. Numbers tell the story fast.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="cards" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 320px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="padding: 28px;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">About</div>
+        <div style="font-size: 14px; color: #a3a3a3; line-height: 1.6; margin-bottom: 20px;">Senior Developer Advocate at Postman. AI Council Co-Chair. Coding bootcamp grad turned engineering leader turned DevRel.</div>
+      </div>
+      <!-- Highlight cards -->
+      <div style="padding: 0 28px 28px; display: flex; gap: 12px;">
+        <div style="flex: 1; background: #262626; border-radius: 8px; padding: 16px; border: 1px solid #404040;">
+          <div style="font-size: 20px; margin-bottom: 6px;">&#9881;</div>
+          <div style="font-size: 13px; font-weight: 600; color: #e5e5e5;">Builder</div>
+          <div style="font-size: 11px; color: #a3a3a3; margin-top: 4px;">First MCP server at Postman, Claude Code plugin, Clara</div>
+        </div>
+        <div style="flex: 1; background: #262626; border-radius: 8px; padding: 16px; border: 1px solid #404040;">
+          <div style="font-size: 20px; margin-bottom: 6px;">&#127908;</div>
+          <div style="font-size: 13px; font-weight: 600; color: #e5e5e5;">Speaker</div>
+          <div style="font-size: 11px; color: #a3a3a3; margin-top: 4px;">24+ conferences across 4 continents in 2 years</div>
+        </div>
+        <div style="flex: 1; background: #262626; border-radius: 8px; padding: 16px; border: 1px solid #404040;">
+          <div style="font-size: 20px; margin-bottom: 6px;">&#128101;</div>
+          <div style="font-size: 13px; font-weight: 600; color: #e5e5e5;">Community</div>
+          <div style="font-size: 11px; color: #a3a3a3; margin-top: 4px;">Agents & APIs meetup series across US & Canada</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Short Bio + Highlight Cards</h3>
+      <p>One-liner bio, then three cards showing the pillars of what you do: Build, Speak, Community. Scannable, no wall of text.</p>
+    </div>
+  </div>
+</div>

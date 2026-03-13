@@ -1,0 +1,88 @@
+<h2>Hero Section Layout</h2>
+<p class="subtitle">First thing visitors see. Which layout feels right?</p>
+
+<div class="cards">
+  <div class="card" data-choice="centered" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 360px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <!-- Nav -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; border-bottom: 1px solid #404040;">
+        <div style="font-size: 16px; font-weight: 700; color: #f59e0b;">SC</div>
+        <div style="display: flex; gap: 20px; font-size: 12px; color: #a3a3a3;">
+          <span>About</span><span>Work</span><span>Speaking</span><span>Content</span><span style="color:#f59e0b;">&#9790;</span>
+        </div>
+      </div>
+      <!-- Hero centered -->
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: #262626; border: 2px solid #f59e0b; margin-bottom: 16px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 11px;">Photo</div>
+        <div style="font-size: 28px; font-weight: 700; color: #e5e5e5;">Sterling Chin</div>
+        <div style="font-size: 13px; color: #f59e0b; margin-top: 6px; letter-spacing: 1px; text-transform: uppercase;">Senior Developer Advocate at Postman</div>
+        <div style="font-size: 13px; color: #a3a3a3; margin-top: 12px; max-width: 400px; line-height: 1.5;">AI Council Co-Chair. I build tools that make APIs work for AI agents, and talk about it on stages worldwide.</div>
+        <div style="display: flex; gap: 12px; margin-top: 16px;">
+          <span style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 10px;">in</span>
+          <span style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 10px;">X</span>
+          <span style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 10px;">GH</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Centered Minimal</h3>
+      <p>Photo, name, title, one-liner, social icons. Clean, focused, no clutter. Scroll down for everything else.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="split" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 360px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <!-- Nav -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; border-bottom: 1px solid #404040;">
+        <div style="font-size: 16px; font-weight: 700; color: #f59e0b;">SC</div>
+        <div style="display: flex; gap: 20px; font-size: 12px; color: #a3a3a3;">
+          <span>About</span><span>Work</span><span>Speaking</span><span>Content</span><span style="color:#f59e0b;">&#9790;</span>
+        </div>
+      </div>
+      <!-- Hero split -->
+      <div style="flex: 1; display: flex; align-items: center; padding: 32px;">
+        <div style="flex: 1; padding-right: 24px;">
+          <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">Senior Developer Advocate</div>
+          <div style="font-size: 28px; font-weight: 700; color: #e5e5e5; line-height: 1.1;">Sterling Chin</div>
+          <div style="font-size: 13px; color: #a3a3a3; margin-top: 12px; line-height: 1.5;">AI Council Co-Chair at Postman. I build tools that make APIs work for AI agents, and talk about it on stages worldwide.</div>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <span style="background: #f59e0b; color: #000; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 600;">View Work</span>
+            <span style="border: 1px solid #404040; color: #e5e5e5; padding: 6px 14px; border-radius: 6px; font-size: 11px;">LinkedIn</span>
+          </div>
+        </div>
+        <div style="width: 140px; height: 170px; border-radius: 12px; background: #262626; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 11px;">Photo</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Split (Text + Photo)</h3>
+      <p>Text-heavy left side with CTA buttons, photo right. More content above the fold, clear call to action.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="statement" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 360px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <!-- Nav -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; border-bottom: 1px solid #404040;">
+        <div style="font-size: 16px; font-weight: 700; color: #f59e0b;">SC</div>
+        <div style="display: flex; gap: 20px; font-size: 12px; color: #a3a3a3;">
+          <span>About</span><span>Work</span><span>Speaking</span><span>Content</span><span style="color:#f59e0b;">&#9790;</span>
+        </div>
+      </div>
+      <!-- Hero statement -->
+      <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 32px;">
+        <div style="font-size: 36px; font-weight: 700; color: #e5e5e5; line-height: 1.15;">I build tools that make <span style="color: #f59e0b;">APIs work for AI agents.</span></div>
+        <div style="font-size: 14px; color: #a3a3a3; margin-top: 16px; line-height: 1.6; max-width: 480px;">Sterling Chin — Senior Developer Advocate at Postman. AI Council Co-Chair. 24+ conference talks. Creator of the official Postman plugin for Claude Code.</div>
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+          <span style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 10px;">in</span>
+          <span style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 10px;">X</span>
+          <span style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 10px;">GH</span>
+          <span style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #404040; display: flex; align-items: center; justify-content: center; color: #a3a3a3; font-size: 10px;">BS</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Statement</h3>
+      <p>Leads with what you do, not who you are. Big typography, no photo in hero. Name and credentials come second. Bold, memorable.</p>
+    </div>
+  </div>
+</div>

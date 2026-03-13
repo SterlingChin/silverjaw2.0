@@ -1,0 +1,126 @@
+<h2>Work Section</h2>
+<p class="subtitle">Your magnum opus and key projects. How do we showcase them?</p>
+
+<div class="cards">
+  <div class="card" data-choice="featured" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 400px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="padding: 28px 28px 16px;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Work</div>
+      </div>
+      <!-- Featured project -->
+      <div style="margin: 0 28px; background: #262626; border-radius: 12px; border: 1px solid #f59e0b; padding: 24px; position: relative;">
+        <div style="position: absolute; top: -8px; right: 16px; background: #f59e0b; color: #000; font-size: 9px; font-weight: 700; padding: 2px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;">Featured</div>
+        <div style="font-size: 18px; font-weight: 700; color: #e5e5e5;">Postman Plugin for Claude Code</div>
+        <div style="font-size: 13px; color: #a3a3a3; margin-top: 8px; line-height: 1.6;">Designed and shipped the official Postman plugin for Claude Code. AI agents can create, manage, test, and document APIs through conversation. Built on Postman's first MCP server, Claude Code skills, and the Learning Center's documentation layer.</div>
+        <div style="display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap;">
+          <span style="background: #92400e; color: #fde68a; padding: 3px 10px; border-radius: 4px; font-size: 10px;">MCP</span>
+          <span style="background: #92400e; color: #fde68a; padding: 3px 10px; border-radius: 4px; font-size: 10px;">Claude Code</span>
+          <span style="background: #92400e; color: #fde68a; padding: 3px 10px; border-radius: 4px; font-size: 10px;">TypeScript</span>
+          <span style="background: #92400e; color: #fde68a; padding: 3px 10px; border-radius: 4px; font-size: 10px;">Plugin SDK</span>
+        </div>
+      </div>
+      <!-- Other projects grid -->
+      <div style="padding: 16px 28px 28px; display: flex; gap: 12px;">
+        <div style="flex: 1; background: #262626; border-radius: 8px; padding: 16px; border: 1px solid #404040;">
+          <div style="font-size: 13px; font-weight: 600; color: #e5e5e5;">AI Council</div>
+          <div style="font-size: 11px; color: #a3a3a3; margin-top: 4px;">Co-Chair. Industry analysis, POCs, shipped products.</div>
+        </div>
+        <div style="flex: 1; background: #262626; border-radius: 8px; padding: 16px; border: 1px solid #404040;">
+          <div style="font-size: 13px; font-weight: 600; color: #e5e5e5;">Clara</div>
+          <div style="font-size: 11px; color: #a3a3a3; margin-top: 4px;">AI agent that grades APIs on agent-readiness.</div>
+        </div>
+        <div style="flex: 1; background: #262626; border-radius: 8px; padding: 16px; border: 1px solid #404040;">
+          <div style="font-size: 13px; font-weight: 600; color: #e5e5e5;">Cursor Rules</div>
+          <div style="font-size: 11px; color: #a3a3a3; margin-top: 4px;">Open-source rules for API-first development.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Featured + Grid</h3>
+      <p>Plugin gets the spotlight with an amber border and "Featured" badge. Other projects in a smaller card grid below. Clear hierarchy.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="timeline" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 400px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="padding: 28px 28px 16px;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Work</div>
+      </div>
+      <!-- Timeline -->
+      <div style="padding: 0 28px 28px; position: relative;">
+        <!-- Line -->
+        <div style="position: absolute; left: 38px; top: 0; bottom: 28px; width: 2px; background: #404040;"></div>
+        <!-- Item 1 -->
+        <div style="display: flex; gap: 16px; margin-bottom: 24px; position: relative;">
+          <div style="width: 20px; height: 20px; border-radius: 50%; background: #f59e0b; flex-shrink: 0; z-index: 1; margin-top: 2px;"></div>
+          <div>
+            <div style="font-size: 10px; color: #f59e0b; text-transform: uppercase; letter-spacing: 1px;">2026 — Magnum Opus</div>
+            <div style="font-size: 15px; font-weight: 600; color: #e5e5e5; margin-top: 4px;">Postman Plugin for Claude Code</div>
+            <div style="font-size: 12px; color: #a3a3a3; margin-top: 4px; line-height: 1.5;">AI agents managing the full API lifecycle through conversation. Built on Postman's first MCP server.</div>
+          </div>
+        </div>
+        <!-- Item 2 -->
+        <div style="display: flex; gap: 16px; margin-bottom: 24px; position: relative;">
+          <div style="width: 20px; height: 20px; border-radius: 50%; background: #404040; border: 2px solid #f59e0b; flex-shrink: 0; z-index: 1; margin-top: 2px;"></div>
+          <div>
+            <div style="font-size: 10px; color: #a3a3a3; text-transform: uppercase; letter-spacing: 1px;">2024 — Present</div>
+            <div style="font-size: 15px; font-weight: 600; color: #e5e5e5; margin-top: 4px;">AI Council Co-Chair</div>
+            <div style="font-size: 12px; color: #a3a3a3; margin-top: 4px; line-height: 1.5;">Analyzing the AI landscape, identifying signals, turning POCs into shipped products.</div>
+          </div>
+        </div>
+        <!-- Item 3 -->
+        <div style="display: flex; gap: 16px; position: relative;">
+          <div style="width: 20px; height: 20px; border-radius: 50%; background: #404040; border: 2px solid #f59e0b; flex-shrink: 0; z-index: 1; margin-top: 2px;"></div>
+          <div>
+            <div style="font-size: 10px; color: #a3a3a3; text-transform: uppercase; letter-spacing: 1px;">2024</div>
+            <div style="font-size: 15px; font-weight: 600; color: #e5e5e5; margin-top: 4px;">Clara & Open Source</div>
+            <div style="font-size: 12px; color: #a3a3a3; margin-top: 4px; line-height: 1.5;">Agent-readiness grader, postman-cursor-rules, V12 launch.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Timeline</h3>
+      <p>Chronological journey from DevRel start to the plugin. Tells the story of how each piece built on the last. The arc matters.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="equal" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #171717; padding: 0; min-height: 400px; display: flex; flex-direction: column; overflow: hidden; font-family: Inter, -apple-system, sans-serif;">
+      <div style="padding: 28px 28px 16px;">
+        <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 16px;">Work</div>
+      </div>
+      <!-- Equal grid -->
+      <div style="padding: 0 28px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div style="background: #262626; border-radius: 8px; padding: 20px; border: 1px solid #404040;">
+          <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Shipped</div>
+          <div style="font-size: 15px; font-weight: 600; color: #e5e5e5;">Postman Plugin for Claude Code</div>
+          <div style="font-size: 12px; color: #a3a3a3; margin-top: 6px; line-height: 1.5;">Official plugin. AI agents manage the full API lifecycle.</div>
+          <div style="display: flex; gap: 4px; margin-top: 10px;">
+            <span style="background: #92400e; color: #fde68a; padding: 2px 8px; border-radius: 3px; font-size: 9px;">MCP</span>
+            <span style="background: #92400e; color: #fde68a; padding: 2px 8px; border-radius: 3px; font-size: 9px;">TypeScript</span>
+          </div>
+        </div>
+        <div style="background: #262626; border-radius: 8px; padding: 20px; border: 1px solid #404040;">
+          <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Leadership</div>
+          <div style="font-size: 15px; font-weight: 600; color: #e5e5e5;">AI Council Co-Chair</div>
+          <div style="font-size: 12px; color: #a3a3a3; margin-top: 6px; line-height: 1.5;">Industry signals to shipped products. MCP server, Claude Code skills.</div>
+        </div>
+        <div style="background: #262626; border-radius: 8px; padding: 20px; border: 1px solid #404040;">
+          <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Open Source</div>
+          <div style="font-size: 15px; font-weight: 600; color: #e5e5e5;">Clara</div>
+          <div style="font-size: 12px; color: #a3a3a3; margin-top: 6px; line-height: 1.5;">AI agent that grades APIs on agent-readiness. 12K lines, 56 tests.</div>
+        </div>
+        <div style="background: #262626; border-radius: 8px; padding: 20px; border: 1px solid #404040;">
+          <div style="font-size: 11px; color: #f59e0b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Open Source</div>
+          <div style="font-size: 15px; font-weight: 600; color: #e5e5e5;">Postman Cursor Rules</div>
+          <div style="font-size: 12px; color: #a3a3a3; margin-top: 6px; line-height: 1.5;">API-first development rules for Cursor IDE.</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Equal Grid</h3>
+      <p>2x2 grid, all projects get equal weight. Democratic, no hierarchy. Each card has a category label and tech tags.</p>
+    </div>
+  </div>
+</div>
