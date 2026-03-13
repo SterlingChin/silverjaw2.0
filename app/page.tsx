@@ -4,6 +4,7 @@ import { About } from "@/components/about"
 import { Work } from "@/components/work"
 import { Speaking } from "@/components/speaking"
 import { ContentSection } from "@/components/content-section"
+import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Speaking />
         <ContentSection />
       </main>
+      <Footer />
     </>
   )
 }
