@@ -1,7 +1,26 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { Star } from "lucide-react"
 import { SectionHeader } from "@/components/section-header"
+
+const featuredProjects = [
+  {
+    title: "MARVIN",
+    description:
+      "Open-source AI chief of staff that manages email, calendar, Jira, content pipelines, and daily workflows through Claude Code. 930+ GitHub stars. Skills system, mobile relay, daemon architecture.",
+    tags: ["Claude Code", "MCP", "Python", "TypeScript"],
+    url: "https://github.com/SterlingChin/marvin-template",
+    stars: 930,
+  },
+  {
+    title: "Postman Plugin for Claude Code",
+    description:
+      "Designed and shipped the official Postman plugin for Claude Code. AI agents can create, manage, test, and document APIs through conversation. Built on Postman's first MCP server, Claude Code skills, and the Learning Center's documentation layer.",
+    tags: ["MCP", "Claude Code", "TypeScript", "Plugin SDK"],
+    url: "https://github.com/Postman-Devrel/cursor-postman-plugin",
+  },
+]
 
 const supportingProjects = [
   {
@@ -30,30 +49,45 @@ export function Work() {
       >
         <SectionHeader label="Work" />
 
-        {/* Featured project */}
-        <div className="relative rounded-xl border border-primary bg-card p-6">
-          <span className="absolute -top-2 right-4 rounded bg-primary px-3 py-0.5 text-xs font-bold uppercase tracking-wider text-primary-foreground">
-            Featured
-          </span>
-          <h3 className="text-xl font-bold text-foreground">
-            Postman Plugin for Claude Code
-          </h3>
-          <p className="mt-3 text-muted-foreground leading-relaxed">
-            Designed and shipped the official Postman plugin for Claude Code. AI
-            agents can create, manage, test, and document APIs through
-            conversation. Built on Postman&apos;s first MCP server, Claude Code
-            skills, and the Learning Center&apos;s documentation layer.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {["MCP", "Claude Code", "TypeScript", "Plugin SDK"].map((tag) => (
-              <span
-                key={tag}
-                className="rounded bg-accent px-3 py-1 text-xs font-medium text-accent-foreground"
-              >
-                {tag}
+        {/* Featured projects */}
+        <div className="grid gap-4 md:grid-cols-2">
+          {featuredProjects.map((project) => (
+            <a
+              key={project.title}
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative rounded-xl border border-primary bg-card p-6 transition-colors hover:border-primary/80"
+            >
+              <span className="absolute -top-2 right-4 rounded bg-primary px-3 py-0.5 text-xs font-bold uppercase tracking-wider text-primary-foreground">
+                Featured
               </span>
-            ))}
-          </div>
+              <div className="flex items-center gap-3">
+                <h3 className="text-xl font-bold text-foreground">
+                  {project.title}
+                </h3>
+                {project.stars && (
+                  <span className="flex items-center gap-1 rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-accent-foreground">
+                    <Star className="h-3 w-3 fill-current" />
+                    {project.stars}+
+                  </span>
+                )}
+              </div>
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                {project.description}
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded bg-accent px-3 py-1 text-xs font-medium text-accent-foreground"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </a>
+          ))}
         </div>
 
         {/* Supporting projects */}

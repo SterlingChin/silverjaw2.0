@@ -5,10 +5,10 @@ import { motion } from "framer-motion"
 import { SectionHeader } from "@/components/section-header"
 
 const stats = [
+  { value: "930+", label: "GitHub Stars" },
   { value: "24+", label: "Conferences" },
   { value: "9", label: "Cities" },
   { value: "5K+", label: "LinkedIn" },
-  { value: "1", label: "Plugin Shipped" },
 ]
 
 export function About() {
@@ -34,16 +34,55 @@ export function About() {
           </div>
           <div>
             <p className="text-foreground leading-relaxed">
-              I co-chair Postman&apos;s AI Council, where we turn proof-of-concepts
-              into shipped products. I created Postman&apos;s first MCP server, built
-              Claude Code skills for API development, and launched the official
-              Postman plugin for Claude Code.
+              I build{" "}
+              <a
+                href="https://github.com/SterlingChin/marvin-template"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                MARVIN
+              </a>
+              , an open-source AI chief of staff with 930+ GitHub stars. I also
+              created Postman&apos;s first MCP server, built Claude Code skills for
+              API development, and launched the official Postman plugin for Claude
+              Code.
             </p>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
               I came into tech through a coding bootcamp. Before DevRel, I was an
               Engineering Manager at Postman leading the Labs team. Before that, I
               spent years shipping software across startups and enterprise.
             </p>
+          </div>
+        </div>
+
+        {/* Studio shots */}
+        <div className="mt-8 grid grid-cols-2 gap-3">
+          <div className="group relative overflow-hidden rounded-lg">
+            <div className="relative aspect-video w-full">
+              <Image
+                src="/images/api-first-studio.jpg"
+                alt="Postman Studio recording session"
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+              <span className="text-xs font-medium text-white">Postman Studio</span>
+            </div>
+          </div>
+          <div className="group relative overflow-hidden rounded-lg">
+            <div className="relative aspect-video w-full">
+              <Image
+                src="/images/home-studio.jpg"
+                alt="Home recording studio setup"
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+              <span className="text-xs font-medium text-white">Home Studio</span>
+            </div>
           </div>
         </div>
 

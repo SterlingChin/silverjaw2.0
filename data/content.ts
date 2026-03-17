@@ -19,6 +19,42 @@ export const contentItems: ContentItem[] = [
     date: "Feb 2026",
   },
   {
+    type: "Video",
+    title: "Claude Skills vs MCP: What's the Difference and When to Use Each?",
+    url: "https://youtu.be/qthyl0GCpDo",
+    date: "Nov 2025",
+  },
+  {
+    type: "Video",
+    title: "How to Setup Mistral Vibe + First Impressions",
+    url: "https://youtu.be/vAsGKyGKEv4",
+    date: "Dec 2025",
+  },
+  {
+    type: "Video",
+    title: "How to Build Your First MCP Server (in Less Than 5 Minutes)",
+    url: "https://youtu.be/Y4bpWRLdRoA",
+    date: "May 2025",
+  },
+  {
+    type: "Video",
+    title: "Live Demo: Build a Postman MCP Server with PayPal APIs",
+    url: "https://youtu.be/YzT9QU-Kfh4",
+    date: "Jun 2025",
+  },
+  {
+    type: "Repo",
+    title: "marvin-template",
+    url: "https://github.com/SterlingChin/marvin-template",
+    date: "Jan 2026",
+  },
+  {
+    type: "Repo",
+    title: "marvin-desktop",
+    url: "https://github.com/SterlingChin/marvin-desktop",
+    date: "Feb 2026",
+  },
+  {
     type: "Repo",
     title: "postman-cursor-rules",
     url: "https://github.com/Postman-Devrel/postman-cursor-rules",
