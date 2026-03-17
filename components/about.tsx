@@ -34,7 +34,7 @@ export function About() {
           </div>
           <div>
             <p className="text-foreground leading-relaxed">
-              I build{" "}
+              I built{" "}
               <a
                 href="https://github.com/SterlingChin/marvin-template"
                 target="_blank"

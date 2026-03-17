@@ -21,9 +21,17 @@ export function Hero() {
             <span className="text-primary">APIs work for AI agents.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-            Sterling Chin — Senior Developer Advocate at Postman. AI Council
-            Co-Chair. 24+ conference talks. Creator of the official Postman
-            plugin for Claude Code.
+            Sterling Chin — Creator of{" "}
+            <a
+              href="https://github.com/SterlingChin/marvin-template"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              MARVIN
+            </a>
+            , the open-source AI chief of staff. 24+ conference talks. Builder
+            of the official Postman plugin for Claude Code.
           </p>
           <SocialIcons className="mt-8" />
         </motion.div>
