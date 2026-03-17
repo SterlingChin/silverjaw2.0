@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
+import { BackgroundPaths } from "@/components/ui/background-paths"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
@@ -26,7 +27,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <BackgroundPaths />
+          <div className="relative z-10">
+            {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>
