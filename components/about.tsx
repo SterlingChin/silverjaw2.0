@@ -58,61 +58,29 @@ export function About() {
 
         {/* Photo grid */}
         <div className="mt-8 grid grid-cols-3 gap-3">
-          {/* Row 1: Studio hero (2/3) + meetup (1/3) */}
-          <div className="group relative col-span-2 overflow-hidden rounded-lg">
-            <div className="relative aspect-video w-full">
-              <Image
-                src="/images/sterling-studio.jpg"
-                alt="Sterling Chin recording at Postman Studio"
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
+          {[
+            { src: "/images/sterling-studio.jpg", alt: "Sterling Chin recording at Postman Studio", label: "Postman Studio", span: 2 },
+            { src: "/images/meetup-runmcp.jpg", alt: "Hosting Agents & APIs meetup in San Francisco", label: "SF Meetup", span: 1 },
+            { src: "/images/conference-stage.jpg", alt: "Sterling on stage at POST/CON", label: "POST/CON", span: 1 },
+            { src: "/images/conference-crowd.jpg", alt: "Speaking to a packed conference hall", label: "POST/CON 24", span: 2 },
+          ].map((photo) => (
+            <div
+              key={photo.src}
+              className={`group relative overflow-hidden rounded-lg ${photo.span === 2 ? "col-span-2" : ""}`}
+            >
+              <div className="relative h-48 w-full">
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                <span className="text-xs font-medium text-white">{photo.label}</span>
+              </div>
             </div>
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-              <span className="text-xs font-medium text-white">Postman Studio</span>
-            </div>
-          </div>
-          <div className="group relative overflow-hidden rounded-lg">
-            <div className="relative aspect-video w-full">
-              <Image
-                src="/images/meetup-runmcp.jpg"
-                alt="Hosting Agents & APIs meetup in San Francisco"
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-            </div>
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-              <span className="text-xs font-medium text-white">SF Meetup</span>
-            </div>
-          </div>
-
-          {/* Row 2: stage (1/3) + crowd (2/3) */}
-          <div className="group relative overflow-hidden rounded-lg">
-            <div className="relative aspect-video w-full">
-              <Image
-                src="/images/conference-stage.jpg"
-                alt="Sterling on stage at conference"
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-            </div>
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-              <span className="text-xs font-medium text-white">POST/CON</span>
-            </div>
-          </div>
-          <div className="group relative col-span-2 overflow-hidden rounded-lg">
-            <div className="relative aspect-video w-full">
-              <Image
-                src="/images/conference-crowd.jpg"
-                alt="Speaking to a packed conference hall"
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-            </div>
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-              <span className="text-xs font-medium text-white">POST/CON 24</span>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* Stats bar */}
