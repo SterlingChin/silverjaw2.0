@@ -57,12 +57,12 @@ export function About() {
         </div>
 
         {/* Studio shots */}
-        <div className="mt-8 grid grid-cols-2 gap-3">
-          <div className="group relative overflow-hidden rounded-lg">
+        <div className="mt-8 grid grid-cols-3 gap-3">
+          <div className="group relative col-span-2 overflow-hidden rounded-lg">
             <div className="relative aspect-video w-full">
               <Image
-                src="/images/api-first-studio.jpg"
-                alt="Postman Studio recording session"
+                src="/images/sterling-studio.jpg"
+                alt="Sterling Chin recording at Postman Studio"
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -71,17 +71,32 @@ export function About() {
               <span className="text-xs font-medium text-white">Postman Studio</span>
             </div>
           </div>
-          <div className="group relative overflow-hidden rounded-lg">
-            <div className="relative aspect-video w-full">
-              <Image
-                src="/images/home-studio.jpg"
-                alt="Home recording studio setup"
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-              />
+          <div className="grid gap-3">
+            <div className="group relative overflow-hidden rounded-lg">
+              <div className="relative aspect-video w-full">
+                <Image
+                  src="/images/api-first-studio.jpg"
+                  alt="Postman Studio recording session"
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                <span className="text-xs font-medium text-white">API First</span>
+              </div>
             </div>
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-              <span className="text-xs font-medium text-white">Home Studio</span>
+            <div className="group relative overflow-hidden rounded-lg">
+              <div className="relative aspect-video w-full">
+                <Image
+                  src="/images/home-studio.jpg"
+                  alt="Home recording studio setup"
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
+                <span className="text-xs font-medium text-white">Home Studio</span>
+              </div>
             </div>
           </div>
         </div>
