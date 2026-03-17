@@ -20,7 +20,7 @@ export function Hero() {
             I build tools that make{" "}
             <span className="text-primary">APIs work for AI agents.</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
+          <p className="mt-6 max-w-3xl text-lg text-muted-foreground">
             Sterling Chin — Creator of{" "}
             <a
               href="https://github.com/SterlingChin/marvin-template"
