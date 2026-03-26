@@ -38,7 +38,7 @@ export function Speaking() {
               <Link
                 key={talk.slug}
                 href={`/${talk.slug}`}
-                className="group flex items-center justify-between rounded-lg border border-border p-4 transition-colors hover:border-primary"
+                className="group flex items-center justify-between rounded-lg border border-border bg-background p-4 transition-colors hover:border-primary"
               >
                 <div className="min-w-0">
                   <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-primary">

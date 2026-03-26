@@ -9,7 +9,7 @@ import type { Talk } from "@/data/talks"
 function ResourceCard({ icon, label, url }: { icon: string; label: string; url: string | null }) {
   const content = (
     <div
-      className={`rounded-lg border px-3 py-4 text-center ${
+      className={`rounded-lg border bg-background px-3 py-4 text-center ${
         url
           ? "border-border cursor-pointer transition-colors hover:border-primary"
           : "border-border/50"
@@ -44,7 +44,7 @@ export function TalkLanding({ talk }: { talk: Talk }) {
         transition={{ duration: 0.6 }}
       >
         {/* Event badge */}
-        <span className="inline-block rounded-full border border-primary/30 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
+        <span className="inline-block rounded-full border border-primary/30 bg-background px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
           {talk.event}
         </span>
 
@@ -76,7 +76,7 @@ export function TalkLanding({ talk }: { talk: Talk }) {
               href={talk.links.repo.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 rounded-lg border border-border px-5 py-3.5 text-[15px] text-foreground transition-colors hover:border-primary hover:text-primary"
+              className="flex items-center justify-center gap-2 rounded-lg border border-border bg-background px-5 py-3.5 text-[15px] text-foreground transition-colors hover:border-primary hover:text-primary"
             >
               🤖 {talk.links.repo.label}
             </a>

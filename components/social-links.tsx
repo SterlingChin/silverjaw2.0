@@ -35,7 +35,7 @@ export function SocialIcons({ className = "" }: { className?: string }) {
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:border-primary hover:text-primary"
           aria-label={link.label}
         >
           <link.icon />

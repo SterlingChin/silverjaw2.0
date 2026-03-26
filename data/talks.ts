@@ -31,7 +31,7 @@ export const talks: Talk[] = [
     location: "New York",
     status: "upcoming",
     links: {
-      feedback: "https://mcpdevsummitna2026.sched.com/event/1128581/feedback",
+      feedback: "https://sfeedback.com/bB4JAV",
       repo: {
         label: "MARVIN Template on GitHub",
         url: "https://github.com/SterlingChin/marvin-template",
