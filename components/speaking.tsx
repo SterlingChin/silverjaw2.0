@@ -1,16 +1,23 @@
+// components/speaking.tsx
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { motion } from "framer-motion"
+import { ArrowRight } from "lucide-react"
 import { SectionHeader } from "@/components/section-header"
+import { talks } from "@/data/talks"
 
 const speakingPhotos = [
   { src: "/images/ms_build_24.jpg", caption: "Microsoft Build '24", tall: true },
   { src: "/images/shift_24.jpg", caption: "Shift '24", tall: false },
   { src: "/images/api_world_24.jpg", caption: "API World '24", tall: false },
+  { src: "/images/conference-error-semantics.jpg", caption: "Rich Error Semantics", tall: true },
   { src: "/images/conexion24.jpg", caption: "Conexion '24", tall: false },
   { src: "/images/ai_big_data_panel_24.jpeg", caption: "AI & Big Data Expo '24", tall: false },
 ]
+
+const upcomingTalks = talks.filter((t) => t.status === "upcoming")
 
 export function Speaking() {
   return (
@@ -24,7 +31,34 @@ export function Speaking() {
       >
         <SectionHeader label="Speaking" subtitle="24+ conferences worldwide" />
 
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2">
+        {/* Upcoming talks */}
+        {upcomingTalks.length > 0 && (
+          <div className="mb-8 flex flex-col gap-3">
+            {upcomingTalks.map((talk) => (
+              <Link
+                key={talk.slug}
+                href={`/${talk.slug}`}
+                className="group flex items-center justify-between rounded-lg border border-border p-4 transition-colors hover:border-primary"
+              >
+                <div className="min-w-0">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-primary">
+                    {talk.event}
+                  </span>
+                  <h3 className="mt-1 line-clamp-2 text-sm font-semibold text-foreground">
+                    {talk.title}
+                  </h3>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {talk.date} · {talk.location}
+                  </p>
+                </div>
+                <ArrowRight className="ml-4 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {/* Photo grid */}
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
           {speakingPhotos.map((photo) => (
             <div
               key={photo.caption}
@@ -39,11 +73,6 @@ export function Speaking() {
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-              </div>
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3">
-                <span className="text-sm font-semibold text-white">
-                  {photo.caption}
-                </span>
               </div>
             </div>
           ))}
