@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, ChevronDown, ExternalLink } from "lucide-react"
+import { ArrowRight, ChevronDown } from "lucide-react"
 import { SocialIcons } from "@/components/social-links"
 
 export function Hero() {
@@ -36,13 +36,11 @@ export function Hero() {
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a
-              href="https://github.com/SterlingChin/marvin-template"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/marvin"
               className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
             >
               Meet MARVIN
-              <ExternalLink className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" />
             </a>
             <a
               href="/clara"

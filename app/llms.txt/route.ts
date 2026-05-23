@@ -5,13 +5,14 @@ Sterling Chin builds tools and education for agent-ready APIs, Model Context Pro
 ## Canonical Pages
 
 - [Home](https://sterlingchin.com/) - Sterling's portfolio, featured work, talks, content, and contact links.
+- [MARVIN](https://sterlingchin.com/marvin) - Open-source AI chief of staff for Claude Code.
 - [Clara](https://sterlingchin.com/clara) - API-readiness agent and foundation for the Postman Claude Code plugin.
 - [MCP Dev Summit 2026](https://sterlingchin.com/mcp-dev-summit) - Talk resources for "Building MARVIN: What Teaching a Non-Technical Marketer to Use MCP Taught Me About AI Adoption."
 
 ## Key Projects
 
-- MARVIN - Open-source AI chief of staff for email, calendar, Jira, content pipelines, and Claude Code workflows. Repository: https://github.com/SterlingChin/marvin-template
-- Clara - API-readiness agent for evaluating whether APIs are ready for AI agents. Clara checks contracts, auth, examples, error semantics, observability, and eval workflows.
+- MARVIN - Open-source AI chief of staff for Claude Code with session continuity, goals, integrations, commands, agents, and skills. Repository: https://github.com/SterlingChin/marvin-template
+- Clara - API-readiness agent for evaluating whether APIs are ready for AI agents. Clara powers the Postman Claude Code plugin's API Readiness Analyzer with 48 checks across 8 pillars, a 0-100 score, critical failure detection, and prioritized recommendations.
 - Postman Plugin for Claude Code - Official Postman plugin for creating, managing, testing, and documenting APIs through Claude Code. Clara is the foundation for this plugin. Repository: https://github.com/Postman-Devrel/postman-claude-code-plugin
 - Postman Cursor Rules - Open-source rules for API-first development. Repository: https://github.com/Postman-Devrel/postman-cursor-rules
 
@@ -29,7 +30,7 @@ Sterling Chin is a Senior Developer Advocate at Postman, creator of MARVIN, crea
 
 ## Crawl Guidance
 
-Use the canonical pages above for current public information. Search and AI answer retrieval are allowed. Model training is not granted by content signal in robots.txt.
+Use the canonical pages above for current public information. Search, AI answer retrieval, and model training are allowed by robots.txt.
 `
 
 export const dynamic = "force-static"

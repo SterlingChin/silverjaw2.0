@@ -1,7 +1,8 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Bot, CheckCircle2, ExternalLink, GitBranch, ShieldCheck } from "lucide-react"
+import { ArrowRight, Bot, CheckCircle2, ExternalLink, GitBranch, Gauge, ShieldCheck } from "lucide-react"
 
 const readinessAreas = [
   "Machine-readable API contracts",
@@ -12,6 +13,48 @@ const readinessAreas = [
   "Observable agent traffic and audit trails",
   "LLM-readable documentation",
   "Repeatable evaluation workflows",
+]
+
+const analyzerProof = [
+  { value: "48", label: "readiness checks" },
+  { value: "8", label: "readiness pillars" },
+  { value: "0-100", label: "scored output" },
+  { value: "70%+", label: "agent-ready threshold" },
+]
+
+const readinessPillars = [
+  {
+    name: "Metadata",
+    checks: "operation IDs, summaries, descriptions, and tags",
+  },
+  {
+    name: "Errors",
+    checks: "error schemas, codes, retry guidance, and failure recovery",
+  },
+  {
+    name: "Introspection",
+    checks: "parameter types, required fields, examples, and constraints",
+  },
+  {
+    name: "Naming",
+    checks: "consistent casing, RESTful paths, and agent-readable names",
+  },
+  {
+    name: "Predictability",
+    checks: "response schemas, pagination, dates, and stable output shapes",
+  },
+  {
+    name: "Documentation",
+    checks: "auth docs, rate limits, usage notes, and task context",
+  },
+  {
+    name: "Performance",
+    checks: "rate limit headers, caching, bulk endpoints, and efficient calls",
+  },
+  {
+    name: "Discoverability",
+    checks: "OpenAPI version, server URLs, and crawlable API entry points",
+  },
 ]
 
 const foundations = [
@@ -81,36 +124,81 @@ export function ClaraPage() {
 
           <section
             aria-label="What Clara evaluates"
-            className="rounded-lg border border-border bg-card p-5 shadow-sm sm:p-6"
+            className="overflow-hidden rounded-lg border border-border bg-card shadow-sm"
           >
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-accent text-accent-foreground">
-                <Bot className="h-5 w-5" />
-              </div>
-              <div>
-                <h2 className="text-lg font-bold text-foreground">API readiness model</h2>
-                <p className="text-sm text-muted-foreground">
-                  The signals Clara uses to judge agent usability.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-6 grid gap-3">
-              {readinessAreas.map((area) => (
-                <div
-                  key={area}
-                  className="flex items-start gap-3 rounded-md border border-border bg-background p-3"
-                >
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                  <p className="text-sm font-medium text-foreground">{area}</p>
+            <Image
+              src="/images/postman-plugin-api-ai-check.gif"
+              alt="Postman Claude Code plugin analyzing an API for AI readiness"
+              width={1854}
+              height={1080}
+              unoptimized
+              className="aspect-video w-full border-b border-border object-cover"
+              priority
+            />
+            <div className="p-5 sm:p-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-md bg-accent text-accent-foreground">
+                  <Bot className="h-5 w-5" />
                 </div>
-              ))}
+                <div>
+                  <h2 className="text-lg font-bold text-foreground">API readiness model</h2>
+                  <p className="text-sm text-muted-foreground">
+                    The signals Clara uses to judge agent usability.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-3">
+                {readinessAreas.map((area) => (
+                  <div
+                    key={area}
+                    className="flex items-start gap-3 rounded-md border border-border bg-background p-3"
+                  >
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                    <p className="text-sm font-medium text-foreground">{area}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
         </div>
       </section>
 
       <section className="border-y border-border bg-muted/40 px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex items-center gap-3">
+            <Gauge className="h-6 w-6 text-primary" />
+            <h2 className="text-2xl font-bold text-foreground">Proof from the plugin</h2>
+          </div>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
+            Clara powers the built-in API Readiness Analyzer in the Postman Claude Code
+            plugin. It evaluates API definitions for AI agent compatibility, returns a
+            score, calls out critical failures, and prioritizes recommendations.
+          </p>
+          <div className="mt-6 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-4">
+            {analyzerProof.map((item) => (
+              <div key={item.label} className="bg-card p-5">
+                <p className="text-2xl font-bold text-foreground">{item.value}</p>
+                <p className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                  {item.label}
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+            {readinessPillars.map((pillar) => (
+              <div key={pillar.name} className="rounded-lg border border-border bg-card p-4">
+                <h3 className="font-semibold text-foreground">{pillar.name}</h3>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  {pillar.checks}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 py-16">
         <div className="mx-auto grid max-w-6xl gap-4 md:grid-cols-3">
           {foundations.map((item) => {
             const content = (
@@ -152,18 +240,19 @@ export function ClaraPage() {
         </div>
       </section>
 
-      <section className="px-6 py-16">
+      <section className="px-6 pb-16">
         <div className="mx-auto max-w-6xl rounded-lg border border-border bg-card p-6">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-            Positioning
+            Focus
           </p>
           <h2 className="mt-3 text-2xl font-bold text-foreground">
-            Clara is not a website checker.
+            Clara focuses on API readiness for agents.
           </h2>
           <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
-            The website-readiness audit is a separate tool. Clara is the API-readiness
-            agent: the underlying system for evaluating whether APIs, docs, collections,
-            and workflows are ready for AI agents and Claude Code.
+            The goal is to help teams see whether their APIs, docs, collections, and
+            workflows are usable by AI agents before those agents reach production users.
+            That means Clara looks for the details that make APIs discoverable, predictable,
+            debuggable, and safe to operate through Claude Code.
           </p>
         </div>
       </section>
