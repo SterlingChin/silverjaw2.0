@@ -2,6 +2,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import Link from "next/link"
 import { Star } from "lucide-react"
 import { SocialIcons } from "@/components/social-links"
 import type { Talk } from "@/data/talks"
@@ -106,12 +107,12 @@ export function TalkLanding({ talk }: { talk: Talk }) {
         <SocialIcons className="justify-center" />
 
         {/* Footer link */}
-        <a
+        <Link
           href="/"
           className="mt-8 inline-block text-xs text-muted-foreground/50 transition-colors hover:text-muted-foreground"
         >
           sterlingchin.com
-        </a>
+        </Link>
       </motion.div>
     </main>
   )
