@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ChevronDown } from "lucide-react"
+import { ArrowRight, ChevronDown } from "lucide-react"
 import { SocialIcons } from "@/components/social-links"
 
 export function Hero() {
@@ -33,6 +33,21 @@ export function Hero() {
             , the open-source AI chief of staff. 24+ conference talks. Builder
             of the official Postman plugin for Claude Code.
           </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a
+              href="/clara"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            >
+              Meet Clara
+              <ArrowRight className="h-4 w-4" />
+            </a>
+            <a
+              href="#work"
+              className="inline-flex items-center justify-center rounded-md border border-border bg-background px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
+            >
+              See the work
+            </a>
+          </div>
           <SocialIcons className="mt-8" />
         </motion.div>
       </div>

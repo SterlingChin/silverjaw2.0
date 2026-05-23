@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -9,13 +10,16 @@ import { ThemeToggle } from "@/components/theme-toggle"
 const navItems = [
   { label: "About", href: "#about" },
   { label: "Work", href: "#work" },
+  { label: "Clara", href: "/clara" },
   { label: "Speaking", href: "#speaking" },
   { label: "Content", href: "#content" },
 ]
 
 export function Nav() {
+  const pathname = usePathname()
   const [activeSection, setActiveSection] = useState("")
   const [isOpen, setIsOpen] = useState(false)
+  const isHome = pathname === "/"
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,18 +41,44 @@ export function Nav() {
 
   const handleClick = (href: string) => {
     setIsOpen(false)
+    if (href.startsWith("/")) {
+      window.location.href = href
+      return
+    }
+
+    if (!isHome) {
+      window.location.href = `/${href}`
+      return
+    }
+
     const el = document.querySelector(href)
     el?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  const getHref = (href: string) => {
+    if (href.startsWith("#") && !isHome) {
+      return `/${href}`
+    }
+
+    return href
+  }
+
+  const isActive = (href: string) => {
+    if (href.startsWith("/")) {
+      return pathname === href
+    }
+
+    return isHome && activeSection === href.slice(1)
   }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
         <a
-          href="#hero"
+          href={isHome ? "#hero" : "/"}
           onClick={(e) => {
             e.preventDefault()
-            handleClick("#hero")
+            handleClick(isHome ? "#hero" : "/")
           }}
           className="text-lg font-bold text-primary"
         >
@@ -60,13 +90,13 @@ export function Nav() {
           {navItems.map((item) => (
             <a
               key={item.href}
-              href={item.href}
+              href={getHref(item.href)}
               onClick={(e) => {
                 e.preventDefault()
                 handleClick(item.href)
               }}
               className={`text-sm transition-colors hover:text-primary ${
-                activeSection === item.href.slice(1)
+                isActive(item.href)
                   ? "text-primary"
                   : "text-muted-foreground"
               }`}
@@ -91,13 +121,13 @@ export function Nav() {
                 {navItems.map((item) => (
                   <a
                     key={item.href}
-                    href={item.href}
+                    href={getHref(item.href)}
                     onClick={(e) => {
                       e.preventDefault()
                       handleClick(item.href)
                     }}
                     className={`text-lg transition-colors hover:text-primary ${
-                      activeSection === item.href.slice(1)
+                      isActive(item.href)
                         ? "text-primary"
                         : "text-muted-foreground"
                     }`}

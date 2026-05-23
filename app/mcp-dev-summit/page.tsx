@@ -4,13 +4,17 @@ import { TalkLanding } from "@/components/talk-landing"
 import { notFound } from "next/navigation"
 
 export const metadata = {
-  title: "Building MARVIN | MCP Dev Summit 2026 - Sterling Chin",
+  title: "Building MARVIN | MCP Dev Summit 2026",
   description:
     "Talk resources, session feedback, and links from Sterling Chin's MCP Dev Summit 2026 session.",
+  alternates: {
+    canonical: "/mcp-dev-summit",
+  },
   openGraph: {
     title: "Building MARVIN | MCP Dev Summit 2026",
     description:
       "What Teaching a Non-Technical Marketer to Use MCP Taught Me About AI Adoption",
+    url: "https://sterlingchin.com/mcp-dev-summit",
   },
 }
 

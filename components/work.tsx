@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Star } from "lucide-react"
+import { ArrowRight, Star } from "lucide-react"
 import { SectionHeader } from "@/components/section-header"
 
 const featuredProjects = [
@@ -16,9 +16,9 @@ const featuredProjects = [
   {
     title: "Postman Plugin for Claude Code",
     description:
-      "Designed and shipped the official Postman plugin for Claude Code. AI agents can create, manage, test, and document APIs through conversation. Built on Postman's first MCP server, Claude Code skills, and the Learning Center's documentation layer.",
+      "Designed and shipped the official Postman plugin for Claude Code. AI agents can create, manage, test, and document APIs through conversation. Built on Clara, Postman's first MCP server, Claude Code skills, and the Learning Center's documentation layer.",
     tags: ["MCP", "Claude Code", "TypeScript", "Plugin SDK"],
-    url: "https://github.com/Postman-Devrel/cursor-postman-plugin",
+    url: "https://github.com/Postman-Devrel/postman-claude-code-plugin",
   },
 ]
 
@@ -29,7 +29,8 @@ const supportingProjects = [
   },
   {
     title: "Clara",
-    description: "AI agent that grades APIs on agent-readiness.",
+    description: "API-readiness agent and foundation for Postman's Claude Code plugin.",
+    url: "/clara",
   },
   {
     title: "Postman Cursor Rules",
@@ -92,17 +93,42 @@ export function Work() {
 
         {/* Supporting projects */}
         <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {supportingProjects.map((project) => (
-            <div
-              key={project.title}
-              className="rounded-lg border border-border bg-card p-4"
-            >
-              <h4 className="font-semibold text-foreground">{project.title}</h4>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {project.description}
-              </p>
-            </div>
-          ))}
+          {supportingProjects.map((project) => {
+            const content = (
+              <>
+                <div className="flex items-center justify-between gap-3">
+                  <h4 className="font-semibold text-foreground">{project.title}</h4>
+                  {"url" in project && project.url && (
+                    <ArrowRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
+                  )}
+                </div>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {project.description}
+                </p>
+              </>
+            )
+
+            if ("url" in project && project.url) {
+              return (
+                <a
+                  key={project.title}
+                  href={project.url}
+                  className="group rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary"
+                >
+                  {content}
+                </a>
+              )
+            }
+
+            return (
+              <div
+                key={project.title}
+                className="rounded-lg border border-border bg-card p-4"
+              >
+                {content}
+              </div>
+            )
+          })}
         </div>
       </motion.div>
     </section>
