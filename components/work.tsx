@@ -10,7 +10,7 @@ const featuredProjects = [
     description:
       "Open-source AI chief of staff that manages email, calendar, Jira, content pipelines, and daily workflows through Claude Code. 930+ GitHub stars. Skills system, mobile relay, daemon architecture.",
     tags: ["Claude Code", "MCP", "Python", "TypeScript"],
-    url: "https://github.com/SterlingChin/marvin-template",
+    url: "/marvin",
     stars: 930,
   },
   {
@@ -56,8 +56,8 @@ export function Work() {
             <a
               key={project.title}
               href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={project.url.startsWith("http") ? "_blank" : undefined}
+              rel={project.url.startsWith("http") ? "noopener noreferrer" : undefined}
               className="group relative rounded-xl border border-primary bg-card p-6 transition-colors hover:border-primary/80"
             >
               <span className="absolute -top-2 right-4 rounded bg-primary px-3 py-0.5 text-xs font-bold uppercase tracking-wider text-primary-foreground">

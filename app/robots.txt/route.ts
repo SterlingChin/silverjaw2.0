@@ -1,8 +1,8 @@
 const body = `# sterlingchin.com crawl policy
-# Search and AI answer retrieval are allowed. Model training is not granted by content signal.
+# Search, AI answer retrieval, and model training are allowed.
 
 User-agent: *
-Content-Signal: search=yes,ai-input=yes,ai-train=no
+Content-Signal: search=yes,ai-input=yes,ai-train=yes
 Allow: /
 
 User-agent: OAI-SearchBot
@@ -21,25 +21,25 @@ User-agent: PerplexityBot
 Allow: /
 
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: ClaudeBot
-Disallow: /
+Allow: /
 
 User-agent: Google-Extended
-Disallow: /
+Allow: /
 
 User-agent: Applebot-Extended
-Disallow: /
+Allow: /
 
 User-agent: CCBot
-Disallow: /
+Allow: /
 
 User-agent: Bytespider
-Disallow: /
+Allow: /
 
 User-agent: meta-externalagent
-Disallow: /
+Allow: /
 
 Sitemap: https://sterlingchin.com/sitemap.xml
 Host: https://sterlingchin.com
