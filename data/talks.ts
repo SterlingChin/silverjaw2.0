@@ -29,7 +29,7 @@ export const talks: Talk[] = [
     event: "MCP Dev Summit North America 2026",
     date: "April 2, 2026",
     location: "New York",
-    status: "upcoming",
+    status: "past",
     links: {
       feedback: "https://sfeedback.com/bB4JAV",
       repo: {

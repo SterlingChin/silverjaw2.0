@@ -45,6 +45,7 @@ const claraJsonLd = {
   operatingSystem: "Web",
   creator: {
     "@type": "Person",
+    "@id": "https://sterlingchin.com/#person",
     name: "Sterling Chin",
     url: "https://sterlingchin.com",
     sameAs: [

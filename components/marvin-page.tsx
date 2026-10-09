@@ -54,7 +54,7 @@ const architecture = [
 
 export function MarvinPage() {
   return (
-    <main className="pt-14">
+    <main id="main-content" className="pt-20">
       <section className="px-6 py-16 sm:py-20">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div className="pt-2">

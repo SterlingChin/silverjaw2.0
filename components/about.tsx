@@ -1,101 +1,41 @@
-"use client"
-
 import Image from "next/image"
-import { motion } from "framer-motion"
-import { SectionHeader } from "@/components/section-header"
-
-const stats = [
-  { value: "930+", label: "GitHub Stars" },
-  { value: "24+", label: "Conferences" },
-  { value: "9", label: "Cities" },
-  { value: "5K+", label: "LinkedIn" },
-]
 
 export function About() {
   return (
-    <section id="about" className="px-6 py-24">
-      <motion.div
-        className="mx-auto max-w-5xl"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.5 }}
-      >
-        <SectionHeader label="About" />
-
-        <div className="flex items-start gap-5">
-          <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-full border-2 border-primary">
-            <Image
-              src="/images/sterling-primary.jpg"
-              alt="Sterling Chin"
-              fill
-              className="object-cover"
-            />
+    <section id="about" className="site-container grid items-center gap-12 py-20 md:grid-cols-2 lg:gap-20">
+      <div className="grid grid-cols-2 gap-4">
+        <figure>
+          <div className="relative aspect-[3/4] overflow-hidden rounded-[1.5rem]">
+            <Image src="/images/sterling-studio.jpg" alt="Sterling recording at Postman Studio" fill sizes="(min-width: 768px) 240px, 45vw" className="photo-wash object-cover" />
           </div>
-          <div>
-            <p className="text-foreground leading-relaxed">
-              I built{" "}
-              <a
-                href="https://github.com/SterlingChin/marvin-template"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
-              >
-                MARVIN
-              </a>
-              , an open-source AI chief of staff with 930+ GitHub stars. I also
-              created Postman&apos;s first MCP server, built Claude Code skills for
-              API development, and launched the official Postman plugin for Claude
-              Code.
-            </p>
-            <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-              I came into tech through a coding bootcamp. Before DevRel, I was an
-              Engineering Manager at Postman leading the Labs team. Before that, I
-              spent years shipping software across startups and enterprise.
-            </p>
+          <figcaption className="mt-3 text-xs text-muted-foreground">Making the technical approachable.</figcaption>
+        </figure>
+        <figure className="pt-12">
+          <div className="relative aspect-[3/4] overflow-hidden rounded-[1.5rem]">
+            <Image src="/images/meetup-runmcp.jpg" alt="Sterling at an Agents & APIs meetup in San Francisco" fill sizes="(min-width: 768px) 240px, 45vw" className="photo-wash object-cover" />
           </div>
-        </div>
-
-        {/* Photo grid */}
-        <div className="mt-8 grid grid-cols-3 gap-3">
-          {[
-            { src: "/images/sterling-studio.jpg", alt: "Sterling Chin recording at Postman Studio", label: "Postman Studio", span: 2 },
-            { src: "/images/meetup-runmcp.jpg", alt: "Hosting Agents & APIs meetup in San Francisco", label: "SF Meetup", span: 1 },
-            { src: "/images/conference-stage.jpg", alt: "Sterling on stage at POST/CON", label: "POST/CON", span: 1 },
-            { src: "/images/conference-crowd.jpg", alt: "Speaking to a packed conference hall", label: "POST/CON 24", span: 2 },
-          ].map((photo) => (
-            <div
-              key={photo.src}
-              className={`group relative overflow-hidden rounded-lg ${photo.span === 2 ? "col-span-2" : ""}`}
-            >
-              <div className="relative h-48 w-full">
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-2">
-                <span className="text-xs font-medium text-white">{photo.label}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Stats bar */}
-        <div className="mt-10 grid grid-cols-2 border-t border-border md:grid-cols-4">
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="border-b border-border px-4 py-5 text-center md:border-b-0 md:border-r md:last:border-r-0"
-            >
-              <div className="text-2xl font-bold text-primary">{stat.value}</div>
-              <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
+          <figcaption className="mt-3 text-xs text-muted-foreground">Learning with other builders.</figcaption>
+        </figure>
+      </div>
+      <div>
+        <p className="section-kicker mb-5">How I got here</p>
+        <h2 className="display-heading text-3xl leading-tight sm:text-4xl">A coding bootcamp.<br />A lot of building.<br />Now, my own company.</h2>
+        <p className="mt-6 text-lg leading-relaxed">
+          I got into tech through a coding bootcamp, shipped software at startups
+          and enterprises, and went on to lead the Labs team at Postman before
+          moving into developer advocacy.
+        </p>
+        <p className="mt-4 leading-relaxed text-muted-foreground">
+          Building <a className="text-link" href="/marvin">MARVIN</a>, my open-source
+          AI chief of staff, gave me a place to explore what agents need to be
+          useful in everyday work. My work on API tools and MCP kept bringing me
+          back to the same question: what context does the next person or agent need?
+        </p>
+        <p className="mt-4 leading-relaxed text-muted-foreground">
+          That’s the question I’m working on as the founder of Sannr. I write,
+          build, and speak about what I’m learning along the way.
+        </p>
+      </div>
     </section>
   )
 }
