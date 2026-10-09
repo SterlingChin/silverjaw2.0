@@ -67,3 +67,19 @@ test('Super Doodle discovery stays hidden until earned and persists across reloa
  run=game(saved);assert.equal(run('superDiscovered'),true);
  assert.equal(game({'notebook-invasion-super-discovered':'false'})('superDiscovered'),false);
 });
+test('dragon comes from a charged Volcano plus heal and breathes lava without spending gun ammo',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.weapon='VOLCANO GUN';player.ammo=12;pickups=[{type:'+',x:player.x,y:player.y-24,life:10}];update(.01);fire();return player.dragonTime===60&&foundSecrets.dragon&&shots[0].lava&&player.ammo===12&&player.healUsed})()`),true);
+ assert.equal(run(`(()=>{player.dragonTime=.01;keys={};update(.02);player.cool=0;shots=[];fire();return player.dragonTime===0&&shots[0].effect==='volcano'&&player.ammo===11})()`),true);
+});
+test('cow secret requires five consecutive cows and resets on other passengers or hits',()=>{
+ const run=game();assert.equal(run(`(()=>{start('alien');for(let i=0;i<4;i++)recordAbduction('cow');recordAbduction('civilian');recordAbduction('cow');hurt();if(player.cowStreak!==0)return false;for(let i=0;i<5;i++)recordAbduction('cow');return foundSecrets.cow&&player.cowTime===60&&tractorWidth(ufoPower(player.mods))===280})()`),true);
+});
+test('ten actual reflected bullets unlock mirrors that abduct outside the main beam',()=>{
+ const run=game();assert.equal(run(`(()=>{start('alien');player.mods={SHIELD:30,SPEED:30};spawnTimer=100;pickupTimer=100;for(let i=0;i<10;i++){shots=[{x:player.x+45,y:player.y,vx:-100,vy:0,life:5,friendly:false}];update(.01);}if(!foundSecrets.mirror||player.mirrorTime!==45)return false;player.mods={};entities=[{type:'cow',x:player.x+170,y:player.y+31,hp:1,t:0}];keys.Space=true;update(.02);return kills===1})()`),true);
+});
+test('wave ten without heals draws a teammate that shoots; heal use blocks the secret',()=>{
+ for(const healed of [false,true]){const run=game();assert.equal(run(`(()=>{start('human');wave=9;player.healUsed=${healed};kills=goal;update(.01);return player.buddy})()`),!healed);if(!healed)assert.equal(run(`(()=>{entities=[{type:'ufo',x:player.x+100,y:250,hp:5,t:0,cool:100,vx:0}];shots=[];update(.01);return shots.some(s=>s.friendly&&s.damage===2)})()`),true);}
+});
+test('all discoveries persist while temporary powers and challenge counters reset',()=>{
+ const saved={},run=game(saved);run("start('alien');for(const key of Object.keys(SECRET_NOTES))unlockSecret(key);player.cowTime=60;player.mirrorTime=45;start('human')");assert.equal(run('player.cowTime+player.mirrorTime+player.dragonTime+player.reflections+player.cowStreak'),0);assert.equal(run('player.buddy'),false);const loaded=game(saved);assert.equal(loaded('Object.keys(foundSecrets).length'),4);
+});
