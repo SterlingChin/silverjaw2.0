@@ -81,5 +81,13 @@ test('wave ten without heals draws a teammate that shoots; heal use blocks the s
  for(const healed of [false,true]){const run=game();assert.equal(run(`(()=>{start('human');wave=9;player.healUsed=${healed};kills=goal;update(.01);return player.buddy})()`),!healed);if(!healed)assert.equal(run(`(()=>{entities=[{type:'ufo',x:player.x+100,y:250,hp:5,t:0,cool:100,vx:0}];shots=[];update(.01);return shots.some(s=>s.friendly&&s.damage===2)})()`),true);}
 });
 test('all discoveries persist while temporary powers and challenge counters reset',()=>{
- const saved={},run=game(saved);run("start('alien');for(const key of Object.keys(SECRET_NOTES))unlockSecret(key);player.cowTime=60;player.mirrorTime=45;start('human')");assert.equal(run('player.cowTime+player.mirrorTime+player.dragonTime+player.reflections+player.cowStreak'),0);assert.equal(run('player.buddy'),false);const loaded=game(saved);assert.equal(loaded('Object.keys(foundSecrets).length'),4);
+ const saved={},run=game(saved);run("start('alien');for(const key of Object.keys(SECRET_NOTES))unlockSecret(key);player.cowTime=60;player.mirrorTime=45;start('human')");assert.equal(run('player.cowTime+player.mirrorTime+player.dragonTime+player.reflections+player.cowStreak'),0);assert.equal(run('player.buddy'),false);const loaded=game(saved);assert.equal(loaded('Object.keys(foundSecrets).length'),5);
+});
+
+test('Imposter unlocks with charged swarm plus heal and protects against targeting and contact',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.weapon='SWARM LAUNCHER';player.ammo=10;pickups=[{type:'+',x:player.x,y:player.y-24,life:10}];update(.01);shots=[];enemyShot({x:100,y:100},100);hurt();return player.imposter&&foundSecrets.imposter&&player.hp===5&&shots.length===0})()`),true);
+ assert.equal(run(`(()=>{player.cool=0;fire();enemyShot({x:100,y:100},100);hurt();return !player.imposter&&player.hp===4&&shots.some(s=>!s.friendly)&&shots.some(s=>s.friendly)})()`),true);
+});
+test('Imposter holds teammate fire, suppresses super dash kills, and resets on new runs',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.imposter=true;player.buddy=true;player.superTime=120;spawnTimer=100;pickupTimer=100;entities=[{type:'alien',x:player.x,y:G,hp:3,t:0,cool:0}];update(.01);const protectedState=entities[0].hp===3&&shots.length===0&&player.hp===5;start('human');return protectedState&&!player.imposter})()`),true);
 });
