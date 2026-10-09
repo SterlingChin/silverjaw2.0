@@ -50,3 +50,11 @@ test('Thunder Pen has three single-press uses, cannot repeat while held, and ret
 test('UFO pickups activate their named module and a new run clears all modules',()=>{
  const run=game();assert.equal(run(`(()=>{start('alien');spawnTimer=100;pickupTimer=100;for(const type of UFO_PARTS){pickups=[{x:player.x,y:player.y,type,life:10}];update(.01);}const all=ufoPower(player.mods);const combined=all.tornado&&all.bubble&&all.vacuum&&all.reflect;start('alien');return combined&&ufoName(ufoPower(player.mods))==='TRACTOR BEAM'})()`),true);
 });
+test('secret power requires a live Prism Gun plus heal, lasts 120 seconds, and leaves map unchanged',()=>{
+ const run=game();for(const [weapon,ammo,expected] of [['PRISM GUN',3,120],['PRISM GUN',0,0],['LASER',3,0]]){assert.equal(run(`(()=>{start('human');player.weapon='${weapon}';player.ammo=${ammo};pickups=[{x:player.x,y:player.y-24,type:'+',life:10}];update(.01);return player.superTime})()`),expected);}
+ assert.equal(run("Object.keys(WEAPONS).some(k=>k.includes('SUPER'))"),false);
+});
+test('super dash sweeps through enemies, blocks damage, expires, and resets on restart',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.superTime=120;player.y=250;keys.ArrowRight=true;entities=[{type:'ufo',x:player.x+50,y:226,hp:99,t:0,cool:100,vx:0}];update(.1);hurt();return kills===1&&player.hp===5&&player.x===472&&player.superTime===119.9})()`),true);
+ assert.equal(run(`(()=>{player.superTime=.01;keys={};update(.02);hurt();const expired=player.superTime===0&&player.hp===4;start('human');return expired&&player.superTime===0&&player.trail.length===0})()`),true);
+});
