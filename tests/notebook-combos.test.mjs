@@ -41,8 +41,11 @@ test('tornado abducts trucks, while ordinary beams cannot',()=>{
 test('bubble passengers keep rising after the beam is released',()=>{
  const run=game();assert.equal(run(`(()=>{start('alien');player.mods={'WIDE BEAM':30,SHIELD:30};keys.Space=true;entities=[{type:'cow',x:player.x,y:400,hp:1,t:0}];update(.02);const e=entities[0],y=e.y;keys.Space=false;update(.02);return e.bubble&&e.y<y})()`),true);
 });
-test('Thunder Pen sends damaging rays toward nearby enemies after a hit',()=>{
- const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;entities=[{type:'ufo',x:600,y:220,hp:1,vx:0,t:0,cool:100},{type:'ufo',x:730,y:220,hp:2,vx:0,t:0,cool:100}];shots=[{x:570,y:220,vx:1400,vy:0,life:1,travel:0,damage:3,friendly:true,laser:true,effect:'chain',hit:new Set()}];for(let i=0;i<15;i++)update(.01);return kills>=2})()`),true);
+test('Thunder Pen kills visible invaders, preserves offscreen enemies, and awards each kill once',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.weapon='THUNDER PEN';player.ammo=3;entities=[{type:'ufo',x:500,y:200,hp:99},{type:'alien',x:800,y:G,hp:99},{type:'ufo',x:1400,y:200,hp:99},{type:'cow',x:400,y:G,hp:1}];fire();return kills===2&&score===225&&entities[0].hp===0&&entities[1].hp===0&&entities[2].hp===99&&entities[3].hp===1&&player.ammo===2&&player.storm.targets.length===2&&shots.length===0})()`),true);
+});
+test('Thunder Pen has three single-press uses, cannot repeat while held, and returns to pistol',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.weapon='THUNDER PEN';player.ammo=WEAPONS['THUNDER PEN'].ammo;keys.KeyJ=true;fire();player.cool=0;fire();if(player.ammo!==2)return false;for(let i=0;i<2;i++){keys.KeyJ=false;update(.01);player.cool=0;keys.KeyJ=true;fire();}return player.ammo===0&&player.weapon==='PENCIL PISTOL'})()`),true);
 });
 test('UFO pickups activate their named module and a new run clears all modules',()=>{
  const run=game();assert.equal(run(`(()=>{start('alien');spawnTimer=100;pickupTimer=100;for(const type of UFO_PARTS){pickups=[{x:player.x,y:player.y,type,life:10}];update(.01);}const all=ufoPower(player.mods);const combined=all.tornado&&all.bubble&&all.vacuum&&all.reflect;start('alien');return combined&&ufoName(ufoPower(player.mods))==='TRACTOR BEAM'})()`),true);
