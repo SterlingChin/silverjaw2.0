@@ -3,9 +3,9 @@ import vm from 'node:vm';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 const html=readFileSync(new URL('../public/games/notebook-invasion/index.html',import.meta.url),'utf8');
-function game(){
+function game(saved={}){
  const noop=()=>{},element={innerHTML:'',classList:{add:noop,remove:noop,contains:()=>true},getContext:()=>({}),addEventListener:noop,setAttribute:noop,blur:noop};
- const c=vm.createContext({document:{querySelector:()=>element,querySelectorAll:()=>[],activeElement:null},window:{addEventListener:noop},localStorage:{getItem:()=>null,setItem:noop},requestAnimationFrame:noop});
+ const c=vm.createContext({document:{querySelector:()=>element,querySelectorAll:()=>[],activeElement:null},window:{addEventListener:noop},localStorage:{getItem:k=>saved[k]??null,setItem:(k,v)=>saved[k]=v},requestAnimationFrame:noop});
  for(const match of html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g))vm.runInContext(match[1],c);
  return code=>vm.runInContext(code,c);
 }
@@ -57,4 +57,13 @@ test('secret power requires a live Prism Gun plus heal, lasts 120 seconds, and l
 test('super dash sweeps through enemies, blocks damage, expires, and resets on restart',()=>{
  const run=game();assert.equal(run(`(()=>{start('human');player.superTime=120;player.y=250;keys.ArrowRight=true;entities=[{type:'ufo',x:player.x+50,y:226,hp:99,t:0,cool:100,vx:0}];update(.1);hurt();return kills===1&&player.hp===5&&player.x===472&&player.superTime===119.9})()`),true);
  assert.equal(run(`(()=>{player.superTime=.01;keys={};update(.02);hurt();const expired=player.superTime===0&&player.hp===4;start('human');return expired&&player.superTime===0&&player.trail.length===0})()`),true);
+});
+
+test('Super Doodle discovery stays hidden until earned and persists across reloads and runs',()=>{
+ const saved={};let run=game(saved);assert.equal(run('superDiscovered'),false);
+ run("start('human');player.weapon='PRISM GUN';player.ammo=3;pickups=[{type:'+',x:player.x,y:player.y-24,life:10}];update(.01)");
+ assert.equal(run('superDiscovered'),true);assert.equal(saved['notebook-invasion-super-discovered'],'1');
+ run("start('human')");assert.equal(run('superDiscovered'),true);assert.equal(run('player.superTime'),0);
+ run=game(saved);assert.equal(run('superDiscovered'),true);
+ assert.equal(game({'notebook-invasion-super-discovered':'false'})('superDiscovered'),false);
 });
