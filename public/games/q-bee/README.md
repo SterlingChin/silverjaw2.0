@@ -4,12 +4,14 @@ Pronounced “cubey.” A standalone, top-down perspective dropper. Open index.h
 
 ## Controls
 
-- WASD / arrow keys steer across the falling plane. Q-BEE falls automatically.
+- WASD / arrow keys steer across the falling plane. Q-BEE falls automatically, at 205–280 depth units per second depending on the world.
 - Press and drag with mouse or touch to steer toward a spot.
 - P / Escape pauses; use the pause dialog to resume, restart, or return home.
 - Sound is optional and starts off. Reduced-motion settings disable decorative motion and facial animation.
 
 ## Rules
+
+Laser layers form plus signs with four open quadrants. Flamethrowers pulse from wall-mounted nozzles; their tapered shapes define the hit area. Solid walls retain outlined openings. Obstacles have no floating text labels.
 
 Six finite worlds end in jello: Space, Kitchen, Attic, Greenhouse, Candy Factory, and Volcano. Story Mode unlocks worlds in order. Free Play opens all worlds immediately. Mode records are independent; wallet and wardrobe are shared.
 

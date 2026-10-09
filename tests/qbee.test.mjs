@@ -7,7 +7,7 @@ const html = readFileSync(new URL('../public/games/q-bee/index.html', import.met
 const source = html.match(/<script id="qbee-model">([\s\S]*?)<\/script>/)[1];
 function setup(serialized = null) {
   const context = vm.createContext({});
-  const api = vm.runInContext(source + '\n({Progress,Fall,LEVELS,SKINS,SAVE_KEY,REVIVE_COST,gateAt,safeAt,normalizeSave,expressionAt})', context);
+  const api = vm.runInContext(source + '\n({Progress,Fall,LEVELS,SKINS,SAVE_KEY,REVIVE_COST,gateAt,safeAt,normalizeSave,expressionAt,obstacleRects,hitsObstacle})', context);
   let stored = serialized;
   const storage = { getItem: () => stored, setItem: (_, v) => stored = v };
   const model = new api.Progress(storage);
@@ -167,4 +167,29 @@ test('Q-BEE blinks, briefly grins, and yawns occasionally with a closed smile at
   assert.ok(expressionAt(7.8).grin>.9);assert.equal(expressionAt(10).grin,0);
   assert.ok(expressionAt(18.3).yawn>.9);assert.equal(expressionAt(21).yawn,0);
   assert.equal(expressionAt(18.3,true).yawn,0);
+});
+
+
+test('cross lasers have four safe openings and both beams collide', () => {
+ const {hitsObstacle}=setup(),laser={type:'laser',index:1};
+ for(const x of [-.48,.48])for(const y of [-.48,.48])assert.equal(hitsObstacle(x,y,laser,0),false);
+ assert.equal(hitsObstacle(0,0,laser,0),true);
+ assert.equal(hitsObstacle(.7,0,laser,0),true);
+ assert.equal(hitsObstacle(0,.7,laser,0),true);
+});
+
+test('flames extend from walls, vary their reach, and leave the center open', () => {
+ const {obstacleRects,hitsObstacle}=setup(),flame={type:'flame',index:2};
+ const a=obstacleRects(flame,0),b=obstacleRects(flame,1);
+ assert.equal(a[0][0],-1);assert.equal(a[1][0]+a[1][2],1);assert.notEqual(a[0][2],b[0][2]);
+ assert.equal(hitsObstacle(0,0,flame,0),false);assert.equal(hitsObstacle(-.8,-.48,flame,0),true);
+ assert.equal(hitsObstacle(.8,.48,flame,0),true);
+});
+
+
+test('empty space beside a tapered flame tip does not cause phantom collisions', () => {
+ const {obstacleRects,hitsObstacle}=setup(),flame={type:'flame',index:2};
+ const [x,y,w,h]=obstacleRects(flame,0)[0];
+ assert.equal(hitsObstacle(x+w-.02,y+.02,flame,0,.01),false);
+ assert.equal(hitsObstacle(x+w-.02,y+h/2,flame,0,.01),true);
 });
