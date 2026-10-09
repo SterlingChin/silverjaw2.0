@@ -7,3 +7,7 @@ Q-BEE's core economy tests passed, but the browser wardrobe check found a render
 ## 2026-10-09: Standalone back links need a top-level target in the launcher
 
 A standalone game's default `/games` link navigates inside its iframe when embedded. Set its target to `_top` so it returns to the gallery rather than nesting a second gallery inside the active game window. Applied to both Q-BEE and Notebook Invasion.
+
+## 2026-10-09: Inspect deployment metadata when build logs are empty
+
+The Thunder Pen production deployment failed before building with `git_info_fail`, despite a successful preview. The build-event endpoint returned no logs; deployment metadata exposed the Git retrieval error. Retried the same production commit through Vercel's redeploy API rather than changing tested source to trigger another build.
