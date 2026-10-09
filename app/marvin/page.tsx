@@ -46,6 +46,7 @@ const marvinJsonLd = {
   operatingSystem: "Claude Code",
   creator: {
     "@type": "Person",
+    "@id": "https://sterlingchin.com/#person",
     name: "Sterling Chin",
     url: "https://sterlingchin.com",
   },

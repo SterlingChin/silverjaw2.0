@@ -1,83 +1,55 @@
-// components/speaking.tsx
-"use client"
-
 import Image from "next/image"
 import Link from "next/link"
-import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
-import { SectionHeader } from "@/components/section-header"
-import { talks } from "@/data/talks"
-
-const speakingPhotos = [
-  { src: "/images/ms_build_24.jpg", caption: "Microsoft Build '24", tall: true },
-  { src: "/images/shift_24.jpg", caption: "Shift '24", tall: false },
-  { src: "/images/api_world_24.jpg", caption: "API World '24", tall: false },
-  { src: "/images/conference-error-semantics.jpg", caption: "Rich Error Semantics", tall: true },
-  { src: "/images/conexion24.jpg", caption: "Conexion '24", tall: false },
-  { src: "/images/ai_big_data_panel_24.jpeg", caption: "AI & Big Data Expo '24", tall: false },
-]
-
-const upcomingTalks = talks.filter((t) => t.status === "upcoming")
+import { ArrowUpRight } from "lucide-react"
 
 export function Speaking() {
   return (
-    <section id="speaking" className="px-6 py-24">
-      <motion.div
-        className="mx-auto max-w-5xl"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.5 }}
-      >
-        <SectionHeader label="Speaking" subtitle="24+ conferences worldwide" />
-
-        {/* Upcoming talks */}
-        {upcomingTalks.length > 0 && (
-          <div className="mb-8 flex flex-col gap-3">
-            {upcomingTalks.map((talk) => (
-              <Link
-                key={talk.slug}
-                href={`/${talk.slug}`}
-                className="group flex items-center justify-between rounded-lg border border-border bg-background p-4 transition-colors hover:border-primary"
-              >
-                <div className="min-w-0">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-primary">
-                    {talk.event}
-                  </span>
-                  <h3 className="mt-1 line-clamp-2 text-sm font-semibold text-foreground">
-                    {talk.title}
-                  </h3>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {talk.date} · {talk.location}
-                  </p>
-                </div>
-                <ArrowRight className="ml-4 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
-              </Link>
-            ))}
+    <section id="speaking" aria-labelledby="speaking-heading" className="py-20">
+      <div className="site-container grid items-center gap-10 md:grid-cols-2 md:gap-16">
+        <figure>
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem]">
+            <Image
+              src="/images/conference-crowd.jpg"
+              alt="Sterling speaking to an audience at POST/CON"
+              fill
+              sizes="(max-width: 767px) 100vw, 50vw"
+              className="object-cover object-left saturate-[0.75] contrast-[0.95]"
+            />
           </div>
-        )}
+          <figcaption className="mt-3 text-sm text-muted-foreground">
+            On stage at POST/CON
+          </figcaption>
+        </figure>
 
-        {/* Photo grid */}
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
-          {speakingPhotos.map((photo) => (
-            <div
-              key={photo.caption}
-              className={`group relative overflow-hidden rounded-lg ${
-                photo.tall ? "md:col-span-1 lg:row-span-2" : ""
-              }`}
+        <div>
+          <p className="section-kicker">Speaking</p>
+          <h2
+            id="speaking-heading"
+            className="display-heading mt-4 text-3xl leading-tight sm:text-4xl lg:text-5xl"
+          >
+            What I&apos;m learning, shared out loud.
+          </h2>
+          <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
+            I give practical talks about API context, MCP, and building AI tools
+            people can actually use. The work gives me the stories: what I tried,
+            what broke, and what I learned along the way.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <Link href="/mcp-dev-summit" className="button-secondary">
+              Talks &amp; resources
+            </Link>
+            <a
+              href="https://www.linkedin.com/in/sterlingchin/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-link inline-flex items-center gap-2"
             >
-              <div className={`relative w-full ${photo.tall ? "h-full min-h-[300px] lg:min-h-full" : "h-48 lg:h-auto lg:aspect-[4/3]"}`}>
-                <Image
-                  src={photo.src}
-                  alt={photo.caption}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-            </div>
-          ))}
+              Invite me to speak
+              <ArrowUpRight aria-hidden="true" className="h-4 w-4" />
+            </a>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   )
 }

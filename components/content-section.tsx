@@ -1,59 +1,122 @@
 "use client"
 
-import { Pencil, Play, Code, Newspaper } from "lucide-react"
-import { motion } from "framer-motion"
-import { SectionHeader } from "@/components/section-header"
+import { useState } from "react"
+import { ArrowUpRight } from "lucide-react"
 import { contentItems, type ContentItem } from "@/data/content"
 
-const typeIcons: Record<ContentItem["type"], React.ElementType> = {
-  Blog: Pencil,
-  Video: Play,
-  Repo: Code,
-  Media: Newspaper,
+type ContentFilter = "All" | ContentItem["type"]
+
+const filters: ContentFilter[] = ["All", "Blog", "Video", "Repo", "Media"]
+const months = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+]
+const initialLimit = 6
+
+function dateKey(date: string) {
+  const [month, year] = date.split(" ")
+  return `${year}-${String(months.indexOf(month) + 1).padStart(2, "0")}`
 }
 
-export function ContentSection() {
-  return (
-    <section id="content" className="px-6 py-24">
-      <motion.div
-        className="mx-auto max-w-5xl"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.5 }}
-      >
-        <SectionHeader label="Content" />
+const sortedContent = [...contentItems].sort((a, b) =>
+  dateKey(b.date).localeCompare(dateKey(a.date))
+)
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {contentItems.map((item) => {
-            const Icon = typeIcons[item.type]
-            return (
+export function ContentSection() {
+  const [filter, setFilter] = useState<ContentFilter>("All")
+  const [expanded, setExpanded] = useState(false)
+  const filtered = sortedContent.filter(
+    (item) => filter === "All" || item.type === filter
+  )
+  const shown = expanded ? filtered : filtered.slice(0, initialLimit)
+
+  return (
+    <section id="content" aria-labelledby="content-heading" className="py-20">
+      <div className="site-container">
+        <p className="section-kicker">From the workbench</p>
+        <h2
+          id="content-heading"
+          className="display-heading mt-4 text-3xl leading-tight sm:text-4xl lg:text-5xl"
+        >
+          Writing, demos &amp; experiments.
+        </h2>
+        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+          A curated selection of things I&apos;ve written, recorded, and built
+          while exploring how agents work with APIs.
+        </p>
+
+        <div
+          role="group"
+          aria-label="Filter by content type"
+          className="mt-8 flex flex-wrap gap-2"
+        >
+          {filters.map((type) => (
+            <button
+              key={type}
+              type="button"
+              aria-pressed={filter === type}
+              aria-controls="content-list"
+              onClick={() => {
+                setFilter(type)
+                setExpanded(false)
+              }}
+              className={`min-h-11 rounded-full border px-5 py-2 text-sm font-semibold transition-colors ${
+                filter === type
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-transparent text-foreground hover:border-primary hover:text-primary"
+              }`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
+
+        <p className="sr-only" aria-live="polite" aria-atomic="true">
+          Showing {shown.length} of {filtered.length} {filter === "All" ? "items" : `${filter.toLowerCase()} items`}.
+        </p>
+
+        <ul id="content-list" className="mt-7 divide-y divide-border border-y border-border">
+          {shown.map((item) => (
+            <li key={item.url}>
               <a
-                key={item.url}
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group rounded-lg border border-border bg-card overflow-hidden transition-colors hover:border-primary"
+                className="group grid grid-cols-[1fr_auto] items-center gap-x-5 gap-y-3 rounded-xl px-3 py-6 transition-colors hover:bg-card sm:grid-cols-[5rem_1fr_auto_auto] sm:px-4"
               >
-                <div className="flex h-20 items-center justify-center bg-muted">
-                  <Icon className="h-8 w-8 text-muted-foreground transition-colors group-hover:text-primary" />
-                </div>
-                <div className="p-4">
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-primary">
-                    {item.type}
-                  </span>
-                  <h4 className="mt-1 font-semibold text-foreground text-sm leading-snug">
-                    {item.title}
-                  </h4>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    {item.date}
-                  </p>
-                </div>
+                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">
+                  {item.type}
+                </span>
+                <h3 className="col-span-2 row-start-2 text-lg font-semibold leading-snug transition-colors group-hover:text-primary sm:col-span-1 sm:row-start-auto">
+                  {item.title}
+                </h3>
+                <time
+                  dateTime={dateKey(item.date)}
+                  className="col-start-2 row-start-1 whitespace-nowrap text-sm text-muted-foreground sm:col-start-auto sm:row-start-auto"
+                >
+                  {item.date}
+                </time>
+                <ArrowUpRight
+                  aria-hidden="true"
+                  className="hidden h-5 w-5 text-primary sm:block"
+                />
               </a>
-            )
-          })}
-        </div>
-      </motion.div>
+            </li>
+          ))}
+        </ul>
+
+        {filtered.length > initialLimit ? (
+          <button
+            type="button"
+            aria-expanded={expanded}
+            aria-controls="content-list"
+            onClick={() => setExpanded((value) => !value)}
+            className="button-secondary mt-6"
+          >
+            {expanded ? "Show fewer" : `Show all ${filtered.length}`}
+          </button>
+        ) : null}
+      </div>
     </section>
   )
 }

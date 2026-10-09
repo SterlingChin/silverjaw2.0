@@ -1,38 +1,38 @@
 import type { Metadata } from "next"
-import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google"
+import { Caprasimo, Figtree, JetBrains_Mono, Source_Serif_4 } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
-import { BackgroundPaths } from "@/components/ui/background-paths"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
-const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" })
-const sourceSerif = Source_Serif_4({ subsets: ["latin"], variable: "--font-serif" })
+const figtree = Figtree({ subsets: ["latin"], variable: "--font-body" })
+const caprasimo = Caprasimo({ weight: "400", subsets: ["latin"], variable: "--font-display" })
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-code" })
+const sourceSerif = Source_Serif_4({ subsets: ["latin"], variable: "--font-editorial" })
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sterlingchin.com"),
   title: {
-    default: "Sterling Chin",
+    default: "Sterling Chin — Founder of Sannr",
     template: "%s | Sterling Chin",
   },
   description:
-    "Sterling Chin builds tools that make APIs work for AI agents, including MARVIN, Clara, and the Postman plugin for Claude Code.",
+    "Sterling Chin is the founder of Sannr, an API client for coding agents that keeps recorded API lessons beside the code. Follow his work, writing, and talks.",
   authors: [{ name: "Sterling Chin", url: "https://sterlingchin.com" }],
   creator: "Sterling Chin",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Sterling Chin",
+    title: "Sterling Chin — Founder of Sannr",
     description:
-      "Creator of MARVIN and Clara. Builder of agent-ready API tools, MCP workflows, and the Postman plugin for Claude Code.",
+      "Founder of Sannr. Building an API client for coding agents that keeps recorded lessons beside the code, and sharing what he learns along the way.",
     url: "https://sterlingchin.com",
     siteName: "Sterling Chin",
     type: "website",
     images: [
       {
         url: "/images/sterling-primary.jpg",
-        width: 1200,
-        height: 630,
+        width: 2000,
+        height: 2004,
         alt: "Sterling Chin",
       },
     ],
@@ -40,9 +40,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     creator: "@SilverJaw82",
-    title: "Sterling Chin",
+    title: "Sterling Chin — Founder of Sannr",
     description:
-      "Building tools that make APIs work for AI agents, including MARVIN, Clara, and Postman MCP workflows.",
+      "Founder of Sannr, creator of MARVIN, and builder of tools for people working with AI agents.",
     images: ["/images/sterling-primary.jpg"],
   },
   robots: {
@@ -54,13 +54,16 @@ export const metadata: Metadata = {
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "https://sterlingchin.com/#person",
   name: "Sterling Chin",
   url: "https://sterlingchin.com",
   image: "https://sterlingchin.com/images/sterling-primary.jpg",
-  jobTitle: "Senior Developer Advocate",
+  jobTitle: "Founder",
+  description: "Founder of Sannr, creator of MARVIN, and builder of tools for people working with AI agents.",
   worksFor: {
     "@type": "Organization",
-    name: "Postman",
+    name: "Sannr",
+    url: "https://sannr.dev",
   },
   knowsAbout: [
     "AI agents",
@@ -86,18 +89,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} ${sourceSerif.variable} font-sans antialiased`}>
+      <body className={`${figtree.variable} ${caprasimo.variable} ${jetbrainsMono.variable} ${sourceSerif.variable} font-sans antialiased`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          <BackgroundPaths />
           <div className="relative z-10">
             {children}
           </div>

@@ -7,6 +7,17 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/games",
   },
+  openGraph: {
+    title: "Game Night | Sterling Chin",
+    description: "Little browser games we build together. Pick one and press play.",
+    url: "https://sterlingchin.com/games",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Game Night | Sterling Chin",
+    description: "Little browser games we build together. Pick one and press play.",
+  },
   robots: {
     index: false,
     follow: false,
