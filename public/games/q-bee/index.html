@@ -153,7 +153,20 @@ addEventListener('blur',()=>{keys={};pointer=null;if(view==='play'&&!paused)paus
 function polygon(c,points,fill,stroke,width=1){c.beginPath();points.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();if(fill){c.fillStyle=fill;c.fill()}if(stroke){c.strokeStyle=stroke;c.lineWidth=width;c.stroke()}}
 function roundRect(c,x,y,w,h,r,fill,stroke){c.beginPath();c.roundRect(x,y,w,h,r);if(fill){c.fillStyle=fill;c.fill()}if(stroke){c.strokeStyle=stroke;c.lineWidth=1.4;c.stroke()}}
 function ellipse(c,x,y,rx,ry,color){c.beginPath();c.ellipse(x,y,Math.max(.01,rx),Math.max(.01,ry),0,0,Math.PI*2);c.fillStyle=color;c.fill()}
-function drawCube(c,x,y,size,skin,tilt=0,faceTime=0){c.save();c.translate(x,y);c.rotate(tilt);const s=size;const w=s*.88,h=s*.80,dx=s*.24,dy=-s*.20;const lx=-w/2,ly=-h/2;polygon(c,[[lx,ly],[lx+dx,ly+dy],[lx+w+dx,ly+dy],[lx+w,ly]],skin.top,'#17252925');polygon(c,[[lx+w,ly],[lx+w+dx,ly+dy],[lx+w+dx,ly+h+dy],[lx+w,ly+h]],skin.side,'#17252925');roundRect(c,lx,ly,w,h,s*.12,skin.color,'#17252930');roundRect(c,lx+s*.065,ly+s*.07,w*.52,s*.055,s*.02,'#ffffff38');
+function roundedHull(c,points,rounding){
+ const corners=points.map((p,i)=>{const prev=points[(i+points.length-1)%points.length],next=points[(i+1)%points.length],a=Math.hypot(prev[0]-p[0],prev[1]-p[1]),b=Math.hypot(next[0]-p[0],next[1]-p[1]),r=Math.min(rounding,a*.45,b*.45);return{p,in:[p[0]+(prev[0]-p[0])*r/a,p[1]+(prev[1]-p[1])*r/a],out:[p[0]+(next[0]-p[0])*r/b,p[1]+(next[1]-p[1])*r/b]};});
+ c.beginPath();c.moveTo(...corners[0].in);for(const corner of corners){c.lineTo(...corner.in);c.quadraticCurveTo(...corner.p,...corner.out);}c.closePath();
+}
+function drawSoftBody(c,lx,ly,w,h,dx,dy,s,skin){
+ const hull=[[lx,ly],[lx+dx,ly+dy],[lx+w+dx,ly+dy],[lx+w+dx,ly+h+dy],[lx+w,ly+h],[lx,ly+h]];
+ c.save();roundedHull(c,hull,s*.18);c.clip();
+ const side=c.createLinearGradient(lx,ly,lx+w+dx,ly+h);side.addColorStop(0,skin.color);side.addColorStop(1,skin.side);c.fillStyle=side;c.fillRect(lx-1,ly+dy-1,w+dx+2,h-dy+2);
+ const top=c.createLinearGradient(0,ly+dy,0,ly+s*.17);top.addColorStop(0,skin.top);top.addColorStop(1,skin.color);polygon(c,[[lx,ly+s*.16],[lx+dx,ly+dy],[lx+w+dx,ly+dy],[lx+w,ly+s*.16]],top);
+ const front=c.createLinearGradient(lx,ly,lx+w*.85,ly+h);front.addColorStop(0,skin.top);front.addColorStop(.28,skin.color);front.addColorStop(.8,skin.color);front.addColorStop(1,skin.side);roundRect(c,lx,ly,w,h,s*.17,front);
+ c.beginPath();c.moveTo(lx+s*.09,ly+s*.12);c.quadraticCurveTo(lx+s*.09,ly+s*.065,lx+s*.16,ly+s*.065);c.lineTo(lx+w*.63,ly+s*.065);c.strokeStyle='#ffffff35';c.lineWidth=s*.035;c.lineCap='round';c.stroke();
+ c.restore();roundedHull(c,hull,s*.18);c.strokeStyle='#17252920';c.lineWidth=Math.max(.7,s*.006);c.stroke();
+}
+function drawCube(c,x,y,size,skin,tilt=0,faceTime=0){c.save();c.translate(x,y);c.rotate(tilt);const s=size;const w=s*.88,h=s*.80,dx=s*.24,dy=-s*.20;const lx=-w/2,ly=-h/2;drawSoftBody(c,lx,ly,w,h,dx,dy,s,skin);
  if(skin.id==='bee'){for(let i=0;i<3;i++)roundRect(c,lx,ly+h*.2+i*h*.27,w,h*.12,s*.02,'#5c4a43');}
  if(skin.id==='ice'){polygon(c,[[lx+s*.05,ly+h*.8],[lx+s*.3,ly+s*.05],[lx+s*.46,ly+s*.05],[lx+s*.21,ly+h*.8]],'#ffffff42');}
  if(skin.id==='armor'){roundRect(c,lx+s*.07,ly+s*.12,w-s*.14,h*.57,s*.12,'#ffd891');ellipse(c,0,ly+h*.84,s*.065,s*.065,'#a1f9ff');}

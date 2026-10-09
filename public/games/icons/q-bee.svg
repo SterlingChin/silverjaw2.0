@@ -1,11 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none">
-<defs><radialGradient id="bg"><stop stop-color="#50566a"/><stop offset="1" stop-color="#242438"/></radialGradient></defs>
+<defs><radialGradient id="bg"><stop stop-color="#50566a"/><stop offset="1" stop-color="#242438"/></radialGradient><linearGradient id="front" x1="117" y1="136" x2="280" y2="293" gradientUnits="userSpaceOnUse"><stop stop-color="#dfffbc"/><stop offset=".3" stop-color="#b7f39b"/><stop offset=".8" stop-color="#b7f39b"/><stop offset="1" stop-color="#7fba78"/></linearGradient><linearGradient id="top" x1="200" y1="101" x2="200" y2="161" gradientUnits="userSpaceOnUse"><stop stop-color="#dfffbc"/><stop offset="1" stop-color="#b7f39b"/></linearGradient><clipPath id="cube"><path d="M117 165V152Q117 136 132 122L143 111Q153 101 175 101H280Q306 101 306 127V236Q306 258 291 272L284 279Q270 293 248 293H145Q117 293 117 265Z"/></clipPath></defs>
 <rect width="400" height="400" rx="38" fill="url(#bg)"/>
 <g stroke="#d9f890" opacity=".14"><ellipse cx="215" cy="302" rx="127" ry="32"/><ellipse cx="215" cy="328" rx="110" ry="27"/></g>
 <g fill="#d9f890"><path d="M65 99h12m-6-6v12M328 154h10m-5-5v10" stroke="#d9f890" stroke-width="3"/><rect x="310" y="75" width="17" height="17" rx="5" transform="rotate(20 310 75)"/></g>
 <rect x="70" y="278" width="20" height="20" rx="6" fill="#ffbea7" transform="rotate(-15 70 278)"/>
-<g transform="rotate(-9 205 210)"><path d="m117 136 36-35h153l-36 35" fill="#dfffbc"/><path d="m270 136 36-35v157l-36 35" fill="#7fba78"/><rect x="117" y="136" width="154" height="157" rx="25" fill="#b7f39b"/>
-<path d="M134 154h75" stroke="#e8ffd6" stroke-width="9" stroke-linecap="round" opacity=".75"/>
+<g transform="rotate(-9 205 210)"><g clip-path="url(#cube)"><path d="M110 95h210v210H110Z" fill="#7fba78"/><path d="M117 166 153 101h153l-36 65Z" fill="url(#top)"/><rect x="117" y="136" width="154" height="157" rx="30" fill="url(#front)"/><path d="M134 161q0-10 12-10h64" stroke="#eeffdb" stroke-width="6" stroke-linecap="round" opacity=".55"/></g>
 <ellipse cx="161" cy="202" rx="20" ry="26" fill="#fffef0"/><ellipse cx="229" cy="202" rx="20" ry="26" fill="#fffef0"/>
 <ellipse cx="165" cy="208" rx="11" ry="16" fill="#27293d"/><ellipse cx="233" cy="208" rx="11" ry="16" fill="#27293d"/>
 <circle cx="170" cy="199" r="5" fill="white"/><circle cx="238" cy="199" r="5" fill="white"/>
