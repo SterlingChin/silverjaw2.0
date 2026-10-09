@@ -1,0 +1,49 @@
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+const html=readFileSync(new URL('../public/games/notebook-invasion/index.html',import.meta.url),'utf8');
+function game(){
+ const noop=()=>{},element={innerHTML:'',classList:{add:noop,remove:noop,contains:()=>true},getContext:()=>({}),addEventListener:noop,setAttribute:noop,blur:noop};
+ const c=vm.createContext({document:{querySelector:()=>element,querySelectorAll:()=>[],activeElement:null},window:{addEventListener:noop},localStorage:{getItem:()=>null,setItem:noop},requestAnimationFrame:noop});
+ for(const match of html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g))vm.runInContext(match[1],c);
+ return code=>vm.runInContext(code,c);
+}
+test('all new recipes are reachable from base pickups and spend finite ammo',()=>{
+ const run=game();
+ for(const [path,name] of [[['SPREAD GUN','ROCKETS'],'FIREWORK LAUNCHER'],[['RAPID BLASTER','SPREAD GUN','SPREAD GUN','ROCKETS'],'VOLCANO GUN'],[['RAPID BLASTER','SPREAD GUN','ROCKETS','SPREAD GUN'],'PRISM GUN'],[['RAPID BLASTER','ROCKETS','SPREAD GUN'],'SWARM LAUNCHER'],[['RAPID BLASTER','SPREAD GUN','SPREAD GUN','RAPID BLASTER'],'POPCORN GUN'],[['RAPID BLASTER','SPREAD GUN','ROCKETS','RAPID BLASTER'],'THUNDER PEN']]){
+  const result=run(`(()=>{let w='PENCIL PISTOL',a=0;for(const p of ${JSON.stringify(path)}){const r=weaponPickup(w,a,p);w=r.weapon;a=r.ammo;}return {w,a}})()`);assert.equal(result.w,name);assert.ok(result.a>0);
+ }
+});
+test('fireworks and popcorn detonate once and fragments damage enemies',()=>{
+ for(const weapon of ['FIREWORK LAUNCHER','POPCORN GUN']){
+  const run=game();const result=run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.weapon='${weapon}';player.ammo=10;fire();const s=shots[0];detonate(s);const n=shots.length;detonate(s);const once=shots.length===n;const f=shots[1];entities=[{type:'ufo',x:f.x+f.vx*.01,y:f.y+f.vy*.01,hp:1,vx:0,t:0,cool:100}];update(.01);return {once,kills,ammo:player.ammo}})()`);assert.equal(result.once,true);assert.ok(result.kills>=1);assert.equal(result.ammo,9);
+ }
+});
+test('volcano impacts emit upward lava and prism hits split into four rays',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.weapon='VOLCANO GUN';player.ammo=10;fire();detonate(shots[0]);return shots.slice(1).filter(s=>s.vy<=0&&s.effect==='ember').length})()`),13);
+ assert.equal(run(`(()=>{start('human');player.weapon='PRISM GUN';player.ammo=10;fire();splitPrism(shots[0]);return shots.filter(s=>s.laser&&!s.effect).length})()`),4);
+});
+test('swarm launches three rockets with distinct target slots for one ammo',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.weapon='SWARM LAUNCHER';player.ammo=10;fire();return shots.length===3&&new Set(shots.map(s=>s.targetSlot)).size===3&&shots.every(s=>s.homing)&&player.ammo===9})()`),true);
+});
+test('UFO combos stack and expire back to basic beam',()=>{
+ const run=game();assert.equal(run(`(()=>{const p=ufoPower(Object.fromEntries(UFO_PARTS.map(k=>[k,30])));return p.tornado&&p.bubble&&p.vacuum&&p.reflect})()`),true);
+ assert.equal(run(`(()=>{start('alien');player.mods=Object.fromEntries(UFO_PARTS.map(k=>[k,.01]));update(.02);return ufoName(ufoPower(player.mods))})()`),'TRACTOR BEAM');
+});
+test('shield absorbs damage at a cost and deflector reflects hostile shots',()=>{
+ const run=game();assert.equal(run(`(()=>{start('alien');player.mods.SHIELD=30;hurt();return player.hp===5&&player.mods.SHIELD===24})()`),true);
+ assert.equal(run(`(()=>{start('alien');player.mods={SHIELD:30,SPEED:30};shots=[{x:player.x+40,y:player.y,vx:-100,vy:0,life:5,friendly:false}];update(.01);return shots[0].friendly&&shots[0].vx>0&&player.hp===5})()`),true);
+});
+test('tornado abducts trucks, while ordinary beams cannot',()=>{
+ const run=game();for(const strong of [false,true]){const result=run(`(()=>{start('alien');player.y=450;player.mods={'WIDE BEAM':30,'STRONG BEAM':${strong?30:0}};keys.Space=true;spawnTimer=100;pickupTimer=100;entities=[{type:'truck',x:player.x,y:player.y+35,hp:4,t:0,cool:100}];for(let i=0;i<10;i++)update(.02);return kills})()`);assert.equal(result,strong?1:0);}
+});
+test('bubble passengers keep rising after the beam is released',()=>{
+ const run=game();assert.equal(run(`(()=>{start('alien');player.mods={'WIDE BEAM':30,SHIELD:30};keys.Space=true;entities=[{type:'cow',x:player.x,y:400,hp:1,t:0}];update(.02);const e=entities[0],y=e.y;keys.Space=false;update(.02);return e.bubble&&e.y<y})()`),true);
+});
+test('Thunder Pen sends damaging rays toward nearby enemies after a hit',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;entities=[{type:'ufo',x:600,y:220,hp:1,vx:0,t:0,cool:100},{type:'ufo',x:730,y:220,hp:2,vx:0,t:0,cool:100}];shots=[{x:570,y:220,vx:1400,vy:0,life:1,travel:0,damage:3,friendly:true,laser:true,effect:'chain',hit:new Set()}];for(let i=0;i<15;i++)update(.01);return kills>=2})()`),true);
+});
+test('UFO pickups activate their named module and a new run clears all modules',()=>{
+ const run=game();assert.equal(run(`(()=>{start('alien');spawnTimer=100;pickupTimer=100;for(const type of UFO_PARTS){pickups=[{x:player.x,y:player.y,type,life:10}];update(.01);}const all=ufoPower(player.mods);const combined=all.tornado&&all.bubble&&all.vacuum&&all.reflect;start('alien');return combined&&ufoName(ufoPower(player.mods))==='TRACTOR BEAM'})()`),true);
+});

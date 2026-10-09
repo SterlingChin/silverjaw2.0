@@ -15,8 +15,8 @@ test('rapid plus rockets creates fast rockets in either order',()=>{
 });
 test('spent weapons and unrelated pairs do not create combinations',()=>{
  assert.equal(weaponPickup('SPREAD GUN',0,'RAPID BLASTER').weapon,'RAPID BLASTER');
- assert.equal(weaponPickup('SPREAD GUN',10,'ROCKETS').weapon,'ROCKETS');
- assert.equal(weaponPickup('ROCKETS',10,'SPREAD GUN').weapon,'SPREAD GUN');
+ assert.equal(weaponPickup('SPREAD GUN',10,'ROCKETS').weapon,'FIREWORK LAUNCHER');
+ assert.equal(weaponPickup('ROCKETS',10,'SPREAD GUN').weapon,'FIREWORK LAUNCHER');
  assert.equal(weaponPickup('PENCIL PISTOL',0,'+'),null);
 });
 test('laser upgrades take priority over refilling ingredients',()=>{
