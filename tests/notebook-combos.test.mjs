@@ -145,9 +145,25 @@ test('chicken redirects to a new target and slipper returns after bonking',()=>{
 test('Bull Doodle requires charged eraser plus heal and persists discovery only',()=>{
  const saved={},run=game(saved);assert.equal(run(`(()=>{start('human');player.weapon='ANGRY ERASER';player.ammo=0;pickups=[{type:'+',x:player.x,y:G-24,life:10}];update(.01);if(player.wallTime)return false;player.ammo=2;player.superTime=10;player.dragonTime=10;pickups=[{type:'+',x:player.x,y:player.y-24,life:10}];update(.01);return player.wallTime===120&&foundSecrets.wall&&player.superTime===0&&player.dragonTime===0})()`),true);assert.equal(game(saved)('foundSecrets.wall'),true);run("start('human')");assert.equal(run('player.wallTime'),0);
 });
-test('Bull Doodle stays grounded, blocks all firing and bullets, and sweeps ground enemies once',()=>{
- const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.wallTime=120;player.weapon='ANGRY ERASER';player.ammo=3;keys={KeyD:true,KeyW:true,Space:true,KeyJ:true};entities=[{type:'alien',x:player.x+75,y:G,hp:99,t:0,cool:100},{type:'ufo',x:player.x+75,y:180,hp:99,vx:0,t:0,cool:100}];shots=[{x:player.x+100,y:G-45,vx:-1500,vy:0,life:3,friendly:false},{x:player.x-20,y:G-45,vx:500,vy:0,life:3,friendly:true,damage:100}];update(.1);const good=player.y===G&&player.hp===5&&player.ammo===3&&shots.length===0&&kills===1&&entities.length===1;update(.01);return good&&kills===1&&player.eraser===null})()`),true);
+test('Bull Doodle stays grounded, blocks side bullets, and sweeps ground enemies once',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.wallTime=120;player.weapon='ANGRY ERASER';player.ammo=3;keys={KeyD:true,KeyW:true,Space:true};entities=[{type:'alien',x:player.x+75,y:G,hp:99,t:0,cool:100},{type:'ufo',x:player.x+75,y:180,hp:99,vx:0,t:0,cool:100}];shots=[{x:player.x+120,y:G-45,vx:-1500,vy:0,life:3,friendly:false},{x:player.x-20,y:G-45,vx:1500,vy:0,life:3,friendly:true,damage:100}];update(.1);const good=player.y===G&&player.hp===5&&player.ammo===3&&shots.length===0&&kills===1&&entities.length===1;update(.01);return good&&kills===1&&player.eraser===null})()`),true);
 });
 test('Bull Doodle expiry restores weapon firing and damage',()=>{
  const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.wallTime=.01;update(.02);fire();hurt();return player.wallTime===0&&shots.length===1&&player.hp===4})()`),true);
+});
+
+test('Bull walls stop swept side shots but leave the open top clear',()=>{
+ const run=game();for(const [a,b,c,d,hit] of [[0,530,100,530,true],[100,530,0,530,true],[-100,530,0,530,true],[0,530,-100,530,true],[0,530,0,350,false],[0,350,0,530,false],[-100,400,100,400,false],[0,530,100,200,false]])assert.equal(run(`hitsBullWall(${a},${b},${c},${d},562)`),hit);
+});
+test('Bull Doodle can shoot upward and can be hurt by shots through the top',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.wallTime=120;mouse.active=true;mouse.x=player.x;mouse.y=100;fire();update(.02);if(shots.length!==1||shots[0].vy>=0)return false;shots=[{x:player.x,y:G-120,vx:0,vy:1000,life:3,friendly:false}];update(.1);return player.hp===4&&shots.length===0})()`),true);
+});
+test('Bull Doodle side firing spends ammo but bullets hit the wall',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.wallTime=120;player.weapon='RAPID BLASTER';player.ammo=10;mouse.active=true;mouse.x=player.x+500;mouse.y=G-29;fire();update(.02);return player.ammo===9&&shots.length===0})()`),true);
+});
+test('lava remains usable and flows over either Bull wall before falling outside',()=>{
+ for(const dir of [-1,1]){const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.wallTime=120;player.weapon='LAVA GUN';player.ammo=1000;mouse.active=true;mouse.x=player.x+${dir}*500;mouse.y=G-29;fire();update(.02);const s=shots[0];if(!s?.wallFlow||player.ammo!==999)return false;for(let i=0;i<40&&s.wallFlow;i++)update(.01);if(s.wallFlow||Math.sign(s.x-player.x)!==${dir}||Math.abs(s.x-player.x)<65||s.y>G-95)return false;const y=s.y;update(.02);return s.y>y&&s.vy>0&&s.life>0})()`),true);}
+});
+test('lava released by expiring walls resumes normal falling motion',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');const s={wallFlow:{dir:1},vy:0};return !flowBullLava(s,.1,player.x,G,false)&&s.wallFlow===null&&s.vy>0})()`),true);
 });
