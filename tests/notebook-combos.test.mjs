@@ -98,3 +98,7 @@ test('five rocket crates unlock one Nuke, heals preserve streak and other weapon
 test('Nuke removes all current invaders and bullets, advances exactly ten waves, and is single use',()=>{
  const run=game();assert.equal(run(`(()=>{start('human');wave=3;goal=16;kills=15;player.weapon='NUKE';player.ammo=1;entities=[{type:'ufo',x:500,y:200,hp:99},{type:'alien',x:3000,y:G,hp:99}];shots=[{friendly:false,life:5}];fire();const fired=wave===13&&goal===46&&kills===0&&entities.length===0&&shots.length===0&&player.ammo===0&&player.weapon==='PENCIL PISTOL'&&score===2725;fire();return fired&&wave===13})()`),true);
 });
+
+test('human starting route contains five reachable Rocket crates before other weapons',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;const route=pickups.slice(0,5);if(!route.every(p=>p.type==='ROCKETS'))return false;for(const crate of route){player.x=crate.x;update(.01);}return player.weapon==='NUKE'&&player.ammo===1&&foundSecrets.nuke})()`),true);
+});
