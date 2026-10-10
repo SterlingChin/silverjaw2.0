@@ -2,7 +2,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-const html=readFileSync(new URL('../public/games/notebook-invasion/index.html',import.meta.url),'utf8');
+const html=readFileSync(new URL('../public/tater/notebook-invasion/index.html',import.meta.url),'utf8');
 function game(saved={}){
  const noop=()=>{},element={innerHTML:'',classList:{add:noop,remove:noop,contains:()=>true},getContext:()=>({}),addEventListener:noop,setAttribute:noop,blur:noop};
  const c=vm.createContext({document:{querySelector:()=>element,querySelectorAll:()=>[],activeElement:null},window:{addEventListener:noop},localStorage:{getItem:k=>saved[k]??null,setItem:(k,v)=>saved[k]=v},requestAnimationFrame:noop});

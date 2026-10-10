@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/games/:path*",
+        source: "/tater/:path*",
         headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
       },
     ];
@@ -12,13 +12,14 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [
       {
-        source: "/games/:slug",
-        destination: "/games/:slug/index.html",
+        source: "/tater/:slug",
+        destination: "/tater/:slug/index.html",
       },
     ];
   },
   async redirects() {
     return [
+      { source: "/games/:path*", destination: "/tater/:path*", permanent: true },
       {
         source: "/ai-readiness-checker",
         destination: "/clara",

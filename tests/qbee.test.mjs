@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 
-const html = readFileSync(new URL('../public/games/q-bee/index.html', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../public/tater/q-bee/index.html', import.meta.url), 'utf8');
 const source = html.match(/<script id="qbee-model">([\s\S]*?)<\/script>/)[1];
 function setup(serialized = null) {
   const context = vm.createContext({});

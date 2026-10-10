@@ -6,12 +6,12 @@ export const metadata: Metadata = {
   title: "Games",
   description: "Little browser games we build together.",
   alternates: {
-    canonical: "/games",
+    canonical: "/tater",
   },
   openGraph: {
     title: "Game Night | Sterling Chin",
     description: "Little browser games we build together. Pick one and press play.",
-    url: "https://sterlingchin.com/games",
+    url: "https://sterlingchin.com/tater",
     type: "website",
   },
   twitter: {
