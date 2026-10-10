@@ -113,3 +113,10 @@ test('saw returns toward player and black holes pull then damage invaders',()=>{
  const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;shots=[{x:player.x+300,y:player.y-25,vx:750,vy:0,effect:'saw',born:-1,life:4,friendly:true,damage:3,hit:new Set()}];update(.01);return shots[0].vx<0})()`),true);
  assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;entities=[{type:'ufo',x:650,y:200,hp:9,t:0,cool:100,vx:0}];shots=[{x:550,y:200,vx:0,vy:0,effect:'blackhole',fuse:2,life:4,friendly:true,damage:0}];update(.1);const pulled=entities[0].x<650;detonate(shots[0]);return pulled&&entities[0].hp<=0&&kills===1&&player.hp===5})()`),true);
 });
+
+test('Swarm plus Rapid unlocks Snake Launcher and only one snake is summoned at a time',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');const r=weaponPickup('SWARM LAUNCHER',10,'RAPID BLASTER');player.weapon=r.weapon;player.ammo=r.ammo;fire();player.cool=0;const snake=player.snake;fire();return r.weapon==='SNAKE LAUNCHER'&&player.ammo===2&&player.snake===snake&&snake.life===30})()`),true);
+});
+test('snake eats ground aliens, jumps to eat UFOs, and expires without hurting the player',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.weapon='SNAKE LAUNCHER';player.ammo=3;fire();entities=[{type:'alien',x:player.snake.x+30,y:G,hp:99}];updateSnake(.05);if(kills!==1)return false;entities=[{type:'ufo',x:player.snake.x+80,y:230,hp:99}];for(let i=0;i<180&&entities[0].hp>0;i++)updateSnake(1/60);const ate=entities[0].hp===0&&kills===2&&player.hp===5;player.snake.life=.01;updateSnake(.02);return ate&&player.snake===null})()`),true);
+});
