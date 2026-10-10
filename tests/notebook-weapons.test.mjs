@@ -2,7 +2,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-const html=readFileSync(new URL('../public/games/notebook-invasion/index.html',import.meta.url),'utf8');
+const html=readFileSync(new URL('../public/tater/notebook-invasion/index.html',import.meta.url),'utf8');
 const src=html.match(/<script id="notebook-weapons">([\s\S]*?)<\/script>/)[1];
 const {WEAPONS,weaponPickup,segmentDistance,stepProjectile}=vm.runInNewContext(src+';({WEAPONS,weaponPickup,segmentDistance,stepProjectile})');
 test('rapid plus spread creates a limited-ammo laser in either order',()=>{

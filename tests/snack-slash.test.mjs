@@ -1,5 +1,5 @@
 import {readFileSync} from 'node:fs';import vm from 'node:vm';import {test} from 'node:test';import assert from 'node:assert/strict';
-const html=readFileSync(new URL('../public/games/snack-slash/index.html',import.meta.url),'utf8'),source=html.match(/<script id="snack-model">([\s\S]*?)<\/script>/)[1];
+const html=readFileSync(new URL('../public/tater/snack-slash/index.html',import.meta.url),'utf8'),source=html.match(/<script id="snack-model">([\s\S]*?)<\/script>/)[1];
 const {SnackRound,cleanSave,segmentDistance}=vm.runInNewContext(source+';({SnackRound,cleanSave,segmentDistance})');
 const food=(x=100,y=200,healthy=false)=>({id:1,type:healthy?'apple':'donut',healthy,x,y,r:30,vx:0,vy:0,angle:0,spin:0,cut:false});
 test('fast swipes hit crossed snacks exactly once and stationary pointers do not cut',()=>{const r=new SnackRound();r.items=[food()];r.slice(100,200,101,200);assert.equal(r.score,0);r.slice(0,200,200,200);assert.equal(r.score,10);r.slice(0,200,200,200);assert.equal(r.score,10);assert.equal(r.sliced,1);assert.equal(segmentDistance(100,200,0,230,200,230),30);});

@@ -75,7 +75,7 @@ export default function GameLauncher({ games }: { games: Game[] }) {
             </div>
             <iframe
               key={selected.slug}
-              src={`/games/${selected.slug}`}
+              src={`/tater/${selected.slug}`}
               title={`${selected.title} game`}
               className={styles.frame}
               allow="fullscreen"

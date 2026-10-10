@@ -1,6 +1,6 @@
 # Q-BEE
 
-Pronounced “cubey.” A standalone, top-down perspective dropper. Open index.html directly, or play /games/q-bee through the website. No game dependencies, network calls, or external assets.
+Pronounced “cubey.” A standalone, top-down perspective dropper. Open index.html directly, or play /tater/q-bee through the website. No game dependencies, network calls, or external assets.
 
 ## Controls
 
@@ -36,4 +36,4 @@ npm run build
 
 Use the repository's Node 22 runtime for the website build. The model tests cover all rewards, purchases, crashes, paid/free retries, save/reload, corrupt or blocked storage, mode separation, collision/collection, all six reachable courses, and facial animation timing.
 
-Browser validation on 2026-10-09 covered desktop and 390px mobile layouts, real drag input, wardrobe rendering and purchase, pause/resume, death and revive, interrupted-run reload, reset confirmation, game window identity, iframe removal on close, focus return, and the existing Notebook Invasion start flow. The production `/games` route lists Q-BEE and `/games/q-bee` returns the standalone game.
+Browser validation on 2026-10-09 covered desktop and 390px mobile layouts, real drag input, wardrobe rendering and purchase, pause/resume, death and revive, interrupted-run reload, reset confirmation, game window identity, iframe removal on close, focus return, and the existing Notebook Invasion start flow. The production `/games` route lists Q-BEE and `/tater/q-bee` returns the standalone game.

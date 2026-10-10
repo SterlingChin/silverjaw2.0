@@ -7,11 +7,11 @@ export type Game = {
   added: string
 }
 
-// Each game is a self-contained HTML file at public/games/<slug>/index.html.
+// Each game is a self-contained HTML file at public/tater/<slug>/index.html.
 // Add new games to the top of this list.
 export const games: Game[] = [
   {
-    icon: "/games/icons/snack-slash.svg",
+    icon: "/tater/icons/snack-slash.svg",
     slug: "snack-slash",
     title: "Snack Slash",
     tagline: "Parent on a mission. Snacks in trouble.",
@@ -20,7 +20,7 @@ export const games: Game[] = [
     added: "2026-10-10",
   },
   {
-    icon: "/games/icons/q-bee.svg",
+    icon: "/tater/icons/q-bee.svg",
     slug: "q-bee",
     title: "Q-BEE",
     tagline: "A little cube. A long way down.",
@@ -29,7 +29,7 @@ export const games: Game[] = [
     added: "2026-10-09",
   },
   {
-    icon: "/games/icons/notebook-invasion.svg",
+    icon: "/tater/icons/notebook-invasion.svg",
     slug: "notebook-invasion",
     title: "Notebook Invasion",
     tagline: "The margin is under attack.",
