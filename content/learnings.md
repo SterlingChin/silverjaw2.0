@@ -15,3 +15,7 @@ The Thunder Pen production deployment failed before building with `git_info_fail
 ## 2026-10-10: Random pickups can invalidate a spawn-count assertion
 
 The opening-pickup test occasionally spawned a pickup directly on the player and collected it in the same update. Moved the test player outside the spawn range so it verifies spawning without depending on random placement.
+
+## 2026-10-10: Power-up routes need testing at the fastest level speed
+
+Expanding Q-BEE to 20 levels exposed a Tiny Trouble pickup that was barely unreachable from the preceding laser opening at 305 units per second. Moved it closer to the next obstacle, along the same safe route. The steering simulation now verifies the tiny pickup and secret tunnel on every course.
