@@ -81,7 +81,7 @@ test('wave ten without heals draws a teammate that shoots; heal use blocks the s
  for(const healed of [false,true]){const run=game();assert.equal(run(`(()=>{start('human');wave=9;player.healUsed=${healed};kills=goal;update(.01);return player.buddy})()`),!healed);if(!healed)assert.equal(run(`(()=>{entities=[{type:'ufo',x:player.x+100,y:250,hp:5,t:0,cool:100,vx:0}];shots=[];update(.01);return shots.some(s=>s.friendly&&s.damage===2)})()`),true);}
 });
 test('all discoveries persist while temporary powers and challenge counters reset',()=>{
- const saved={},run=game(saved);run("start('alien');for(const key of Object.keys(SECRET_NOTES))unlockSecret(key);player.cowTime=60;player.mirrorTime=45;start('human')");assert.equal(run('player.cowTime+player.mirrorTime+player.dragonTime+player.reflections+player.cowStreak'),0);assert.equal(run('player.buddy'),false);const loaded=game(saved);assert.equal(loaded('Object.keys(foundSecrets).length'),5);
+ const saved={},run=game(saved);run("start('alien');for(const key of Object.keys(SECRET_NOTES))unlockSecret(key);player.cowTime=60;player.mirrorTime=45;start('human')");assert.equal(run('player.cowTime+player.mirrorTime+player.dragonTime+player.reflections+player.cowStreak'),0);assert.equal(run('player.buddy'),false);const loaded=game(saved);assert.equal(loaded('Object.keys(foundSecrets).length'),6);
 });
 
 test('Imposter unlocks with charged swarm plus heal and protects against targeting and contact',()=>{
@@ -90,4 +90,15 @@ test('Imposter unlocks with charged swarm plus heal and protects against targeti
 });
 test('Imposter holds teammate fire, suppresses super dash kills, and resets on new runs',()=>{
  const run=game();assert.equal(run(`(()=>{start('human');player.imposter=true;player.buddy=true;player.superTime=120;spawnTimer=100;pickupTimer=100;entities=[{type:'alien',x:player.x,y:G,hp:3,t:0,cool:0}];update(.01);const protectedState=entities[0].hp===3&&shots.length===0&&player.hp===5;start('human');return protectedState&&!player.imposter})()`),true);
+});
+
+test('five rocket crates unlock one Nuke, heals preserve streak and other weapons reset it',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;function pickup(type){pickups=[{type,x:player.x,y:player.y-24,life:10}];update(.01);}pickup('ROCKETS');pickup('ROCKETS');pickup('SPREAD GUN');if(player.rocketStreak!==0)return false;for(let i=0;i<4;i++)pickup('ROCKETS');pickup('+');if(player.rocketStreak!==4||player.weapon==='NUKE')return false;pickup('ROCKETS');return player.weapon==='NUKE'&&player.ammo===1&&foundSecrets.nuke&&player.rocketStreak===0})()`),true);
+});
+test('Nuke removes all current invaders and bullets, advances exactly ten waves, and is single use',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');wave=3;goal=16;kills=15;player.weapon='NUKE';player.ammo=1;entities=[{type:'ufo',x:500,y:200,hp:99},{type:'alien',x:3000,y:G,hp:99}];shots=[{friendly:false,life:5}];fire();const fired=wave===13&&goal===46&&kills===0&&entities.length===0&&shots.length===0&&player.ammo===0&&player.weapon==='PENCIL PISTOL'&&score===2725;fire();return fired&&wave===13})()`),true);
+});
+
+test('human starting route contains five reachable Rocket crates before other weapons',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;const route=pickups.slice(0,5);if(!route.every(p=>p.type==='ROCKETS'))return false;for(const crate of route){player.x=crate.x;update(.01);}return player.weapon==='NUKE'&&player.ammo===1&&foundSecrets.nuke})()`),true);
 });
