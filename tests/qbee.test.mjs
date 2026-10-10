@@ -7,7 +7,7 @@ const html = readFileSync(new URL('../public/games/q-bee/index.html', import.met
 const source = html.match(/<script id="qbee-model">([\s\S]*?)<\/script>/)[1];
 function setup(serialized = null) {
   const context = vm.createContext({});
-  const api = vm.runInContext(source + '\n({Progress,Fall,LEVELS,SKINS,SAVE_KEY,REVIVE_COST,gateAt,safeAt,normalizeSave,expressionAt,obstacleRects,hitsObstacle})', context);
+  const api = vm.runInContext(source + '\n({Progress,Fall,LEVELS,SKINS,SAVE_KEY,REVIVE_COST,gateAt,safeAt,normalizeSave,expressionAt,obstacleRects,hitsObstacle,landingAt,ghostAt,validGhost,crashMessage,candyHeads})', context);
   let stored = serialized;
   const storage = { getItem: () => stored, setItem: (_, v) => stored = v };
   const model = new api.Progress(storage);
@@ -192,4 +192,30 @@ test('empty space beside a tapered flame tip does not cause phantom collisions',
  const [x,y,w,h]=obstacleRects(flame,0)[0];
  assert.equal(hitsObstacle(x+w-.02,y+.02,flame,0,.01),false);
  assert.equal(hitsObstacle(x+w-.02,y+h/2,flame,0,.01),true);
+});
+
+
+test('Jelly Belly pickup absorbs exactly one collision and never banks qoins early',()=>{
+ const {model,Fall}=setup();model.start('free',0);const f=new Fall(0);f.depth=239;f.advance(.02,{x:0,y:0},model);assert.equal(f.jelly,true);model.collect();f.x=.85;f.depth=419;f.advance(.02,{x:0,y:0},model);assert.equal(model.run.status,'falling');assert.equal(f.jelly,false);assert.equal(f.course.obstacles[0].broken,true);assert.equal(model.save.bank,0);f.bounce=0;f.x=0;f.y=0;f.depth=739;f.advance(.02,{x:0,y:0},model);assert.equal(model.run.status,'dead');assert.equal(model.run.qoins,0);
+});
+test('Tiny Trouble shrinks collision radius, expires, and enables the side tunnel',()=>{
+ const {model,Fall,hitsObstacle}=setup();model.start('free',0);const f=new Fall(0),p=f.course.powers.find(p=>p.type==='tiny');f.depth=p.z-1;f.x=p.x;f.y=p.y;f.advance(.02,{x:0,y:0},model);assert.equal(f.tiny,6);const o=f.course.obstacles[3],t=o.tunnel;assert.equal(hitsObstacle(t.x,t.y,o,0,.085),true);assert.equal(hitsObstacle(t.x,t.y,o,0,.04),false);f.depth=o.z-1;f.x=t.x;f.y=t.y;f.advance(.02,{x:0,y:0},model);assert.equal(f.tunnelFound,true);assert.equal(model.run.qoins,6);assert.equal(model.save.owned.includes('tunnel'),false);f.tiny=.001;f.advance(.02,{x:0,y:0},model);assert.equal(f.tiny,0);
+});
+test('tunnel skin requires finishing and cannot be bought or granted by old saves',()=>{
+ const {model,Fall,landingAt,normalizeSave}=setup();assert.equal(model.buy('tunnel'),false);assert.equal(normalizeSave({version:1}).owned.includes('tunnel'),false);model.start('free',0);const f=new Fall(0);f.tunnelFound=true;f.course.obstacles.forEach(o=>o.passed=true);f.depth=f.course.length-1;const pad=landingAt(.02);f.x=pad.x;f.y=pad.y;f.advance(.02,{x:0,y:0},model);assert.equal(model.save.owned.includes('tunnel'),true);assert.equal(model.buy('tunnel'),true);
+});
+test('missing moving jelly crashes and a paid revive gives a new landing approach',()=>{
+ const {model,Fall,landingAt}=setup();assert.notEqual(landingAt(0).x,landingAt(2).x);model.save.bank=20;model.start('free',0);const f=new Fall(0);f.course.obstacles.forEach(o=>o.passed=true);f.depth=f.course.length-1;f.x=.88;f.y=.88;f.advance(.02,{x:0,y:0},model);assert.equal(model.run.status,'dead');assert.equal(f.collision.type,'landing');f.revive(model);assert.equal(f.depth,f.course.length-170);assert.equal(model.run.status,'falling');assert.equal(f.x,0);
+});
+test('ghost replay interpolates, persists per mode, ignores malformed samples and resets',()=>{
+ const {model,Fall,ghostAt,validGhost,snapshot}=setup();const g={version:1,time:1,frames:[[0,0,0,0],[1,200,.5,-.5]]};assert.equal(ghostAt(g,.5).depth,100);assert.equal(ghostAt(g,.5).x,.25);assert.equal(validGhost({...g,frames:[[1,5,0,0],[0,8,0,0]]}),null);assert.equal(validGhost({...g,frames:Array(1201).fill([0,0,0,0])}),null);model.start('free',0);const f=new Fall(0);f.course.obstacles.forEach(o=>o.passed=true);f.depth=f.course.length-1;f.advance(.02,{x:0,y:0},model);assert.ok(model.save.modes.free.records.space.ghost);assert.equal(model.save.modes.story.records.space,undefined);assert.ok(setup(JSON.stringify(snapshot())).model.save.modes.free.records.space.ghost);model.reset();assert.equal(model.save.modes.free.records.space,undefined);
+});
+test('a slower finish or paid revive cannot replace the fastest ghost',()=>{
+ const {model,Fall}=setup();model.start('free',0);const r=model.record('free',0);r.ghost={version:1,time:.01,frames:[[0,0,0,0],[.01,3080,0,0]]};const f=new Fall(0);f.course.obstacles.forEach(o=>o.passed=true);f.depth=f.course.length-1;f.advance(.02,{x:0,y:0},model);assert.equal(r.ghost.time,.01);model.start('free',0);delete r.ghost;const revived=new Fall(0);revived.revived=true;revived.course.obstacles.forEach(o=>o.passed=true);revived.depth=revived.course.length-1;revived.advance(.02,{x:0,y:0},model);assert.equal(r.ghost,undefined);
+});
+test('Candy Factory has moving lollipop colliders and exact crash messages',()=>{
+ const {Fall,candyHeads,hitsObstacle,crashMessage}=setup(),f=new Fall(4),o=f.course.obstacles.find(o=>o.type==='lollipop'),a=candyHeads(o,0)[0],b=candyHeads(o,1)[0];assert.notEqual(a.x,b.x);assert.equal(hitsObstacle(a.x,a.y,o,0),true);assert.equal(hitsObstacle(0,-.1,o,0),false);assert.equal(crashMessage('flame'),'Get cooked');assert.equal(crashMessage('wall'),'A little too squishy.');assert.equal(crashMessage('laser'),'Freshly sliced.');
+});
+test('the tiny pickup and secret tunnel form a reachable route on every course',()=>{
+ const {model,Fall,LEVELS,gateAt}=setup();for(let level=0;level<LEVELS.length;level++){model.start('free',level);const f=new Fall(level);let steps=0;while(model.run.status==='falling'&&!f.tunnelFound&&steps++<3000){const obstacle=f.course.obstacles.find(o=>!o.passed&&!o.broken),power=f.course.powers.find(p=>p.type==='tiny'&&!p.taken&&p.z>=f.depth);const goal=power&&power.z<obstacle.z?power:obstacle.tunnel?obstacle.tunnel:gateAt(obstacle,f.time,level);const dx=goal.x-f.x,dy=goal.y-f.y,len=Math.hypot(dx,dy),gain=Math.min(15,1/Math.max(.001,len));f.advance(1/120,{x:dx*gain,y:dy*gain},model);}assert.equal(f.tunnelFound,true,`tunnel ${level} reachable`);assert.equal(model.run.status,'falling');}
 });
