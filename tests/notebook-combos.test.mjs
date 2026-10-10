@@ -142,3 +142,12 @@ test('chicken redirects to a new target and slipper returns after bonking',()=>{
  const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.weapon='RUBBER CHICKEN CANNON';player.ammo=60;fire();const s=shots[0];entities=[{type:'ufo',x:s.x+s.vx*.01,y:s.y+s.vy*.01,hp:1,vx:0,t:0,cool:100},{type:'ufo',x:s.x+300,y:150,hp:99,vx:0,t:0,cool:100}];update(.01);return kills===1&&s.hit.size===1&&s.vx>0&&s.life>0&&player.ammo===59})()`),true);
  assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.weapon='GRANDMA SLIPPER';player.ammo=30;fire();const s=shots[0];s.x=player.x+200;s.y=player.y-25;time=1;update(.01);return s.vx<0&&s.laser&&player.ammo===29})()`),true);
 });
+test('Bull Doodle requires charged eraser plus heal and persists discovery only',()=>{
+ const saved={},run=game(saved);assert.equal(run(`(()=>{start('human');player.weapon='ANGRY ERASER';player.ammo=0;pickups=[{type:'+',x:player.x,y:G-24,life:10}];update(.01);if(player.wallTime)return false;player.ammo=2;player.superTime=10;player.dragonTime=10;pickups=[{type:'+',x:player.x,y:player.y-24,life:10}];update(.01);return player.wallTime===120&&foundSecrets.wall&&player.superTime===0&&player.dragonTime===0})()`),true);assert.equal(game(saved)('foundSecrets.wall'),true);run("start('human')");assert.equal(run('player.wallTime'),0);
+});
+test('Bull Doodle stays grounded, blocks all firing and bullets, and sweeps ground enemies once',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.wallTime=120;player.weapon='ANGRY ERASER';player.ammo=3;keys={KeyD:true,KeyW:true,Space:true,KeyJ:true};entities=[{type:'alien',x:player.x+75,y:G,hp:99,t:0,cool:100},{type:'ufo',x:player.x+75,y:180,hp:99,vx:0,t:0,cool:100}];shots=[{x:player.x+100,y:G-45,vx:-1500,vy:0,life:3,friendly:false},{x:player.x-20,y:G-45,vx:500,vy:0,life:3,friendly:true,damage:100}];update(.1);const good=player.y===G&&player.hp===5&&player.ammo===3&&shots.length===0&&kills===1&&entities.length===1;update(.01);return good&&kills===1&&player.eraser===null})()`),true);
+});
+test('Bull Doodle expiry restores weapon firing and damage',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.wallTime=.01;update(.02);fire();hurt();return player.wallTime===0&&shots.length===1&&player.hp===4})()`),true);
+});
