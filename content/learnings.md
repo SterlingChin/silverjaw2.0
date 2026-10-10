@@ -11,3 +11,7 @@ A standalone game's default `/games` link navigates inside its iframe when embed
 ## 2026-10-09: Inspect deployment metadata when build logs are empty
 
 The Thunder Pen production deployment failed before building with `git_info_fail`, despite a successful preview. The build-event endpoint returned no logs; deployment metadata exposed the Git retrieval error. Retried the same production commit through Vercel's redeploy API rather than changing tested source to trigger another build.
+
+## 2026-10-10: Random pickups can invalidate a spawn-count assertion
+
+The opening-pickup test occasionally spawned a pickup directly on the player and collected it in the same update. Moved the test player outside the spawn range so it verifies spawning without depending on random placement.

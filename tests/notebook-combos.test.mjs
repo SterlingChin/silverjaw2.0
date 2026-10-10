@@ -81,7 +81,7 @@ test('wave ten without heals draws a teammate that shoots; heal use blocks the s
  for(const healed of [false,true]){const run=game();assert.equal(run(`(()=>{start('human');wave=9;player.healUsed=${healed};kills=goal;update(.01);return player.buddy})()`),!healed);if(!healed)assert.equal(run(`(()=>{entities=[{type:'ufo',x:player.x+100,y:250,hp:5,t:0,cool:100,vx:0}];shots=[];update(.01);return shots.some(s=>s.friendly&&s.damage===2)})()`),true);}
 });
 test('all discoveries persist while temporary powers and challenge counters reset',()=>{
- const saved={},run=game(saved);run("start('alien');for(const key of Object.keys(SECRET_NOTES))unlockSecret(key);player.cowTime=60;player.mirrorTime=45;start('human')");assert.equal(run('player.cowTime+player.mirrorTime+player.dragonTime+player.reflections+player.cowStreak'),0);assert.equal(run('player.buddy'),false);const loaded=game(saved);assert.equal(loaded('Object.keys(foundSecrets).length'),9);
+ const saved={},run=game(saved);run("start('alien');for(const key of Object.keys(SECRET_NOTES))unlockSecret(key);player.cowTime=60;player.mirrorTime=45;start('human')");assert.equal(run('player.cowTime+player.mirrorTime+player.dragonTime+player.reflections+player.cowStreak'),0);assert.equal(run('player.buddy'),false);const loaded=game(saved);assert.equal(loaded('Object.keys(foundSecrets).length'),loaded('Object.keys(SECRET_NOTES).length'));
 });
 
 test('Imposter unlocks with charged swarm plus heal and protects against targeting and contact',()=>{
@@ -100,7 +100,7 @@ test('Nuke removes all current invaders and bullets, advances exactly ten waves,
 });
 
 test('both modes start without pre-placed pickups and still spawn power-ups during play',()=>{
- const run=game();for(const side of ['human','alien'])assert.equal(run(`(()=>{start('${side}');if(pickups.length!==0)return false;pickupTimer=.01;update(.02);return pickups.length===1})()`),true);
+ const run=game();for(const side of ['human','alien'])assert.equal(run(`(()=>{start('${side}');if(pickups.length!==0)return false;player.x=30;pickupTimer=.01;update(.02);return pickups.length===1})()`),true);
 });
 
 test('secret weapon recipes unlock only through their charged weapon and a heal',()=>{
@@ -119,4 +119,26 @@ test('Swarm plus Rapid unlocks Snake Launcher and only one snake is summoned at 
 });
 test('snake eats ground aliens, jumps to eat UFOs, and expires without hurting the player',()=>{
  const run=game();assert.equal(run(`(()=>{start('human');player.weapon='SNAKE LAUNCHER';player.ammo=3;fire();entities=[{type:'alien',x:player.snake.x+30,y:G,hp:99}];updateSnake(.05);if(kills!==1)return false;entities=[{type:'ufo',x:player.snake.x+80,y:230,hp:99}];for(let i=0;i<180&&entities[0].hp>0;i++)updateSnake(1/60);const ate=entities[0].hp===0&&kills===2&&player.hp===5;player.snake.life=.01;updateSnake(.02);return ate&&player.snake===null})()`),true);
+});
+
+test('funny human recipes reveal only after collecting their heal',()=>{
+ for(const [base,result,key] of [['POPCORN GUN','RUBBER CHICKEN CANNON','chicken'],['FIREWORK LAUNCHER','HOMEWORK LAUNCHER','homework'],['THUNDER PEN','DISCO INVASION','disco'],['GIANT LASER','GRANDMA SLIPPER','slipper'],['BLACK HOLE GUN','ANGRY ERASER','eraser']]){
+ const run=game();assert.equal(run(`(()=>{start('human');if(secretCards('human').includes(SECRET_NOTES['${key}'].name))return false;player.weapon='${base}';player.ammo=1;pickups=[{type:'+',x:player.x,y:player.y-24,life:10}];update(.01);return player.weapon==='${result}'&&player.ammo===WEAPONS['${result}'].ammo&&foundSecrets['${key}']})()`),true);
+ }
+});
+test('homework converts UFOs and crashing planes kill only nearby aliens once',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.weapon='HOMEWORK LAUNCHER';player.ammo=40;fire();const s=shots[0];entities=[{type:'ufo',x:s.x+s.vx*.01,y:s.y+s.vy*.01,hp:99,vx:0,t:0,cool:100}];update(.01);if(player.paperPlanes.length!==1||kills!==1)return false;const p=player.paperPlanes[0];p.y=G-1;p.vx=0;entities=[{type:'alien',x:p.x+50,y:G,hp:99,t:0,cool:100},{type:'alien',x:p.x+250,y:G,hp:99,t:0,cool:100}];update(.01);const good=kills===2&&entities.length===1&&player.planeBlasts.length===1&&player.paperPlanes.length===0;update(.01);return good&&kills===2})()`),true);
+});
+test('disco halts invaders and eraser wipes enemies and hostile bullets',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.weapon='DISCO INVASION';player.ammo=3;entities=[{type:'alien',x:player.x,y:G,hp:10,t:0,cool:0}];fire();update(.1);if(player.hp!==5||shots.some(s=>!s.friendly)||player.ammo!==2)return false;player.weapon='ANGRY ERASER';player.ammo=3;player.cool=0;fire();entities=[{type:'alien',x:player.eraser.x+30,y:G,hp:99,t:0,cool:100}];shots=[{x:player.eraser.x+30,y:200,friendly:false,life:5}];update(.1);return kills===1&&shots.length===0&&player.ammo===2})()`),true);
+});
+test('healing a snake unlocks sneezing and it spends swallowed aliens on UFO shots',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.weapon='SNAKE LAUNCHER';player.ammo=3;fire();player.snake.eaten=1;pickups=[{type:'+',x:player.x,y:player.y-24,life:10}];update(.01);entities=[{type:'ufo',x:player.snake.x+500,y:150,hp:99}];updateSnake(.01);return foundSecrets.sneeze&&player.snake.eaten===0&&shots.some(s=>s.effect==='spatAlien')})()`),true);
+});
+test('UFO heal combinations unlock helmet cows and every fifth toast is a waffle',()=>{
+ const run=game();assert.equal(run(`(()=>{start('alien');spawnTimer=100;pickupTimer=100;player.mods={SHIELD:30,'STRONG BEAM':30,SPEED:30};pickups=[{type:'+',x:player.x,y:player.y,life:10}];update(.01);if(!foundSecrets.oops||!foundSecrets.toast)return false;entities=[{type:'soldier',x:player.x,y:G,hp:1,t:0,cool:100},{type:'jet',x:player.x+500,y:140,hp:99,vx:0,t:0,cool:100}];keys.Space=true;update(.01);if(!entities.some(e=>e.type==='cow'&&e.helmet))return false;for(let i=0;i<4;i++){player.toastCool=0;update(.01);}return shots.some(s=>s.effect==='waffle')&&player.toastCount===5})()`),true);
+});
+test('chicken redirects to a new target and slipper returns after bonking',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.weapon='RUBBER CHICKEN CANNON';player.ammo=60;fire();const s=shots[0];entities=[{type:'ufo',x:s.x+s.vx*.01,y:s.y+s.vy*.01,hp:1,vx:0,t:0,cool:100},{type:'ufo',x:s.x+300,y:150,hp:99,vx:0,t:0,cool:100}];update(.01);return kills===1&&s.hit.size===1&&s.vx>0&&s.life>0&&player.ammo===59})()`),true);
+ assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;player.weapon='GRANDMA SLIPPER';player.ammo=30;fire();const s=shots[0];s.x=player.x+200;s.y=player.y-25;time=1;update(.01);return s.vx<0&&s.laser&&player.ammo===29})()`),true);
 });
