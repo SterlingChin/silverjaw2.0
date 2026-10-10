@@ -139,7 +139,7 @@ test('qoins require a spatial hit; passing their depth elsewhere misses them for
   fall.advance(.02,{x:0,y:0},model);assert.equal(model.run.qoins,1);assert.equal(hit.taken,true);
 });
 
-test('all six courses have reachable moving gaps and can be completed through real updates', () => {
+test('all courses have reachable moving gaps and can be completed through real updates', () => {
   const {model,Fall,LEVELS,gateAt}=setup();
   for(let level=0;level<LEVELS.length;level++) {
     model.start('free',level);const fall=new Fall(level);let steps=0;
@@ -217,5 +217,8 @@ test('Candy Factory has moving lollipop colliders and exact crash messages',()=>
  const {Fall,candyHeads,hitsObstacle,crashMessage}=setup(),f=new Fall(4),o=f.course.obstacles.find(o=>o.type==='lollipop'),a=candyHeads(o,0)[0],b=candyHeads(o,1)[0];assert.notEqual(a.x,b.x);assert.equal(hitsObstacle(a.x,a.y,o,0),true);assert.equal(hitsObstacle(0,-.1,o,0),false);assert.equal(crashMessage('flame'),'Get cooked');assert.equal(crashMessage('wall'),'A little too squishy.');assert.equal(crashMessage('laser'),'Freshly sliced.');
 });
 test('the tiny pickup and secret tunnel form a reachable route on every course',()=>{
- const {model,Fall,LEVELS,gateAt}=setup();for(let level=0;level<LEVELS.length;level++){model.start('free',level);const f=new Fall(level);let steps=0;while(model.run.status==='falling'&&!f.tunnelFound&&steps++<3000){const obstacle=f.course.obstacles.find(o=>!o.passed&&!o.broken),power=f.course.powers.find(p=>p.type==='tiny'&&!p.taken&&p.z>=f.depth);const goal=power&&power.z<obstacle.z?power:obstacle.tunnel?obstacle.tunnel:gateAt(obstacle,f.time,level);const dx=goal.x-f.x,dy=goal.y-f.y,len=Math.hypot(dx,dy),gain=Math.min(15,1/Math.max(.001,len));f.advance(1/120,{x:dx*gain,y:dy*gain},model);}assert.equal(f.tunnelFound,true,`tunnel ${level} reachable`);assert.equal(model.run.status,'falling');}
+ const {model,Fall,LEVELS,gateAt}=setup();for(let level=0;level<LEVELS.length;level++){model.start('free',level);const f=new Fall(level);let steps=0;while(model.run.status==='falling'&&!f.tunnelFound&&steps++<3000){const obstacle=f.course.obstacles.find(o=>!o.passed&&!o.broken),power=f.course.powers.find(p=>p.type==='tiny'&&!p.taken&&p.z>=f.depth);if(!obstacle)break;const goal=power&&power.z<obstacle.z?power:obstacle.tunnel?obstacle.tunnel:gateAt(obstacle,f.time,level);const dx=goal.x-f.x,dy=goal.y-f.y,len=Math.hypot(dx,dy),gain=Math.min(15,1/Math.max(.001,len));f.advance(1/120,{x:dx*gain,y:dy*gain},model);}assert.equal(f.tunnelFound,true,`tunnel ${level} reachable`);assert.equal(model.run.status,'falling');}
+});
+test('twenty levels preserve old wallet, wardrobe and progression while free play expands',()=>{
+ const {model,LEVELS}=setup(JSON.stringify({version:1,bank:83,owned:['mint','chef'],skin:'chef',modes:{story:{unlocked:5,last:5,records:{volcano:{wins:1,best:2,pending:0,collected:9}}},free:{unlocked:5,last:4,records:{}}}}));assert.equal(LEVELS.length,20);assert.equal(new Set(LEVELS.map(l=>l.id)).size,20);assert.equal(model.save.bank,83);assert.equal(model.save.skin,'chef');assert.equal(model.save.modes.story.unlocked,5);assert.equal(model.save.modes.free.unlocked,19);assert.equal(model.start('story',6),false);assert.equal(model.start('free',19),true);
 });
