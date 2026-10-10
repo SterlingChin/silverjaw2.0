@@ -81,7 +81,7 @@ test('wave ten without heals draws a teammate that shoots; heal use blocks the s
  for(const healed of [false,true]){const run=game();assert.equal(run(`(()=>{start('human');wave=9;player.healUsed=${healed};kills=goal;update(.01);return player.buddy})()`),!healed);if(!healed)assert.equal(run(`(()=>{entities=[{type:'ufo',x:player.x+100,y:250,hp:5,t:0,cool:100,vx:0}];shots=[];update(.01);return shots.some(s=>s.friendly&&s.damage===2)})()`),true);}
 });
 test('all discoveries persist while temporary powers and challenge counters reset',()=>{
- const saved={},run=game(saved);run("start('alien');for(const key of Object.keys(SECRET_NOTES))unlockSecret(key);player.cowTime=60;player.mirrorTime=45;start('human')");assert.equal(run('player.cowTime+player.mirrorTime+player.dragonTime+player.reflections+player.cowStreak'),0);assert.equal(run('player.buddy'),false);const loaded=game(saved);assert.equal(loaded('Object.keys(foundSecrets).length'),6);
+ const saved={},run=game(saved);run("start('alien');for(const key of Object.keys(SECRET_NOTES))unlockSecret(key);player.cowTime=60;player.mirrorTime=45;start('human')");assert.equal(run('player.cowTime+player.mirrorTime+player.dragonTime+player.reflections+player.cowStreak'),0);assert.equal(run('player.buddy'),false);const loaded=game(saved);assert.equal(loaded('Object.keys(foundSecrets).length'),9);
 });
 
 test('Imposter unlocks with charged swarm plus heal and protects against targeting and contact',()=>{
@@ -101,4 +101,15 @@ test('Nuke removes all current invaders and bullets, advances exactly ten waves,
 
 test('both modes start without pre-placed pickups and still spawn power-ups during play',()=>{
  const run=game();for(const side of ['human','alien'])assert.equal(run(`(()=>{start('${side}');if(pickups.length!==0)return false;pickupTimer=.01;update(.02);return pickups.length===1})()`),true);
+});
+
+test('secret weapon recipes unlock only through their charged weapon and a heal',()=>{
+ const run=game();for(const [base,w] of [['ROCKETS','METEOR SHOWER'],['SPREAD GUN','BOOMERANG SAW'],['RAPID BLASTER','BLACK HOLE GUN']])assert.equal(run(`(()=>{start('human');player.weapon='${base}';player.ammo=10;pickups=[{type:'+',x:player.x,y:G-24,life:10}];update(.01);return player.weapon})()`),w);
+});
+test('Meteor Shower emits nine falling meteors for one charge',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');player.weapon='METEOR SHOWER';player.ammo=5;fire();return shots.length===9&&shots.every(s=>s.effect==='meteor'&&s.vy>0)&&player.ammo===4})()`),true);
+});
+test('saw returns toward player and black holes pull then damage invaders',()=>{
+ const run=game();assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;shots=[{x:player.x+300,y:player.y-25,vx:750,vy:0,effect:'saw',born:-1,life:4,friendly:true,damage:3,hit:new Set()}];update(.01);return shots[0].vx<0})()`),true);
+ assert.equal(run(`(()=>{start('human');spawnTimer=100;pickupTimer=100;entities=[{type:'ufo',x:650,y:200,hp:9,t:0,cool:100,vx:0}];shots=[{x:550,y:200,vx:0,vy:0,effect:'blackhole',fuse:2,life:4,friendly:true,damage:0}];update(.1);const pulled=entities[0].x<650;detonate(shots[0]);return pulled&&entities[0].hp<=0&&kills===1&&player.hp===5})()`),true);
 });
