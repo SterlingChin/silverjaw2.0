@@ -83,6 +83,7 @@ function character(w,look=record){const h=w.hip,torso=look.torso||look.outfit,he
  if(torso==='thanksgiving'){for(let i=0;i<5;i++)ellipse(-12+i*6,-52+Math.abs(i-2)*5,5,16,i%2?'#e3a94d':'#b54b38');ellipse(0,-39,10,12,'#6d4538');ellipse(3,-51,5,6,'#aa7249');ellipse(5,-53,1,1,'#262b30');line([[7,-50],[11,-48]],'#e3a94d',3);}
  if(torso==='halloween'){ctx.fillStyle='#36303e';ctx.beginPath();ctx.moveTo(-12,-59);ctx.lineTo(-3,-59);ctx.lineTo(-8,-68);ctx.moveTo(3,-59);ctx.lineTo(13,-59);ctx.lineTo(8,-68);ctx.fill();line([[-12,-44],[-7,-39],[-2,-44],[3,-39],[8,-44],[13,-40]],'#36303e',4);}
  if(torso==='wizard'){ctx.fillStyle='#edce78';ctx.font='21px Arial';ctx.fillText('✦',-10,-42);}
+ if(!(head==='inkfang'&&look.headwear!==false)){
  // A single eye and nose silhouette make the walking direction unmistakable.
  if(hairStyle==='ponytail'){ellipse(-29,-103,12,30,hair);line([[-25,-121],[-32,-121]],headStyle.trim,5);}
  if(hairStyle==='bun')ellipse(-25,-132,13,13,hair);
@@ -103,9 +104,16 @@ function character(w,look=record){const h=w.hip,torso=look.torso||look.outfit,he
  if(facial==='beard'||facial==='long'){ctx.beginPath();ctx.moveTo(-10,-104);ctx.lineTo(-8,-87);ctx.quadraticCurveTo(4,facial==='long'?-48:-71,22,facial==='long'?-62:-80);ctx.lineTo(27,-90);ctx.lineTo(11,-86);ctx.lineTo(-4,-99);ctx.closePath();ctx.fillStyle=hair;ctx.fill();}
  }
  ellipse(15,-111,3,4,'#3b4940');line(w.dead?[[13,-90],[20,-94],[25,-90]]:[[14,-92],[21,-89],[27,-93]],'#685143',2.5);
- if(look.headwear!==false&&head==='inkfang'){ellipse(1,-106,28,33,'#191c26');ellipse(25,-101,9,6,'#191c26');ctx.beginPath();ctx.moveTo(-6,-124);ctx.lineTo(3,-120);ctx.lineTo(6,-123);ctx.lineTo(25,-116);ctx.lineTo(18,-103);ctx.lineTo(5,-107);ctx.closePath();ctx.fillStyle='#f4f5ef';ctx.fill();ellipse(18,-87,17,12,'#07090e');
- ctx.beginPath();ctx.moveTo(16,-83);ctx.bezierCurveTo(34,-70,55,-90,61,-77);ctx.bezierCurveTo(67,-65,47,-58,44,-66);ctx.strokeStyle='#d83e56';ctx.lineWidth=6;ctx.lineCap='round';ctx.stroke();
- ctx.beginPath();for(const x of [5,12,19,26]){ctx.moveTo(x,-96);ctx.lineTo(x+6,-95);ctx.lineTo(x+3,-87);ctx.closePath();ctx.moveTo(x,-79);ctx.lineTo(x+6,-79);ctx.lineTo(x+3,-85);ctx.closePath();}ctx.fillStyle='#f4f5ef';ctx.fill();line([[-17,-124],[-21,-111]],'#465064',2);}
+ }
+ if(look.headwear!==false&&head==='inkfang'){
+ // The two jaw edges meet at (8,-85), opening at a right angle.
+ ctx.beginPath();ctx.moveTo(-27,-106);ctx.bezierCurveTo(-27,-145,28,-148,34,-111);ctx.lineTo(8,-85);ctx.lineTo(34,-59);ctx.quadraticCurveTo(-23,-63,-27,-106);ctx.closePath();ctx.fillStyle='#191c26';ctx.fill();
+ ctx.beginPath();ctx.moveTo(-6,-126);ctx.lineTo(3,-122);ctx.lineTo(6,-125);ctx.lineTo(27,-117);ctx.lineTo(17,-103);ctx.lineTo(5,-109);ctx.closePath();ctx.fillStyle='#f4f5ef';ctx.fill();
+ // Only the free end moves. The tongue root stays attached to the jaw hinge.
+ const phase=(w.time??clock)*9,motion=clamp(Math.abs(w.hip.vx||0)/80+Math.abs(stride)+lift,0,1),wave=reduced||w.dead?0:Math.sin(phase)*(2+motion*7),curl=reduced||w.dead?0:Math.cos(phase*.8)*(2+motion*4);
+ ctx.beginPath();ctx.moveTo(8,-85);ctx.bezierCurveTo(28,-82,47,-91+wave,61,-81+wave);ctx.bezierCurveTo(76,-69+curl,52,-56+wave,48,-67+curl);ctx.strokeStyle='#d83e56';ctx.lineWidth=6;ctx.lineCap='round';ctx.stroke();
+ ctx.beginPath();for(const t of [.23,.45,.67,.89]){const x=8+26*t;for(const sign of [-1,1]){const y=-85+sign*26*t;ctx.moveTo(x-2,y-sign*2);ctx.lineTo(x+2,y+sign*2);ctx.lineTo(x+6,y-sign*4);ctx.closePath();}}ctx.fillStyle='#f4f5ef';ctx.fill();line([[-17,-124],[-21,-111]],'#465064',2);}
+
  if(look.headwear!==false&&head==='pilot'){rr(-25,-139,47,19,7,'#93684b');line([[-24,-127],[-23,-108]],'#93684b',8);rr(5,-116,22,14,5,'#bad5dc','#6a5745');line([[-12,-110],[5,-110]],'#6a5745',3);}
  if(look.headwear!==false&&head==='airplane'){rr(-26,-140,49,16,7,'#dfeaf0','#4c88b1');line([[-28,-123],[32,-123]],'#4c88b1',5);line([[0,-141],[0,-151]],'#637b88',3);line([[-18,-152],[18,-152]],'#4c88b1',5);}
  if(look.headwear!==false&&head==='spaghetti'){for(let i=0;i<7;i++)line([[-24+i*7,-124],[-29+i*7,-140],[-18+i*7,-146],[-23+i*7,-132]],'#e2c273',5);ellipse(0,-145,7,6,'#a4482e');}
