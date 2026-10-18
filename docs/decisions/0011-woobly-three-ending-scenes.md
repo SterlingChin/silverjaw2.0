@@ -19,3 +19,6 @@ Existing saves remain compatible. Flight is required for the vertical exits, but
 
 ## Content hooks
 Three secret exits are demoable after family review.
+
+## Extension: 1,000-step couch ending
+On 2026-10-18, added a fourth ending when the current run reaches 1,000 steps. It uses the same validated discovery set, with a seated character rubbing a foot instead of running. The discovery counter derives its total from the ending registry. Flight is optional, and existing exit and loss handling retain priority.
