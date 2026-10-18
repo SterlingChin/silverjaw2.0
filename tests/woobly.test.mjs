@@ -19,5 +19,8 @@ test('dry ground does not slide planted feet',()=>{const w=new Walk();w.puddles=
 
 test('gap widths vary independently and remain within a reachable range',()=>{let n=0;const values=[.1,0,0,0,.1,0,1,0];const w=new Walk(()=>values[n++%values.length]);assert.equal(w.gaps[0].w,45);assert.equal(w.gaps[1].w,125);});
 
-test('blue cannot cross pink even when lifted, and pink cannot cross behind blue',()=>{for(const i of [0,1]){const w=new Walk();w.blocks=[];w.grab(i);w.move(i===0?400:100,GROUND-100);assert.ok(w.feet[1].x-w.feet[0].x>=42-1e-8);const y=w.feet[i].y;w.move(i===0?400:100,y-30);assert.ok(w.feet[i].y<y,'lifting still works at the limit');w.release();settle(w,10);assert.ok(w.feet[1].x-w.feet[0].x>=42-1e-8);}});
-test('slipping cannot push either foot through the other',()=>{for(const i of [0,1]){const w=new Walk();w.blocks=[];w.gaps=[];w.puddles=[];w.feet[i].slip=i===0?10000:-10000;w.step(.033);assert.ok(w.feet[1].x-w.feet[0].x>=42-1e-8);assert.equal(w.feet[i].slip,0);}});
+
+test('either foot can cross the other without being stopped',()=>{for(const i of [0,1]){const w=new Walk();w.blocks=[];w.grab(i);w.move(i===0?320:140,GROUND-80);assert.equal(w.crossed(),true);assert.ok(i===0?w.feet[0].x>300:w.feet[1].x<160);}});
+test('crossed feet wobble and build danger, then recover when uncrossed',()=>{const w=new Walk();w.blocks=[];w.gaps=[];w.puddles=[];w.feet[0].x=240;w.feet[1].x=180;settle(w,60);assert.ok(w.danger>.45);assert.ok(Math.abs(w.lean)>.15);assert.equal(w.dead,false);w.grab(0);w.move(140,GROUND-50);w.move(140,GROUND);w.release();settle(w,100);assert.equal(w.crossed(),false);assert.equal(w.dead,false);assert.equal(w.danger,0);});
+test('leaving feet crossed eventually causes a fall',()=>{const w=new Walk();w.blocks=[];w.gaps=[];w.puddles=[];w.feet[0].x=240;w.feet[1].x=180;settle(w,200);assert.equal(w.dead,true);assert.match(w.reason,/Tangled legs/);});
+test('slipping can cross feet and immediately builds danger',()=>{const w=new Walk();w.blocks=[];w.gaps=[];w.puddles=[];w.feet[0].slip=4000;w.step(.033);assert.equal(w.crossed(),true);assert.ok(w.danger>0);});
