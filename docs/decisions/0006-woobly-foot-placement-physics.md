@@ -1,7 +1,7 @@
 # 0006. Woobly uses bounded foot-placement physics
 
 Date: 2026-10-18
-Status: Accepted
+Status: Amended by 0007 for terrain generation and leg collisions
 
 ## Context
 Woobly is an endless long-legged walking game. The cursor controls legs, obstacles interrupt walking, and distance ends when the character falls.
