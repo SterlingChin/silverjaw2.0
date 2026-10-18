@@ -15,7 +15,7 @@ Store torso, arms, head, and character variant as independently validated, optio
 Separate boy and girl outfit inventories would duplicate choices and make matching themes harder to maintain. Paid unlocks conflict with the player's request. Changing collision physics per outfit would affect fairness.
 
 ## Consequences
-The wardrobe previews all combinations of seven themes across three body parts and two character variants and persists choices locally. Existing records and movement rules remain compatible.
+The wardrobe previews all combinations of ten themes across three body parts and two character variants and persists choices locally. Existing records and movement rules remain compatible.
 
 ## Content hooks
 Family review required for a demo of the side-view character and free wardrobe.
