@@ -21,3 +21,6 @@ Random rare triggers would make discovery depend on luck. Separate games for eac
 
 ## Content hooks
 A secret-ending scavenger hunt is demoable after family review.
+
+## Moon landing refinement
+The moon victory now requires both released feet grounded on a curved lunar surface at world x=450..950. Altitude alone cannot win. The surface supports foot placement and physics from above, with flight retained for travel; the space background adds stars and moon direction guidance. Existing discoveries remain valid.
