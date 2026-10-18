@@ -11,6 +11,15 @@ export type Game = {
 // Add new games to the top of this list.
 export const games: Game[] = [
   {
+    icon: "/tater/icons/woobly.svg",
+    slug: "woobly",
+    title: "Woobly",
+    tagline: "One foot. Then the other.",
+    description:
+      "Drag a pair of ridiculously long legs over crates and gaps. Keep your balance and beat your best distance with mouse or touch.",
+    added: "2026-10-18",
+  },
+  {
     icon: "/tater/icons/snack-slash.svg",
     slug: "snack-slash",
     title: "Snack Slash",
