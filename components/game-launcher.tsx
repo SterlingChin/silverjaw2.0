@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import type { Game } from "@/data/games"
+import { series, type Game } from "@/data/games"
 import styles from "./game-launcher.module.css"
 
 export default function GameLauncher({ games }: { games: Game[] }) {
@@ -26,8 +26,19 @@ export default function GameLauncher({ games }: { games: Game[] }) {
 
   return (
     <>
-      <ul className={styles.grid}>
-        {games.map((game, index) => (
+      <nav className={styles.tabs} aria-label="Game collections">
+        {series.map((collection) => <a key={collection.id} href={`#${collection.id}`}>{collection.title} <span>↗</span></a>)}
+      </nav>
+      <div className={styles.collections}>
+      {series.map((collection) => (
+        <section key={collection.id} id={collection.id} className={styles.collection} aria-labelledby={`title-${collection.id}`}>
+          <header className={styles.collectionHeader}>
+            <span className={styles.collectionNumber} style={{ color: collection.color }}>{collection.number}</span>
+            <div><h2 id={`title-${collection.id}`}>{collection.title}</h2><p>{collection.subtitle}</p></div>
+            <span className={styles.count}>{games.filter(game => game.series === collection.id).length} {games.filter(game => game.series === collection.id).length === 1 ? "GAME" : "GAMES"}</span>
+          </header>
+          <ul className={styles.grid}>
+        {games.filter(game => game.series === collection.id).map((game, index) => (
           <li key={game.slug}>
             <button
               className={styles.tile}
@@ -50,7 +61,10 @@ export default function GameLauncher({ games }: { games: Game[] }) {
             </button>
           </li>
         ))}
-      </ul>
+          </ul>
+        </section>
+      ))}
+      </div>
 
       <dialog
         ref={dialogRef}
