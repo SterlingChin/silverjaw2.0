@@ -20,6 +20,16 @@ export type Game = {
 // Each game is a self-contained HTML file at public/tater/<slug>/index.html.
 // Add new games to the top of this list.
 export const games: Game[] = [
+  {series:"notebook",icon:"/tater/icons/doodle-escape.svg",slug:"doodle-escape",title:"Doodle Escape",tagline:"Draw a way out.",description:"Help the doodle reach the door before the giant eraser catches up.",added:"2026-11-03"},
+  {series:"notebook",icon:"/tater/icons/paper-plane-panic.svg",slug:"paper-plane-panic",title:"Paper Plane Panic",tagline:"Cleared for classroom chaos.",description:"Fly through the classroom to the open window. Dodge fans, desks, and thrown pencils.",added:"2026-11-03"},
+  {series:"notebook",icon:"/tater/icons/margin-monsters.svg",slug:"margin-monsters",title:"Margin Monsters",tagline:"Finish the doodle. Unleash the weird.",description:"Give each unfinished monster the right power to cross its obstacle.",added:"2026-11-03"},
+  {series:"q",icon:"/tater/icons/q-stick.svg",slug:"q-stick",title:"Q-STICK",tagline:"Small cube. Sticky situation.",description:"Cling, launch, and collect every qoin on the way to the flag.",added:"2026-11-03"},
+  {series:"q",icon:"/tater/icons/q-stack.svg",slug:"q-stack",title:"Q-STACK",tagline:"A tower with too much personality.",description:"Stack the target number of squishy cubes without tipping the tower.",added:"2026-11-03"},
+  {series:"dude",icon:"/tater/icons/grabby.svg",slug:"grabby",title:"Grabby",tagline:"Long arms. Short-term planning.",description:"Swing across the canyon and land on the far ledge.",added:"2026-11-03"},
+  {series:"dude",icon:"/tater/icons/normal-human.svg",slug:"normal-human",title:"Definitely a Normal Human",tagline:"Three creatures. One suspicious coat.",description:"Buy groceries and greet your neighbors without revealing the creatures in your coat.",added:"2026-11-03"},
+  {series:"snack",icon:"/tater/icons/midnight-munch.svg",slug:"midnight-munch",title:"Midnight Munch",tagline:"One cookie. Past bedtime.",description:"Collect three crumbs, dodge the dog, and reach the cookie tin.",added:"2026-11-03"},
+  {series:"snack",icon:"/tater/icons/toast-trouble.svg",slug:"toast-trouble",title:"Toast Trouble",tagline:"Breakfast has left the toaster.",description:"Land on the plate butter-side up. Watch the fan, fork, and cat.",added:"2026-11-03"},
+  {series:"dude",icon:"/tater/icons/rooftop-rascal.svg",slug:"rooftop-rascal",title:"Rooftop Rascal",tagline:"A little dude. A big leap.",description:"Collect every coin, then reach the rooftop flag. Checkpoints save your place.",added:"2026-11-03"},
   {
     series: "notebook",
     icon: "/tater/icons/pencil-patrol.svg",
