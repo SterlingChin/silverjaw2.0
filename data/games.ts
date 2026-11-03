@@ -1,4 +1,14 @@
+export type SeriesId = "notebook" | "q" | "dude" | "snack"
+
+export const series = [
+  { id: "notebook", number: "01", title: "Notebook Series", subtitle: "Big adventures. One sheet of paper.", color: "#ba714d" },
+  { id: "q", number: "02", title: "Q Series", subtitle: "A little cube with a lot of personality.", color: "#796b9a" },
+  { id: "dude", number: "03", title: "Dude Series", subtitle: "Long legs. Questionable balance.", color: "#5d806b" },
+  { id: "snack", number: "04", title: "Snack Drawer", subtitle: "Open for a little snack-time chaos.", color: "#b97945" },
+] as const
+
 export type Game = {
+  series: SeriesId
   icon: string
   slug: string
   title: string
@@ -11,6 +21,16 @@ export type Game = {
 // Add new games to the top of this list.
 export const games: Game[] = [
   {
+    series: "notebook",
+    icon: "/tater/icons/pencil-patrol.svg",
+    slug: "pencil-patrol",
+    title: "Pencil Patrol",
+    tagline: "Hold the line. Save the doodles.",
+    description: "Build a pencil defense, collect graphite, and stop erasers from wiping out your notebook. Five pages of stationery strategy.",
+    added: "2026-11-03",
+  },
+  {
+    series: "dude",
     icon: "/tater/icons/woobly.svg",
     slug: "woobly",
     title: "Woobly",
@@ -20,6 +40,7 @@ export const games: Game[] = [
     added: "2026-10-18",
   },
   {
+    series: "snack",
     icon: "/tater/icons/snack-slash.svg",
     slug: "snack-slash",
     title: "Snack Slash",
@@ -29,6 +50,7 @@ export const games: Game[] = [
     added: "2026-10-10",
   },
   {
+    series: "q",
     icon: "/tater/icons/q-bee.svg",
     slug: "q-bee",
     title: "Q-BEE",
@@ -38,6 +60,7 @@ export const games: Game[] = [
     added: "2026-10-09",
   },
   {
+    series: "notebook",
     icon: "/tater/icons/notebook-invasion.svg",
     slug: "notebook-invasion",
     title: "Notebook Invasion",
