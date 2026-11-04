@@ -1,3 +1,4 @@
+import {PARKOUR_COURSES} from './parkour-courses.js';
 export const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 export const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 export const hit=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
@@ -110,10 +111,27 @@ export class Toast extends Base{
  action(n){if(n===2&&!this.air){this.p.vx=this.level===0?500:540;this.p.vy=this.level===0?-500:-410;this.air=true;}}
  update(dt,i){this.fork.y=240+Math.sin(this.time*1.8+this.level)*80;if(!this.air)return;const p=this.p,old=p.y;p.vx+=Math.sin(this.time*2)*this.level*10*dt;p.vy+=720*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.angle+=((i.right?1:0)-(i.left?1:0))*3.5*dt+.18*dt;if(Math.hypot(p.x-this.fork.x,p.y-this.fork.y)<30)this.lose('Fork interception! Try a higher or lower launch.');if(Math.hypot(p.x-this.cat.x,p.y-this.cat.y)<65)this.lose('The cat ordered toast. You delivered.');if(old< this.plate.y-15&&p.y>=this.plate.y-15&&p.vy>0&&p.x>this.plate.x&&p.x<this.plate.x+this.plate.w){const a=Math.atan2(Math.sin(p.angle),Math.cos(p.angle));if(Math.abs(a)<.7){this.score=Math.round(300-Math.abs(a)*100);this.win('Butter-side up. Breakfast is served!');}else this.lose('Butter-side DOWN. Rotate the toast before it lands.');}if(p.y>550||p.x>1000)this.lose('Missed the plate! Pull back to choose a different arc.');}
 }
-export class Parkour extends Base{
- constructor(l){super(l);this.platforms=Array.from({length:9},(_,i)=>({x:i*230,y:440-(i%3)*35,w:165+(i===0?30:0),h:140,moving:i===4&&l>1,spring:i===5&&l>2}));this.p={x:65,y:390,w:24,h:38,vx:0,vy:0,ground:false};this.coins=this.platforms.slice(1).map(b=>({x:b.x+80,y:b.y-50,got:false}));this.enemies=l>0?[{x:520,y:332,w:27,h:28,base:520},{x:1460,y:377,w:27,h:28,base:1460}]:[];this.checkpoint={x:65,y:390};this.deaths=0;this.jumpHeld=false;this.grace=0;this.invulnerable=0;}
- action(n){if(n===2&&this.grace>0){this.p.vy=-465;this.p.ground=false;this.grace=0;}}
- respawn(){this.deaths++;this.p={...this.p,x:this.checkpoint.x,y:this.checkpoint.y,vx:0,vy:0};this.invulnerable=1;this.message='Back at your checkpoint. Keep going!';}
- update(dt,i){const p=this.p;this.invulnerable=Math.max(0,this.invulnerable-dt);p.vx=((i.right?1:0)-(i.left?1:0))*230;if(i.jump&&!this.jumpHeld)this.action(2);this.jumpHeld=!!i.jump;const oldY=p.y;p.x=clamp(p.x+p.vx*dt,0,2100);p.vy+=1100*dt;p.y+=p.vy*dt;p.ground=false;for(const b of this.platforms){const y=b.y+(b.moving?Math.sin(this.time*1.5)*25:0);if(p.x+p.w>b.x&&p.x<b.x+b.w&&oldY+p.h<=y+5&&p.y+p.h>=y&&p.vy>=0){p.y=y-p.h;p.vy=b.spring?-620:0;p.ground=!b.spring;break;}}this.grace=p.ground?.1:Math.max(0,this.grace-dt);for(const e of this.enemies){e.x=e.base+Math.sin(this.time*1.7)*36;const floor=this.platforms.find(b=>e.x>=b.x&&e.x<=b.x+b.w);e.y=(floor?.y||440)-e.h;if(hit(p,e)&&this.invulnerable<=0){if(p.vy>0&&oldY+p.h<e.y+12){e.dead=true;p.vy=-370;this.score+=50;}else this.respawn();}}this.enemies=this.enemies.filter(e=>!e.dead);for(const c of this.coins)if(!c.got&&dist({x:p.x+12,y:p.y+18},c)<33){c.got=true;this.score+=25;}if(p.x>945&&p.x<1100&&p.ground&&this.checkpoint.x<900){this.checkpoint={x:980,y:340};this.message='Checkpoint reached!';}if(p.y>560)this.respawn();if(p.x>1950){if(this.coins.every(c=>c.got))this.win('Every coin, every rooftop. That is one nimble dude.');else this.message='The flag needs every coin. Check the rooftops behind you!';}this.camera=clamp(p.x-270,0,1150);}
+export class Parkour extends Base {
+ constructor(l){super(l);this.course=PARKOUR_COURSES[l];const c=this.course;this.platforms=[...c.platforms,...(c.extra||[])].map(b=>({...b,baseX:b.x,baseY:b.y}));this.p={x:c.spawn[0],y:c.spawn[1]-38,w:24,h:38,vx:0,vy:0,ground:false};this.coins=c.coins.map(([x,y])=>({x,y,got:false}));this.ladders=c.ladders||[];this.switches=(c.switches||[]).map(b=>({...b,on:false}));this.enemies=(c.enemies||[]).map(e=>({...e,base:e.x,y:0,w:27,h:28}));this.checkpoint={x:this.p.x,y:this.p.y};this.checked=false;this.deaths=0;this.jumpHeld=false;this.grace=0;this.invulnerable=0;this.umbrella=false;this.riding=null;this.message=c.hint;}
+ action(n){if(n===2&&this.grace>0){this.p.vy=-475;this.p.ground=false;this.grace=0;this.riding=null;}}
+ respawn(){this.deaths++;Object.assign(this.p,{x:this.checkpoint.x,y:this.checkpoint.y,vx:0,vy:0,ground:false});this.riding=null;this.grace=0;this.invulnerable=1;this.message='Back at the checkpoint. Your collected coins are safe.';}
+ update(dt,i){const p=this.p,c=this.course;this.invulnerable=Math.max(0,this.invulnerable-dt);
+  for(let n=0;n<this.platforms.length;n++){const b=this.platforms[n],ox=b.x,oy=b.y,phase=(1-Math.cos(this.time*Math.PI*2/(b.period||4)))/2;b.x=b.baseX+(b.moveX||0)*phase;b.y=b.baseY+(b.moveY||0)*phase;if(this.riding===n){p.x+=b.x-ox;p.y+=b.y-oy;}}
+  const ladder=this.ladders.find(l=>Math.abs(p.x+12-l.x)<26&&p.y+p.h>=l.y&&p.y<l.y+l.h);
+  const climb=!!ladder&&(i.up||i.jump);p.vx=((i.right?1:0)-(i.left?1:0))*210;
+  if(i.jump&&!this.jumpHeld&&!climb)this.action(2);this.jumpHeld=!!i.jump;
+  const oldY=p.y;p.x=clamp(p.x+p.vx*dt,0,936);
+  if(climb){p.x=ladder.x-12;p.vy=-145;this.riding=null;}else{p.vy+=1100*dt;if(this.umbrella&&i.jump&&p.vy>75)p.vy=75;}
+  p.y+=p.vy*dt;p.ground=false;this.riding=null;
+  for(let n=0;n<this.platforms.length;n++){const b=this.platforms[n];if(b.gate&&!this.switches.every(s=>s.on))continue;if(p.x+p.w>b.x&&p.x<b.x+b.w&&oldY+p.h<=b.y+3&&p.y+p.h>=b.y&&p.vy>=0){p.y=b.y-p.h;p.vy=b.spring?-690:0;p.ground=!b.spring;if(p.ground)this.riding=n;break;}}
+  this.grace=p.ground?.1:Math.max(0,this.grace-dt);
+  for(const e of this.enemies){const floor=this.platforms[e.platform];e.x=clamp(e.base+Math.sin(this.time*1.7)*32,floor.x,floor.x+floor.w-e.w);e.y=floor.y-e.h;if(hit(p,e)&&this.invulnerable<=0){if(p.vy>0&&oldY+p.h<e.y+12){e.dead=true;p.vy=-370;this.score+=50;}else{this.respawn();return;}}}this.enemies=this.enemies.filter(e=>!e.dead);
+  for(const coin of this.coins)if(!coin.got&&dist({x:p.x+12,y:p.y+18},coin)<29){coin.got=true;this.score+=25;}
+  for(const sw of this.switches)if(dist({x:p.x+12,y:p.y+18},sw)<33){sw.on=true;this.message='Bridge unlocked! Find the remaining coins.';}
+  if(c.umbrella&&dist({x:p.x+12,y:p.y+18},{x:c.umbrella[0],y:c.umbrella[1]})<32){this.umbrella=true;this.message='Umbrella ready! Hold Jump while falling to glide.';}
+  if(!this.checked&&p.ground&&Math.abs(p.x-c.checkpoint[0])<45&&Math.abs(p.y+p.h-c.checkpoint[1])<8){this.checked=true;this.checkpoint={x:p.x,y:p.y};this.message='Checkpoint saved!';}
+  if(p.y>570){this.respawn();return;}
+  if(this.coins.every(k=>k.got)&&dist({x:p.x+12,y:p.y+p.h},{x:c.exit[0],y:c.exit[1]})<40)this.win(c.name+' complete! Every coin collected.');
+ }
 }
 export const MODELS={'doodle-escape':Doodle,'paper-plane-panic':Plane,'margin-monsters':Monsters,'q-stick':Sticky,'q-stack':Stack,'grabby':Grabby,'normal-human':Human,'midnight-munch':Munch,'toast-trouble':Toast,'rooftop-rascal':Parkour};

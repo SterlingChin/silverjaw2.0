@@ -29,7 +29,7 @@ export const games: Game[] = [
   {series:"dude",icon:"/tater/icons/normal-human.svg",slug:"normal-human",title:"Definitely a Normal Human",tagline:"Three creatures. One suspicious coat.",description:"Buy groceries and greet your neighbors without revealing the creatures in your coat.",added:"2026-11-03"},
   {series:"snack",icon:"/tater/icons/midnight-munch.svg",slug:"midnight-munch",title:"Midnight Munch",tagline:"One cookie. Past bedtime.",description:"Collect three crumbs, dodge the dog, and reach the cookie tin.",added:"2026-11-03"},
   {series:"snack",icon:"/tater/icons/toast-trouble.svg",slug:"toast-trouble",title:"Toast Trouble",tagline:"Breakfast has left the toaster.",description:"Land on the plate butter-side up. Watch the fan, fork, and cat.",added:"2026-11-03"},
-  {series:"dude",icon:"/tater/icons/rooftop-rascal.svg",slug:"rooftop-rascal",title:"Rooftop Rascal",tagline:"A little dude. A big leap.",description:"Collect every coin, then reach the rooftop flag. Checkpoints save your place.",added:"2026-11-03"},
+  {series:"dude",icon:"/tater/icons/rooftop-rascal.svg",slug:"rooftop-rascal",title:"Rooftop Rascal",tagline:"A little dude. A big leap.",description:"Six distinct puzzle-platform courses with ladders, switches, moving ferries, springs, and umbrella gliding.",added:"2026-11-03"},
   {
     series: "notebook",
     icon: "/tater/icons/pencil-patrol.svg",
