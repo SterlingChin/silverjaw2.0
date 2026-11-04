@@ -30,17 +30,45 @@ export class Sticky extends Base{
  action(){if(this.stuck===null)return;const target=this.nodes[Math.min(this.stuck+1,6)],t=.72;this.p.vx=(target.x-this.p.x)/t;const targetY=target.baseY+(target.moving?Math.sin((this.time+t)*1.1+target.phase)*22:0);this.p.vy=(targetY-this.p.y-420*t*t/2)/t;this.departed=this.stuck;this.stuck=null;}
  update(dt){for(const n of this.nodes)if(n.moving)n.y=n.baseY+Math.sin(this.time*1.1+n.phase)*22;if(this.stuck!==null){this.p.x=this.nodes[this.stuck].x;this.p.y=this.nodes[this.stuck].y;return;}this.p.vy+=420*dt;this.p.x+=this.p.vx*dt;this.p.y+=this.p.vy*dt;for(let n=0;n<this.nodes.length;n++){if(n===this.departed){if(dist(this.p,this.nodes[n])>35)this.departed=null;continue;}if(dist(this.p,this.nodes[n])<25){this.p={...this.nodes[n],vx:0,vy:0};this.stuck=n;if(!this.visited.has(n)){this.visited.add(n);this.score+=25;}if(n===6&&this.visited.size===7)this.win('Sticky fingers? Sticky everything. All qoins collected!');return;}}for(const soap of this.soaps)if(dist(this.p,soap)<37){this.p.vx*=.98;this.p.vy+=80*dt;this.message='Soap! No sticking here.';}if(this.p.y>560||this.p.x< -40||this.p.x>1000)this.lose('Too slippery! Aim for a green pad.');}
 }
-export class Stack extends Base{
- constructor(l){super(l);this.target=8+l;this.blocks=[{x:480,y:470,w:130}];this.moving={x:160,y:90,w:100-l*3,vy:0};this.dropping=false;this.offset=0;}
- press(){this.action();}action(){if(!this.dropping)this.dropping=true;}
- update(dt){const p=this.moving,top=this.blocks.at(-1);if(!this.dropping){p.x=480+Math.sin(this.time*(1.3+this.level*.15))*220;p.y=Math.max(70,top.y-150);return;}p.vy+=750*dt;p.y+=p.vy*dt;if(p.y+34>=top.y){const overlap=Math.min(p.x+p.w/2,top.x+top.w/2)-Math.max(p.x-p.w/2,top.x-top.w/2);if(overlap<20){this.lose('A cube missed its seat. The tower says goodbye.');return;}const mass=[...this.blocks.slice(1),p].reduce((sum,b)=>sum+b.x,0)/this.blocks.length;if(Math.abs(mass-480)>60){this.lose('Too lopsided! Your cubes leaned out of the tower.');return;}this.blocks.push({x:p.x,y:top.y-34,w:p.w});this.score=(this.blocks.length-1)*100;if(this.blocks.length-1>=this.target){this.win('A tower of very proud, very squishy cubes.');return;}if(this.blocks.at(-1).y<210){for(const b of this.blocks)b.y+=34;this.offset+=34;}this.moving={x:160,y:80,w:100-this.level*3,vy:0};this.dropping=false;}}
+export class Stack extends Base {
+ constructor(){super(0);this.blocks=[{x:480,y:470,w:220}];this.height=0;this.speed=260;this.direction=1;this.dropping=false;this.fragments=[];this.perfect=0;this.spawn();}
+ spawn(){const top=this.blocks.at(-1);this.moving={x:this.direction>0?140:820,y:top.y-90,w:top.w,vy:0};}
+ press(){this.action();}
+ action(){if(this.state==='play'&&!this.dropping)this.dropping=true;}
+ update(dt){
+  for(const f of this.fragments){f.vy+=900*dt;f.y+=f.vy*dt;f.x+=f.vx*dt;f.angle+=f.spin*dt;}
+  this.fragments=this.fragments.filter(f=>f.y<600);
+  const p=this.moving,top=this.blocks.at(-1);
+  if(!this.dropping){p.x+=this.direction*this.speed*dt;if(p.x>820){p.x=820;this.direction=-1;}if(p.x<140){p.x=140;this.direction=1;}return;}
+  p.vy+=1800*dt;p.y+=p.vy*dt;
+  if(p.y+34<top.y)return;
+  let left=Math.max(p.x-p.w/2,top.x-top.w/2),right=Math.min(p.x+p.w/2,top.x+top.w/2);
+  if(right-left<=0){this.lose('Missed! Your tower reached '+this.height+' cubes.');return;}
+  if(Math.abs(p.x-top.x)<=3){p.x=top.x;left=top.x-top.w/2;right=top.x+top.w/2;this.perfect++;this.message='Perfect! '+this.perfect+' in a row.';}
+  else {this.perfect=0;this.message='Overhang trimmed. The next cube is narrower!';const w=p.w-(right-left);this.fragments.push({x:p.x>top.x?right+w/2:left-w/2,y:top.y-34,w,vy:20,vx:p.x>top.x?80:-80,angle:0,spin:p.x>top.x?2:-2});}
+  this.blocks.push({x:(left+right)/2,y:top.y-34,w:right-left});this.height++;this.score=this.height;this.speed=Math.min(680,260+this.height*13);
+  if(this.blocks.at(-1).y<220){for(const block of this.blocks)block.y+=34;for(const f of this.fragments)f.y+=34;}
+  this.blocks=this.blocks.filter(block=>block.y<550);this.direction=this.height%2?-1:1;this.dropping=false;this.spawn();
+ }
 }
-export class Grabby extends Base{
- constructor(l){super(l);this.p={x:90,y:285,vx:80,vy:0};this.anchors=Array.from({length:9},(_,i)=>({x:100+i*155,y:110+Math.sin(i+l)*35}));this.anchor=0;this.rope=175;this.length=1470;}
- press(x,y){const a=this.anchors.map((p,i)=>({...p,i})).filter(a=>dist(a,this.p)<285).sort((a,b)=>dist(a,{x,y})-dist(b,{x,y}))[0];if(a&&dist(a,{x,y})<65){this.anchor=a.i;this.rope=clamp(dist(a,this.p),80,240);}}
- release(){this.anchor=null;}
- action(n){if(n!==2)return;if(this.anchor!==null){this.release();return;}const a=this.anchors.map((p,i)=>({...p,i})).filter(a=>a.x>this.p.x-35&&dist(a,this.p)<285).sort((a,b)=>a.x-b.x)[0];if(a){this.anchor=a.i;this.rope=clamp(dist(a,this.p),80,240);}}
- update(dt,i){const p=this.p;p.vx+=((i.right?1:0)-(i.left?1:0))*420*dt;p.vy+=650*dt;p.vx=clamp(p.vx*.999,-460,460);p.x+=p.vx*dt;p.y+=p.vy*dt;if(this.anchor!==null){const a=this.anchors[this.anchor],dx=p.x-a.x,dy=p.y-a.y,d=Math.hypot(dx,dy);if(d>this.rope){const nx=dx/d,ny=dy/d;p.x=a.x+nx*this.rope;p.y=a.y+ny*this.rope;const v=p.vx*nx+p.vy*ny;p.vx-=v*nx;p.vy-=v*ny;}}if(p.x>1390&&p.x<1990&&p.y>=375&&p.y<440&&p.vy>0){this.score=Math.round(1000-this.time);this.win('You made it! Give those arms a very long rest.');}if(p.y>550||p.x< -100)this.lose('Your hands missed the ring. Reach for one inside the circle.');this.camera=clamp(p.x-300,0,1050);}
+export class Grabby extends Base {
+ constructor(l){super(l);this.p={x:100,y:350,vx:0,vy:0};this.anchors=Array.from({length:6+l},(_,i)=>({x:250+i*245,y:125+Math.sin(i+l)*30}));this.finish=this.anchors.at(-1).x+180;this.anchor=null;this.rope=0;this.holding=false;this.started=false;this.skin='classic';this.message='HOLD Space or the screen to attach. RELEASE to fly.';}
+ nextRing(){return this.anchors.map((a,n)=>({a,n})).filter(({a})=>a.x>this.p.x-45&&dist(a,this.p)<350).sort((a,b)=>dist(a.a,this.p)-dist(b.a,this.p))[0]?.n??-1;}
+ catchRing(){const n=this.nextRing();if(n>=0){this.anchor=n;this.rope=dist(this.p,this.anchors[n]);this.message='Attached! Release as you swing forward, then hold again.';}}
+ press(){if(this.state!=='play')return;this.started=true;this.holding=true;if(this.anchor===null)this.catchRing();}
+ release(){this.holding=false;if(this.anchor!==null){this.anchor=null;this.p.vx=Math.max(240,this.p.vx);this.p.vy=Math.min(-260,this.p.vy);this.message='Flying! Hold to catch the next glowing ring.';}}
+ action(){this.press();}
+ update(dt){
+  if(!this.started)return;
+  if(this.holding&&this.anchor===null)this.catchRing();
+  const p=this.p,oldY=p.y;
+  p.vx+= (this.anchor!==null?190:12)*dt;p.vx=clamp(p.vx,-450,520);p.vy+=650*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;
+  if(this.anchor!==null){const a=this.anchors[this.anchor],dx=p.x-a.x,dy=p.y-a.y,d=Math.hypot(dx,dy);if(d>this.rope){const nx=dx/d,ny=dy/d;p.x=a.x+nx*this.rope;p.y=a.y+ny*this.rope;const v=p.vx*nx+p.vy*ny;p.vx-=v*nx;p.vy-=v*ny;}}
+  if(p.x<180&&oldY<=350&&p.y>=350){p.y=350;p.vy=0;}
+  if(p.x>=this.finish&&p.x<=this.finish+1400&&oldY<=410&&p.y>=410){this.score=Math.max(1,Math.round(1500-this.time*10));this.win('A perfect landing! Those arms earned a rest.');}
+  if(p.y>580||p.x< -100)this.lose('Missed the catch! Hold to attach, release to fly, then hold again.');
+  this.camera=clamp(p.x-300,0,this.finish-350);
+ }
 }
 export class Human extends Base{
  constructor(l){super(l);this.x=80;this.tilt=0;this.velocity=0;this.suspicion=0;this.errands=[{x:330,name:'Say hello',done:false},{x:730,name:'Buy groceries',done:false},{x:1130,name:'Thank the cashier',done:false}];this.target=null;}
