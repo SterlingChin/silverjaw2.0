@@ -25,3 +25,13 @@ test('toast has achievable butter-up landing shots and rejects butter-down',()=>
 test('parkour courses can collect all coins and finish through actual jumps',()=>{for(let l=0;l<6;l++){const g=new MODELS['rooftop-rascal'](l);run(g,120,g=>{const p=g.p,b=g.platforms.find(b=>p.x+12>b.x&&p.x<b.x+b.w);if(p.ground&&b&&(p.x>b.x+b.w-65||g.enemies.some(e=>e.x-p.x>0&&e.x-p.x<100)))g.action(2);return {right:true};});assert.equal(g.state,'won');assert.ok(g.coins.every(c=>c.got));assert.equal(g.deaths,0);}});
 test('parkour checkpoints preserve coins but an empty flag does not win',()=>{const g=new MODELS['rooftop-rascal'](0);g.coins[0].got=true;g.checkpoint={x:980,y:340};g.p.y=600;g.tick(.025,{});assert.equal(g.p.x,980);assert.ok(g.coins[0].got);g.p.x=1990;g.p.y=300;g.tick(.025,{});assert.equal(g.state,'play');});
 test('finished games freeze and new instances have independent state',()=>{for(const Model of Object.values(MODELS)){const g=new Model(0);g.win('test');const before=JSON.stringify(g);g.tick(.025,{right:true});assert.equal(JSON.stringify(g),before);assert.equal(new Model(0).state,'play');}});
+
+test('doodle falls with acceleration off an edge and cannot snap onto a bridge above its feet',()=>{
+ const g=new MODELS['doodle-escape'](0);g.running=true;g.p={x:180,y:420,vy:0,grounded:true};g.lines=[[{x:180,y:412},{x:300,y:412}]];g.tick(.025);assert.equal(g.p.grounded,false);assert.ok(g.p.y>420);const speed=g.p.vy;g.tick(.025);assert.ok(g.p.vy>speed);assert.ok(g.p.y>420);
+});
+test('doodle lands on crossed surfaces, falls through gaps and cannot climb a vertical stroke',()=>{
+ const fall=new MODELS['doodle-escape'](0);fall.running=true;fall.p={x:220,y:400,vy:100,grounded:false};fall.lines=[[{x:200,y:440},{x:270,y:440}]];for(let n=0;n<12;n++)fall.tick(.025);assert.equal(fall.p.y,440);assert.equal(fall.p.grounded,true);
+ const gap=new MODELS['doodle-escape'](0);gap.running=true;gap.p={x:180,y:420,vy:0,grounded:true};gap.lines=[[{x:184,y:420},{x:290,y:420}]];for(let n=0;n<5;n++)gap.tick(.025);assert.equal(gap.p.grounded,false);assert.ok(gap.p.y>420);
+ const wall=new MODELS['doodle-escape'](0);wall.running=true;wall.p.x=100;wall.lines=[[{x:102,y:420},{x:102,y:300}]];for(let n=0;n<10;n++)wall.tick(.025);assert.ok(wall.p.x<102);assert.equal(wall.p.y,420);
+});
+test('doodle must reach the exit on the ground, not while falling past it',()=>{const g=new MODELS['doodle-escape'](0);g.running=true;g.p={x:905,y:490,vy:100,grounded:false};g.tick(.025);assert.equal(g.state,'play');run(g,2);assert.equal(g.state,'lost');});

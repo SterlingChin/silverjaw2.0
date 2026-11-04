@@ -4,12 +4,35 @@ export const hit=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
 export function readSave(value,max){return {unlocked:Number.isInteger(value?.unlocked)?clamp(value.unlocked,1,max):1,best:Array.from({length:max},(_,i)=>Number.isFinite(value?.best?.[i])?clamp(value.best[i],0,999999):0)};}
 class Base{constructor(level=0){this.level=level;this.time=0;this.state='play';this.message='';this.score=0;this.camera=0;}win(text){if(this.state!=='play')return;this.state='won';this.message=text;this.score=Math.max(1,this.score);}lose(text){if(this.state!=='play')return;this.state='lost';this.message=text;}tick(dt,input={}){if(this.state!=='play')return;dt=clamp(dt,0,.025);this.time+=dt;this.update(dt,input);}press(){}drag(){}release(){}action(){}}
 export class Doodle extends Base{
- constructor(l){super(l);this.p={x:55,y:370,vy:0};this.ink=1050-l*80;this.lines=[];this.active=null;this.running=false;this.eraser=-90;this.platforms=[{x:0,y:420,w:180},{x:300+l*8,y:395,w:135},{x:555-l*5,y:365,w:120},{x:800,y:410,w:160}];this.bits=[];}
+ constructor(l){super(l);this.p={x:55,y:420,vy:0,grounded:true};this.ink=1050-l*80;this.lines=[];this.active=null;this.running=false;this.eraser=-90;this.platforms=[{x:0,y:420,w:180},{x:300+l*8,y:395,w:135},{x:555-l*5,y:365,w:120},{x:800,y:410,w:160}];this.bits=[];}
  press(x,y){if(this.running||y<95)return;this.active=[{x,y}];}
  drag(x,y){if(!this.active||this.ink<=0)return;const prev=this.active.at(-1),len=Math.hypot(x-prev.x,y-prev.y);if(len<5)return;const used=Math.min(len,this.ink);this.active.push({x:prev.x+(x-prev.x)*used/len,y:prev.y+(y-prev.y)*used/len});this.ink-=used;}
  release(){if(this.active?.length>1)this.lines.push(this.active);this.active=null;}
  action(n){if(n===0){this.release();this.running=true;}if(n===1&&!this.running){const line=this.lines.pop();if(line)for(let i=1;i<line.length;i++)this.ink+=dist(line[i],line[i-1]);}}
- update(dt){if(!this.running)return;const p=this.p,old=p.y;p.x+=65*dt;p.vy+=700*dt;p.y+=p.vy*dt;const floors=this.platforms.filter(b=>p.x>=b.x&&p.x<=b.x+b.w).map(b=>b.y);for(const line of this.lines)for(let i=1;i<line.length;i++){const a=line[i-1],b=line[i];if(Math.abs(b.x-a.x)<1||p.x<Math.min(a.x,b.x)||p.x>Math.max(a.x,b.x))continue;floors.push(a.y+(p.x-a.x)/(b.x-a.x)*(b.y-a.y));}for(const y of floors.sort((a,b)=>a-b))if(old<=y+12&&p.y>=y&&p.vy>=0){p.y=y;p.vy=0;break;}this.eraser+=43*dt;if(p.x-this.eraser<35)this.lose('The giant eraser caught your doodle. Try a smoother bridge!');if(p.y>550)this.lose('The doodle fell off the page. Draw a bridge under every gap.');if(this.level>=2&&Math.floor(this.time*1.2)!==Math.floor((this.time-dt)*1.2))this.bits.push({x:350+(this.time*71)%430,y:80});for(const b of this.bits){const oldY=b.y;b.y+=130*dt;let shield=false;for(const line of this.lines)for(let i=1;i<line.length;i++){const a=line[i-1],c=line[i];if(Math.abs(c.x-a.x)<1||b.x<Math.min(a.x,c.x)||b.x>Math.max(a.x,c.x))continue;const y=a.y+(b.x-a.x)/(c.x-a.x)*(c.y-a.y);if(oldY<y&&b.y>=y)shield=true;}if(shield)b.y=999;if(Math.hypot(b.x-p.x,b.y-(p.y-20))<22)this.lose('Falling eraser crumbs! Draw a shield overhead.');}this.bits=this.bits.filter(b=>b.y<540);if(p.x>900){this.score=Math.round(this.ink)+100;this.win('You drew yourself out of trouble!');}}
+ move(dt){
+ const p=this.p,oldX=p.x,oldY=p.y,nextX=p.x+65*dt;
+ const surfaces=this.platforms.map(b=>({a:{x:b.x,y:b.y},b:{x:b.x+b.w,y:b.y}}));
+ for(const path of this.lines)for(let n=1;n<path.length;n++)surfaces.push({a:path[n-1],b:path[n]});
+ const ramps=surfaces.filter(s=>Math.abs(s.b.x-s.a.x)>.001).map(s=>({...s,slope:(s.b.y-s.a.y)/(s.b.x-s.a.x),min:Math.min(s.a.x,s.b.x),max:Math.max(s.a.x,s.b.x)}));
+ const at=(s,x)=>s.a.y+(x-s.a.x)*s.slope;
+ // Follow only a surface already touching the feet. Never snap up to a nearby line.
+ const support=ramps.filter(s=>Math.abs(s.slope)<=.85&&oldX>=s.min&&oldX<=s.max&&nextX>=s.min&&nextX<=s.max&&Math.abs(at(s,oldX)-oldY)<.15).sort((a,b)=>at(a,nextX)-at(b,nextX))[0];
+ p.x=nextX;p.grounded=false;
+ if(support&&p.vy===0){p.y=at(support,nextX);p.grounded=true;}
+ else{
+  p.vy+=700*dt;p.y+=p.vy*dt;
+  // Swept feet/segment collision: land only when falling across the actual surface.
+  let first=null;
+  for(const s of ramps){if(Math.abs(s.slope)>.85)continue;const before=oldY-at(s,oldX),after=p.y-at(s,p.x);if(before>0.001||after<0||after<=before)continue;const t=-before/(after-before),x=oldX+(p.x-oldX)*t;if(x<s.min||x>s.max)continue;if(!first||t<first.t)first={s,t,x};}
+  if(first){const s=first.s;if(p.x>=s.min&&p.x<=s.max){p.y=at(s,p.x);p.vy=0;p.grounded=true;}}
+ }
+ // Steep strokes behave as walls instead of invisible elevators.
+ for(const s of surfaces){if(Math.abs(s.b.x-s.a.x)>.001&&Math.abs((s.b.y-s.a.y)/(s.b.x-s.a.x))<=.85)continue;const edge=Math.min(s.a.x,s.b.x);if(oldX<=edge&&p.x>=edge&&Math.max(s.a.y,s.b.y)>p.y-45&&Math.min(s.a.y,s.b.y)<p.y){p.x=edge-.01;}}
+ }
+ update(dt){if(!this.running)return;const p=this.p;let remaining=dt;
+ const edges=this.platforms.flatMap(b=>[b.x,b.x+b.w]).concat(this.lines.flatMap(path=>path.map(p=>p.x)));
+ while(remaining>1e-8){const end=p.x+65*remaining;const edge=edges.filter(x=>x>p.x+1e-8&&x<end).sort((a,b)=>a-b)[0];const step=edge===undefined?remaining:(edge-p.x)/65;this.move(step);remaining-=step;}
+ this.eraser+=43*dt;if(p.x-this.eraser<35)this.lose('The giant eraser caught your doodle. Try a smoother bridge!');if(p.y>550)this.lose('The doodle fell off the page. Draw a bridge under every gap.');if(this.level>=2&&Math.floor(this.time*1.2)!==Math.floor((this.time-dt)*1.2))this.bits.push({x:350+(this.time*71)%430,y:80});for(const b of this.bits){const oldY=b.y;b.y+=130*dt;let shield=false;for(const line of this.lines)for(let i=1;i<line.length;i++){const a=line[i-1],c=line[i];if(Math.abs(c.x-a.x)<1||b.x<Math.min(a.x,c.x)||b.x>Math.max(a.x,c.x))continue;const y=a.y+(b.x-a.x)/(c.x-a.x)*(c.y-a.y);if(oldY<y&&b.y>=y)shield=true;}if(shield)b.y=999;if(Math.hypot(b.x-p.x,b.y-(p.y-20))<22)this.lose('Falling eraser crumbs! Draw a shield overhead.');}this.bits=this.bits.filter(b=>b.y<540);if(p.x>900&&p.grounded&&Math.abs(p.y-410)<1){this.score=Math.round(this.ink)+100;this.win('You drew yourself out of trouble!');}}
 }
 export class Plane extends Base{
  constructor(l){super(l);this.p={x:155,y:270};this.distance=0;this.length=2250+l*210;this.obstacles=Array.from({length:9+l},(_,i)=>({x:430+i*210,gap:210+Math.sin(i*2+l)*105,size:210-l*9,kind:i%3}));this.rings=this.obstacles.map(o=>({x:o.x+55,y:o.gap,got:false}));this.target=null;}
